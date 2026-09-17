@@ -12,7 +12,6 @@ import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../components/footer/footer.component';
 import { NgOptimizedImage } from '@angular/common';
 
-declare const grecaptcha: any;
 
 @Component({
   selector: 'app-contact',
@@ -111,46 +110,31 @@ export class ContactComponent {
 
     this.isSubmitting = true;
 
-    grecaptcha.ready(() => {
-      grecaptcha
-        .execute('6LdHvfMsAAAAAId4VWi0zD7O5RlN9GV7O7GMHAhf', {
-          action: 'contact_submit',
-        })
-        .then((token: string) => {
-          // Adding formType and recaptchaToken to identify and verify this as a contact message
-          const payload = {
-            ...this.formData,
-            recaptchaToken: token,
-            formType: 'contact',
-          };
+    const payload = {
+      ...this.formData,
+      formType: 'contact',
+    };
 
-          fetch(this.googleSheetUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-          })
-            .then(() => {
-              this.submitted = true;
-              this.isSubmitting = false;
-            })
-            .catch((error) => {
-              console.error('Submission error:', error);
-              this.submitted = true;
-              this.isSubmitting = false;
-            });
-        })
-        .catch((error: any) => {
-          console.error('reCAPTCHA execution error:', error);
-          this.notificationService.show(
-            'Security verification failed. Please try again.',
-            'error',
-          );
-          this.isSubmitting = false;
-        });
-    });
+    fetch(this.googleSheetUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then(() => {
+        this.submitted = true;
+        this.isSubmitting = false;
+      })
+      .catch((error) => {
+        console.error('Submission error:', error);
+        this.isSubmitting = false;
+        this.notificationService.show(
+          'Something went wrong. Please try again.',
+          'error'
+        );
+      });
   }
 
   resetForm() {

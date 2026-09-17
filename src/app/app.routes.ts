@@ -2,21 +2,22 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/auth-guard';
 
 export const routes: Routes = [
-  { 
-    path: '', 
-    loadComponent: () => import('./website/home/home.component').then(c => c.HomeComponent) 
+  {
+    path: '',
+    // loadComponent: () => import('./website/home/home.component').then(c => c.HomeComponent) 
+    loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES)
   },
-  { 
-    path: 'privacy-policy', 
-    loadComponent: () => import('./website/privacy-policy/privacy-policy.component').then(c => c.PrivacyPolicyComponent) 
+  {
+    path: 'privacy-policy',
+    loadComponent: () => import('./website/privacy-policy/privacy-policy.component').then(c => c.PrivacyPolicyComponent)
   },
-  { 
-    path: 'terms-and-conditions', 
-    loadComponent: () => import('./website/terms-and-conditions/terms-and-conditions.component').then(c => c.TermsAndConditionsComponent) 
+  {
+    path: 'terms-and-conditions',
+    loadComponent: () => import('./website/terms-and-conditions/terms-and-conditions.component').then(c => c.TermsAndConditionsComponent)
   },
-  { 
-    path: 'contact', 
-    loadComponent: () => import('./website/contact/contact.component').then(c => c.ContactComponent) 
+  {
+    path: 'contact',
+    loadComponent: () => import('./website/contact/contact.component').then(c => c.ContactComponent)
   },
 
   {

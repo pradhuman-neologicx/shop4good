@@ -1,14 +1,15 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AdminMockApiService } from 'src/app/core/services/admin-mock-api.service';
 import { NotificationService } from 'src/app/core/services/notificationnew.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-marketplaces',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, NgxPaginationModule],
   styleUrls: ['./marketplaces.component.scss'],
   templateUrl: './marketplaces.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -17,6 +18,13 @@ export class MarketplacesComponent implements OnInit {
   marketplaces: any[] = [];
   isLoading = true;
   
+  // Pagination & Filters
+  page = 1;
+  limit = 10;
+  total = 0;
+  searchQuery = '';
+  filterStatus = 'All';
+
   // Modal state
   isModalOpen = false;
   isEditMode = false;
@@ -56,9 +64,11 @@ export class MarketplacesComponent implements OnInit {
   loadMarketplaces() {
     this.isLoading = true;
     this.cdr.markForCheck();
-    this.mockApi.getMarketplaces().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    this.mockApi.getMarketplaces(this.page, this.limit, this.searchQuery, this.filterStatus)
+      .pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
         this.marketplaces = res.data;
+        this.total = res.pagination.total;
         this.isLoading = false;
         this.cdr.markForCheck();
       },
@@ -68,6 +78,40 @@ export class MarketplacesComponent implements OnInit {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  get showingFrom() {
+    return this.total === 0 ? 0 : (this.page - 1) * this.limit + 1;
+  }
+
+  get showingTo() {
+    return Math.min(this.page * this.limit, this.total);
+  }
+
+  onSearch() {
+    this.page = 1;
+    this.loadMarketplaces();
+  }
+
+  resetSearch() {
+    this.searchQuery = '';
+    this.page = 1;
+    this.loadMarketplaces();
+  }
+
+  onPageChange(newPage: number) {
+    this.page = newPage;
+    this.loadMarketplaces();
+  }
+
+  onLimitChange() {
+    this.page = 1; // Reset to first page
+    this.loadMarketplaces();
+  }
+
+  onFilterChange() {
+    this.page = 1;
+    this.loadMarketplaces();
   }
 
   openAddModal() {

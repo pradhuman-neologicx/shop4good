@@ -9,12 +9,44 @@
     </button>
   </div>
 
+  <div class="filter-section d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded border">
+    <!-- Left: Limit -->
+    <div class="d-flex align-items-center gap-2">
+      <label class="text-nowrap mb-0 fw-medium">Show</label>
+      <select class="form-select form-select-sm" style="width: auto;" [(ngModel)]="limit" (change)="onLimitChange()">
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="20">20</option>
+        <option [value]="50">50</option>
+      </select>
+      <label class="text-nowrap mb-0 fw-medium">entries</label>
+    </div>
+
+    <!-- Right: Filters & Search -->
+    <div class="d-flex gap-3 align-items-center">
+      <select class="form-select form-select-sm" style="width: 150px;" [(ngModel)]="filterStatus" (change)="onFilterChange()">
+        <option value="All">All Statuses</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+      
+      <div class="input-group input-group-sm" style="width: 250px;">
+        <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()">
+        <button class="btn btn-primary-custom" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+        @if (searchQuery) {
+          <button class="btn btn-outline-secondary" type="button" (click)="resetSearch()"><i class="fa fa-times"></i></button>
+        }
+      </div>
+    </div>
+  </div>
+
   @if (!isLoading) {
   <div class="card">
     <div class="table-responsive">
       <table>
         <thead>
           <tr>
+            <th>Sr.No.</th>
             <th>Logo</th>
             <th>Name</th>
             <th>Associate URL</th>
@@ -24,8 +56,9 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of marketplaces; track item.id || $index) {
+          @for (item of marketplaces | paginate: { id: 'server', itemsPerPage: limit, currentPage: page, totalItems: total }; track item.id || $index) {
           <tr>
+            <td>{{ (page - 1) * limit + $index + 1 }}</td>
             <td>
               @if (item.imageUrl) {
               <img [src]="item.imageUrl" alt="Logo" class="rounded bg-white p-1"
@@ -62,11 +95,17 @@
           </tr>
           } @empty {
           <tr>
-            <td colspan="6" class="text-center py-4 text-muted">No marketplaces configured.</td>
+            <td colspan="7" class="text-center py-4 text-muted">No marketplaces configured.</td>
           </tr>
           }
         </tbody>
       </table>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-3 px-2">
+      <div class="text-muted small">
+        Showing {{ showingFrom }} to {{ showingTo }} of {{ total }} entries
+      </div>
+      <pagination-controls id="server" (pageChange)="onPageChange($event)"></pagination-controls>
     </div>
   </div>
   } @else {

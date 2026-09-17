@@ -6,11 +6,47 @@
     </div>
   </div>
 
-  <div class="card" *ngIf="!isLoading; else loadingState">
+  <div class="filter-section d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded border flex-wrap gap-3">
+    <!-- Left: Limit -->
+    <div class="d-flex align-items-center gap-2">
+      <label class="text-nowrap mb-0 fw-medium">Show</label>
+      <select class="form-select form-select-sm" style="width: auto;" [(ngModel)]="limit" (change)="onLimitChange()">
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="20">20</option>
+        <option [value]="50">50</option>
+      </select>
+      <label class="text-nowrap mb-0 fw-medium">entries</label>
+    </div>
+
+    <!-- Right: Filters & Search -->
+    <div class="d-flex gap-3 align-items-center flex-wrap">
+      <div class="d-flex align-items-center gap-2">
+        <label class="text-nowrap small text-muted mb-0">From:</label>
+        <input type="date" class="form-control form-control-sm" [(ngModel)]="startDate" (change)="onFilterChange()">
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <label class="text-nowrap small text-muted mb-0">To:</label>
+        <input type="date" class="form-control form-control-sm" [(ngModel)]="endDate" (change)="onFilterChange()">
+      </div>
+      
+      <div class="input-group input-group-sm" style="width: 250px;">
+        <input type="text" class="form-control" placeholder="Search by Txn ID or Email" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()">
+        <button class="btn btn-primary-custom" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+        @if (searchQuery) {
+          <button class="btn btn-outline-secondary" type="button" (click)="resetSearch()"><i class="fa fa-times"></i></button>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (!isLoading) {
+  <div class="card">
     <div class="table-responsive">
       <table>
         <thead>
           <tr>
+            <th>Sr.No.</th>
             <th>Txn ID</th>
             <th>Date</th>
             <th>Marketplace</th>
@@ -20,7 +56,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let txn of unmatchedTransactions">
+          @for (txn of unmatchedTransactions | paginate: { id: 'server', itemsPerPage: limit, currentPage: page, totalItems: total }; track txn.id || $index) {
+          <tr>
+            <td>{{ (page - 1) * limit + $index + 1 }}</td>
             <td><code class="bg-light px-2 py-1 rounded text-secondary">{{ txn.transactionId }}</code></td>
             <td>{{ txn.date | date:'mediumDate' }}</td>
             <td class="fw-bold">{{ txn.marketplace }}</td>
@@ -32,26 +70,34 @@
               </button>
             </td>
           </tr>
-          <tr *ngIf="!unmatchedTransactions.length">
-            <td colspan="6" class="text-center py-4 text-muted">
+          } @empty {
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">
               <i class="fa fa-check-circle text-success me-2" style="font-size: 20px; vertical-align: middle;"></i> All transactions are matched.
             </td>
           </tr>
+          }
         </tbody>
       </table>
     </div>
+    <div class="d-flex justify-content-between align-items-center mt-3 px-2">
+      <div class="text-muted small">
+        Showing {{ showingFrom }} to {{ showingTo }} of {{ total }} entries
+      </div>
+      <pagination-controls id="server" (pageChange)="onPageChange($event)"></pagination-controls>
+    </div>
   </div>
-</div>
-
-<ng-template #loadingState>
+  } @else {
   <div class="loading-state">
     <div class="spinner"></div>
     <p>Loading transactions...</p>
   </div>
-</ng-template>
+  }
+</div>
 
 <!-- Match User Modal -->
-<div class="custom-modal-overlay" *ngIf="isModalOpen">
+@if (isModalOpen) {
+<div class="custom-modal-overlay">
   <div class="custom-modal">
     <div class="modal-header">
       <h2>Match Transaction</h2>
@@ -70,13 +116,17 @@
           <label class="mb-2 fw-bold">Select User to Match</label>
           <select class="form-select" formControlName="userId">
             <option value="" disabled selected>-- Select a registered user --</option>
-            <option *ngFor="let user of usersList" [value]="user.id">
+            @for (user of usersList; track user.id) {
+            <option [value]="user.id">
               {{ user.name }} ({{ user.email }})
             </option>
+            }
           </select>
-          <div class="text-danger small mt-1" *ngIf="submitted && matchForm.get('userId')?.invalid">
+          @if (submitted && matchForm.get('userId')?.invalid) {
+          <div class="text-danger small mt-1">
             Please select a user to match this transaction.
           </div>
+          }
         </div>
 
         <div class="modal-footer">
@@ -87,3 +137,4 @@
     </div>
   </div>
 </div>
+}

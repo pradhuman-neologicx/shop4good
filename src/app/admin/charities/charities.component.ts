@@ -1,14 +1,15 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AdminMockApiService } from 'src/app/core/services/admin-mock-api.service';
 import { NotificationService } from 'src/app/core/services/notificationnew.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-charities',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, NgxPaginationModule],
   styleUrls: ['./charities.component.scss'],
   templateUrl: './charities.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -17,6 +18,13 @@ export class CharitiesComponent implements OnInit {
   charities: any[] = [];
   isLoading = true;
   
+  // Pagination & Filters
+  page = 1;
+  limit = 10;
+  total = 0;
+  searchQuery = '';
+  filterStatus = 'All';
+
   // Modal state
   isModalOpen = false;
   isEditMode = false;
@@ -52,9 +60,11 @@ export class CharitiesComponent implements OnInit {
   loadCharities() {
     this.isLoading = true;
     this.cdr.markForCheck();
-    this.mockApi.getCharities().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    this.mockApi.getCharities(this.page, this.limit, this.searchQuery, this.filterStatus)
+      .pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
         this.charities = res.data;
+        this.total = res.pagination.total;
         this.isLoading = false;
         this.cdr.markForCheck();
       },
@@ -64,6 +74,40 @@ export class CharitiesComponent implements OnInit {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  get showingFrom() {
+    return this.total === 0 ? 0 : (this.page - 1) * this.limit + 1;
+  }
+
+  get showingTo() {
+    return Math.min(this.page * this.limit, this.total);
+  }
+
+  onSearch() {
+    this.page = 1;
+    this.loadCharities();
+  }
+
+  resetSearch() {
+    this.searchQuery = '';
+    this.page = 1;
+    this.loadCharities();
+  }
+
+  onPageChange(newPage: number) {
+    this.page = newPage;
+    this.loadCharities();
+  }
+
+  onLimitChange() {
+    this.page = 1; // Reset to first page
+    this.loadCharities();
+  }
+
+  onFilterChange() {
+    this.page = 1;
+    this.loadCharities();
   }
 
   openAddModal() {
