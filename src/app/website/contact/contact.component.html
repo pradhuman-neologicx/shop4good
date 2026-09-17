@@ -1,0 +1,159 @@
+<div class="contact-page flex flex-col min-h-screen">
+  <app-navbar></app-navbar>
+
+  <!-- ── HERO ── -->
+  <div class="bg-gradient-to-r from-[#032826] to-[#05413e] pt-32 pb-20 relative">
+    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+    <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+      <span class="text-emerald-400 text-sm font-bold tracking-widest uppercase mb-4 block">Get In Touch</span>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6">We're Here to Help</h1>
+      <p class="text-slate-300 text-lg max-w-2xl mx-auto">
+        Have questions about donations, partnerships, or your account? 
+        Our support team is ready to assist you.
+      </p>
+    </div>
+  </div>
+
+  <!-- ── CONTACT INFO CARDS ── -->
+  <section class="max-w-7xl mx-auto px-4 -mt-10 relative z-20 mb-16 w-full">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center border border-slate-100 transition-transform hover:-translate-y-1">
+        <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl mb-4">
+          <i class="fa-solid fa-phone"></i>
+        </div>
+        <h4 class="text-lg font-bold text-slate-800 mb-1">Phone Support</h4>
+        <a href="tel:08001234567" class="text-teal-600 font-semibold mb-2 hover:underline">0800 123 4567</a>
+        <span class="text-sm text-slate-500">Mon – Fri, 9am – 6pm</span>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center border border-slate-100 transition-transform hover:-translate-y-1">
+        <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl mb-4">
+          <i class="fa-solid fa-envelope"></i>
+        </div>
+        <h4 class="text-lg font-bold text-slate-800 mb-1">Email Support</h4>
+        <a href="mailto:support@shop4good.com" class="text-teal-600 font-semibold mb-2 hover:underline">support&#64;shop4good.com</a>
+        <span class="text-sm text-slate-500">We aim to reply within 24 hours</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MAIN CONTENT: FORM + MAP ── -->
+  <section class="max-w-7xl mx-auto px-4 w-full pb-24">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row border border-slate-200">
+      
+      <!-- Left Visual Panel -->
+      <div class="lg:w-5/12 bg-emerald-50 p-8 flex flex-col justify-center items-center text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-emerald-100/50"></div>
+        <img ngSrc="assets/shop4good_support.jpg" width="400" height="400" alt="Our Support Team" class="w-full max-w-sm rounded-xl object-contain drop-shadow-xl relative z-10 mb-8" />
+        <div class="relative z-10">
+          <h3 class="text-xl font-bold text-emerald-900 mb-2">Dedicated Assistance</h3>
+          <p class="text-emerald-700">"We're here to ensure your donations reach the right causes seamlessly."</p>
+        </div>
+      </div>
+
+      <!-- Form Panel -->
+      <div class="lg:w-7/12 p-8 lg:p-12 relative">
+        @if (!submitted) {
+          <div>
+            <div class="mb-8">
+              <h2 class="text-2xl font-bold text-slate-800 mb-2">Send us a Message</h2>
+              <p class="text-slate-500 text-sm">
+                Fill out the form below and our support team will get back to you promptly.
+              </p>
+            </div>
+            
+            <form (ngSubmit)="onSubmit()" class="space-y-6">
+              <!-- Name -->
+              <div>
+                <label for="contactName" class="block text-sm font-semibold text-slate-700 mb-2">Full Name <span class="text-red-500">*</span></label>
+                <div class="relative">
+                  <i class="fa-solid fa-user absolute left-4 top-3.5 text-slate-400"></i>
+                  <input type="text" id="contactName" [(ngModel)]="formData.name" name="name" placeholder="Enter your name" required 
+                    class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" />
+                </div>
+              </div>
+              
+              <!-- Email + Phone Row -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="contactEmail" class="block text-sm font-semibold text-slate-700 mb-2">Email <span class="text-red-500">*</span></label>
+                  <div class="relative">
+                    <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-400"></i>
+                    <input type="email" id="contactEmail" [(ngModel)]="formData.email" name="email" placeholder="Enter your email" required 
+                      class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" />
+                  </div>
+                </div>
+                <div>
+                  <label for="contactPhone" class="block text-sm font-semibold text-slate-700 mb-2">Phone</label>
+                  <div class="relative">
+                    <i class="fa-solid fa-phone absolute left-4 top-3.5 text-slate-400"></i>
+                    <input type="tel" id="contactPhone" [(ngModel)]="formData.phone" name="phone" placeholder="Enter your phone number" 
+                      class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" />
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Subject Row -->
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Subject</label>
+                <div class="custom-select-wrap" [class.open]="isSubjectDropdownOpen">
+                  <div class="custom-select-display" (click)="toggleSubjectDropdown()">
+                    <span [class.select-placeholder]="!formData.subject">
+                      {{ formData.subject || 'Choose a topic…' }}
+                    </span>
+                    <i class="fa-solid fa-chevron-down text-slate-400 transition-transform" [class.rotate-180]="isSubjectDropdownOpen"></i>
+                  </div>
+                  @if (isSubjectDropdownOpen) {
+                    <div class="custom-select-dropdown">
+                      @for (opt of subjectOptions; track opt) {
+                        <div class="custom-select-option" (click)="selectSubject(opt)" [class.selected]="formData.subject === opt">
+                          {{ opt }}
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+              
+              <!-- Message -->
+              <div>
+                <label for="contactMsg" class="block text-sm font-semibold text-slate-700 mb-2">Message <span class="text-red-500">*</span></label>
+                <textarea id="contactMsg" [(ngModel)]="formData.message" name="message" rows="5" placeholder="Tell us how we can help you…" required
+                  class="w-full p-4 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all resize-y"></textarea>
+              </div>
+              
+              <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30" [disabled]="isSubmitting">
+                @if (!isSubmitting) {
+                  <span>Send Message</span>
+                  <i class="fa-solid fa-paper-plane"></i>
+                }
+                @if (isSubmitting) {
+                  <span>Sending...</span>
+                  <i class="fa-solid fa-spinner fa-spin"></i>
+                }
+              </button>
+            </form>
+          </div>
+        }
+
+        <!-- Success State -->
+        @if (submitted) {
+          <div class="h-full flex flex-col items-center justify-center text-center py-12">
+            <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-6 text-emerald-500 text-4xl">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-800 mb-4">Message Sent!</h3>
+            <p class="text-slate-500 mb-8 max-w-sm">
+              Thank you for reaching out. Our support team will get back to you within 24 hours.
+            </p>
+            <button (click)="resetForm()" class="text-emerald-600 font-semibold hover:text-emerald-800 transition-colors flex items-center gap-2">
+              <i class="fa-solid fa-arrow-left"></i>
+              Send Another Message
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+  <app-footer></app-footer>
+</div>

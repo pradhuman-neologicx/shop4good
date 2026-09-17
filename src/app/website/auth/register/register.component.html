@@ -1,0 +1,97 @@
+<div class="min-h-screen flex items-center justify-center bg-slate-50 relative py-12 px-4 sm:px-6 lg:px-8">
+  <div class="absolute inset-0 bg-gradient-to-br from-[#032826] to-[#05413e] opacity-5"></div>
+  <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+  
+  <div class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden relative z-10 border border-slate-100">
+    <div class="p-8 sm:p-12">
+      <!-- Logo -->
+      <div class="flex justify-center mb-8">
+        <a routerLink="/">
+          <img src="assets/logo.png" alt="Shop4Good" class="h-12 w-auto object-contain" />
+        </a>
+      </div>
+
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-slate-900 mb-2">Create an Account</h2>
+        <p class="text-slate-500 text-sm">Join Shop4Good and start making a difference with every purchase.</p>
+      </div>
+
+      <form class="space-y-5">
+        <div>
+          <label for="name" class="block text-sm font-semibold text-slate-700 mb-2">Full Name</label>
+          <div class="relative">
+            <i class="fa-solid fa-user absolute left-4 top-3.5 text-slate-400"></i>
+            <input type="text" id="name" name="name" placeholder="John Doe" required 
+              class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" />
+          </div>
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
+          <div class="relative">
+            <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-400"></i>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required 
+              class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" />
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-400"></i>
+            <input type="password" id="password" name="password" placeholder="••••••••" required 
+              class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" />
+          </div>
+        </div>
+        
+        <div>
+          <label for="confirm-password" class="block text-sm font-semibold text-slate-700 mb-2">Confirm Password</label>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-400"></i>
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="••••••••" required 
+              class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" />
+          </div>
+        </div>
+
+        <div class="flex items-start">
+          <input id="terms" name="terms" type="checkbox" required class="h-4 w-4 mt-1 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded">
+          <label for="terms" class="ml-2 block text-sm text-slate-600">
+            I agree to the <a routerLink="/terms-and-conditions" class="text-emerald-600 hover:underline">Terms of Service</a> and <a routerLink="/privacy-policy" class="text-emerald-600 hover:underline">Privacy Policy</a>
+          </label>
+        </div>
+
+        <div>
+          <button type="submit" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all">
+            Sign Up
+          </button>
+        </div>
+      </form>
+      
+      <div class="mt-8 relative">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-slate-200"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-2 bg-white text-slate-500">Or sign up with</span>
+        </div>
+      </div>
+      
+      <div class="mt-6 grid grid-cols-2 gap-4">
+        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-slate-300 rounded-lg shadow-sm bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+          <i class="fa-brands fa-google text-red-500"></i> Google
+        </button>
+        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-slate-300 rounded-lg shadow-sm bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+          <i class="fa-brands fa-apple text-slate-800"></i> Apple
+        </button>
+      </div>
+
+    </div>
+    
+    <div class="bg-slate-50 px-8 py-6 border-t border-slate-200 text-center">
+      <p class="text-sm text-slate-600">
+        Already have an account? 
+        <a routerLink="/auth/login" class="font-bold text-emerald-600 hover:text-emerald-500">Sign in</a>
+      </p>
+    </div>
+  </div>
+</div>

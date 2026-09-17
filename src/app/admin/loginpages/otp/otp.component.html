@@ -1,0 +1,95 @@
+<div class="glass-auth-card">
+  <div class="auth-header text-center">
+    <h2 class="auth-title">Reset Password</h2>
+    <p class="auth-subtitle">Create a new secure password for your account</p>
+  </div>
+
+  <form [formGroup]="ResetPassword" (ngSubmit)="changePassword()" class="auth-form">
+
+    <!-- New Password Field -->
+    <div class="form-group">
+      <label class="auth-label">New Password</label>
+      <div class="input-wrapper">
+        <i class="fa-solid fa-lock input-icon"></i>
+        <input
+          type="password"
+          class="auth-input"
+          formControlName="NewPassword"
+          placeholder="Enter New Password"
+          [ngClass]="{'input-error': ResetPassword.controls['NewPassword'].touched && ResetPassword.controls['NewPassword'].errors}"
+          />
+      </div>
+      @if (ResetPassword.controls['NewPassword'].touched && ResetPassword.controls['NewPassword'].errors) {
+        <div class="error-text">
+          @if (ResetPassword.controls['NewPassword'].errors['required']) {
+            <span>New Password is required</span>
+          }
+          @if (ResetPassword.controls['NewPassword'].errors['minlength']) {
+            <span>Must be at least 8 characters</span>
+          }
+          @if (ResetPassword.controls['NewPassword'].errors['maxlength']) {
+            <span>Must be at most 16 characters</span>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Confirm Password Field -->
+    <div class="form-group mt-4">
+      <label class="auth-label">Confirm New Password</label>
+      <div class="input-wrapper">
+        <i class="fa-solid fa-lock-check input-icon"></i>
+        <input
+          type="password"
+          class="auth-input"
+          formControlName="confirmPassword"
+          placeholder="Confirm New Password"
+          [ngClass]="{'input-error': (ResetPassword.controls['confirmPassword'].touched || ResetPassword.controls['confirmPassword'].dirty) && (ResetPassword.controls['confirmPassword'].errors || ResetPassword.get('confirmPassword')?.hasError('passwordMismatch'))}"
+          />
+      </div>
+      @if ((ResetPassword.controls['confirmPassword'].touched || ResetPassword.controls['confirmPassword'].dirty)) {
+        <div class="error-text">
+          @if (ResetPassword.controls['confirmPassword'].errors?.['required']) {
+            <span>Confirm Password is required</span>
+          }
+          @if (ResetPassword.get('confirmPassword')?.hasError('passwordMismatch')) {
+            <span>Passwords do not match</span>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Action Button -->
+    <div class="actions mt-5">
+      <button type="submit" class="btn-auth-primary" [disabled]="ResetPassword.invalid">
+        <span class="btn-text">Reset Password</span>
+        <i class="fa-solid fa-shield-keyhole btn-icon"></i>
+      </button>
+
+      @if (!submitted) {
+        <div class="api-error">
+          <p>{{ errorMessage }}</p>
+        </div>
+      }
+
+      <div class="text-center mt-4">
+        <a routerLink="/sign_in" class="forgot-link">Cancel and Return</a>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<!-- Success Modal -->
+@if (openSecondsuccess) {
+  <div class="success-toast" [@slideIn]>
+    <div class="toast-content">
+      <div class="toast-icon">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <div class="toast-text">
+        <p>{{ successName }} successfully!</p>
+      </div>
+    </div>
+  </div>
+}

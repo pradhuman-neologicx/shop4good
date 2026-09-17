@@ -1,0 +1,120 @@
+<div class="home-page min-h-screen flex flex-col">
+  <app-navbar></app-navbar>
+
+  <!-- ═══ HERO SECTION ═══ -->
+  <section class="hero-bg relative pt-32 pb-20 lg:pt-40 lg:pb-28">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+        
+        <!-- Hero Text -->
+        <div class="text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold tracking-widest uppercase mb-6 border border-emerald-500/30">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Shop4Good Platform
+          </div>
+          
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
+            Shop Your Favorite Brands, <br class="hidden sm:block" />
+            <span class="text-emerald-400">Support Your Causes</span>
+          </h1>
+          
+          <p class="text-lg sm:text-xl text-slate-300 mb-8 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+            Every purchase you make through Shop4Good generates a donation to a charity of your choice, at no extra cost to you. Turn your everyday shopping into meaningful impact.
+          </p>
+          
+          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <a routerLink="/auth/register" class="btn-primary-glow px-8 py-4 rounded-lg font-bold text-sm tracking-wide uppercase flex items-center justify-center gap-2">
+              Start Shopping Now <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a routerLink="/admin/login" class="px-8 py-4 rounded-lg font-bold text-sm tracking-wide uppercase flex items-center justify-center gap-2 text-white border border-white/30 hover:bg-white/10 transition-colors">
+              Admin Login
+            </a>
+          </div>
+          
+          <div class="mt-10 flex items-center justify-center lg:justify-start gap-6 text-slate-400 text-sm font-medium">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-check-circle text-emerald-400"></i> Free to join
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-check-circle text-emerald-400"></i> 1000+ Brands
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-check-circle text-emerald-400"></i> Real Impact
+            </div>
+          </div>
+        </div>
+        
+        <!-- Hero Image -->
+        <div class="relative mt-8 lg:mt-0 flex justify-center">
+          <div class="absolute inset-0 bg-emerald-500/20 blur-[100px] rounded-full"></div>
+          <img ngSrc="assets/shop4good_hero.jpg" width="600" height="600" priority alt="Shopping for a Cause" class="relative z-10 w-full max-w-lg object-contain floating-img drop-shadow-2xl rounded-2xl" />
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HOW IT WORKS SECTION ═══ -->
+  <section class="py-24 bg-slate-50 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-sm font-bold tracking-widest uppercase text-emerald-600 mb-3">Simple Process</h2>
+        <h3 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6">How Shop4Good Works</h3>
+        <p class="text-lg text-slate-600">Making a difference has never been easier. Just three simple steps to start turning your purchases into donations.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+        <!-- Connecting Line -->
+        <div class="hidden md:block absolute top-12 left-[15%] right-[15%] h-0.5 bg-gradient-to-r from-emerald-200 via-emerald-400 to-emerald-200 z-0"></div>
+        
+        <!-- Step 1 -->
+        <div class="relative z-10 flex flex-col items-center text-center">
+          <div class="w-24 h-24 rounded-2xl bg-white shadow-xl shadow-emerald-900/5 flex items-center justify-center mb-6 border border-emerald-100 rotate-3 transition-transform hover:rotate-0 duration-300">
+            <i class="fa-solid fa-hand-holding-heart text-4xl text-emerald-600"></i>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center -mt-10 mb-4 border-4 border-slate-50 relative z-20">1</div>
+          <h4 class="text-xl font-bold text-slate-900 mb-3">Choose a Cause</h4>
+          <p class="text-slate-600 text-sm leading-relaxed">Select from thousands of verified charities and causes that you want to support with your everyday shopping.</p>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="relative z-10 flex flex-col items-center text-center">
+          <div class="w-24 h-24 rounded-2xl bg-white shadow-xl shadow-emerald-900/5 flex items-center justify-center mb-6 border border-emerald-100 -rotate-3 transition-transform hover:rotate-0 duration-300">
+            <i class="fa-solid fa-store text-4xl text-emerald-600"></i>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center -mt-10 mb-4 border-4 border-slate-50 relative z-20">2</div>
+          <h4 class="text-xl font-bold text-slate-900 mb-3">Shop Marketplaces</h4>
+          <p class="text-slate-600 text-sm leading-relaxed">Click through our platform to shop at your favorite online stores like Amazon, Flipkart, and Myntra normally.</p>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="relative z-10 flex flex-col items-center text-center">
+          <div class="w-24 h-24 rounded-2xl bg-white shadow-xl shadow-emerald-900/5 flex items-center justify-center mb-6 border border-emerald-100 rotate-3 transition-transform hover:rotate-0 duration-300">
+            <i class="fa-solid fa-coins text-4xl text-emerald-600"></i>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center -mt-10 mb-4 border-4 border-slate-50 relative z-20">3</div>
+          <h4 class="text-xl font-bold text-slate-900 mb-3">Generate Donations</h4>
+          <p class="text-slate-600 text-sm leading-relaxed">The retailer pays us a commission for sending you to them, and we pass that money straight to your chosen charity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA SECTION ═══ -->
+  <section class="py-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-slate-900"></div>
+    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+    
+    <div class="relative z-10 max-w-4xl mx-auto px-4 text-center">
+      <i class="fa-solid fa-quote-left text-4xl text-emerald-500/50 mb-6"></i>
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-8 leading-tight">
+        "Small acts, when multiplied by millions of people, can transform the world."
+      </h2>
+      <a routerLink="/auth/register" class="btn-primary-glow inline-flex px-8 py-4 rounded-lg font-bold text-sm tracking-wide uppercase items-center gap-2">
+        Create Your Free Account <i class="fa-solid fa-user-plus"></i>
+      </a>
+    </div>
+  </section>
+
+  <app-footer></app-footer>
+</div>

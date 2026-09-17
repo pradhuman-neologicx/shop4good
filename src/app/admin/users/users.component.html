@@ -1,0 +1,160 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="title-section">
+      <h1>Users Management</h1>
+      <p>Manage all registered Shop4Good users and their selected causes.</p>
+    </div>
+    <!-- <button class="btn-primary-custom" (click)="openAddModal()">
+      <i class="fa fa-plus me-2"></i> Add User
+    </button> -->
+  </div>
+
+  @if (!isLoading) {
+  <div class="card">
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Selected Cause</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users; track user.id || $index) {
+          <tr>
+            <td class="fw-bold">{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.mobile }}</td>
+            <td>
+              @if (user.cause) {
+              <span class="badge-cause">{{ user.cause }}</span>
+              } @else {
+              <span class="text-muted">Not selected</span>
+              }
+            </td>
+            <td>
+              <span class="status-badge" [ngClass]="user.status === 'Active' ? 'active' : 'inactive'">
+                {{ user.status }}
+              </span>
+            </td>
+            <td class="text-end">
+              <button class="btn-action" title="View" (click)="viewUser(user)">
+                <i class="fa fa-eye"></i>
+              </button>
+              <!-- <button class="btn-action" title="Edit" (click)="openEditModal(user)">
+                    <i class="fa fa-pen"></i>
+                  </button>
+                  <button class="btn-action" [title]="user.status === 'Active' ? 'Deactivate' : 'Activate'" (click)="toggleStatus(user)">
+                    <i class="fa" [ngClass]="user.status === 'Active' ? 'fa-toggle-on text-success' : 'fa-toggle-off text-muted'"></i>
+                  </button> -->
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="6" class="text-center py-4 text-muted">No users found.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  } @else {
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading users...</p>
+  </div>
+  }
+</div>
+
+<!-- Simple Overlay Modal -->
+@if (isModalOpen) {
+<div class="custom-modal-overlay">
+  <div class="custom-modal">
+    <div class="modal-header">
+      <h2>{{ isViewMode ? 'View User' : (isEditMode ? 'Edit User' : 'Add New User') }}</h2>
+      <button class="close-btn" (click)="closeModal()"><i class="fa fa-times"></i></button>
+    </div>
+
+    <div class="modal-body">
+      @if (!isViewMode) {
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class="form-group mb-3">
+          <label>Full Name</label>
+          <input type="text" class="form-control" formControlName="name" placeholder="Enter full name">
+          @if (submitted && userForm.get('name')?.invalid) {
+          <div class="text-danger small mt-1">
+            Name is required.
+          </div>
+          }
+        </div>
+
+        <div class="form-group mb-3">
+          <label>Email Address</label>
+          <input type="email" class="form-control" formControlName="email" placeholder="Enter email address">
+          @if (submitted && userForm.get('email')?.invalid) {
+          <div class="text-danger small mt-1">
+            Valid email is required.
+          </div>
+          }
+        </div>
+
+        <div class="form-group mb-3">
+          <label>Mobile Number</label>
+          <input type="text" class="form-control" formControlName="mobile" placeholder="Enter mobile number">
+        </div>
+
+        <div class="form-group mb-3">
+          <label>Supported Cause (Optional)</label>
+          <input type="text" class="form-control" formControlName="cause" placeholder="Enter primary cause">
+        </div>
+
+
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary-custom">
+            {{ isEditMode ? 'Save Changes' : 'Add User' }}
+          </button>
+        </div>
+      </form>
+      } @else {
+      <!-- View Details Mode -->
+      <div class="view-details">
+        <div class="detail-group">
+          <label><i class="fa fa-user"></i> Full Name</label>
+          <p>{{ userForm.get('name')?.value || 'N/A' }}</p>
+        </div>
+        <div class="detail-group">
+          <label><i class="fa fa-envelope"></i> Email Address</label>
+          <p>{{ userForm.get('email')?.value || 'N/A' }}</p>
+        </div>
+        <div class="detail-group">
+          <label><i class="fa fa-phone"></i> Mobile Number</label>
+          <p>{{ userForm.get('mobile')?.value || 'N/A' }}</p>
+        </div>
+        <div class="detail-group">
+          <label><i class="fa fa-hand-holding-heart"></i> Supported Cause</label>
+          <p>{{ userForm.get('cause')?.value || 'None specified' }}</p>
+        </div>
+        <div class="detail-group full-width">
+          <label><i class="fa fa-toggle-on"></i> Status</label>
+          <div>
+            <span class="status-badge" [ngClass]="userForm.get('status')?.value === 'Active' ? 'active' : 'inactive'">
+              {{ userForm.get('status')?.value || 'Unknown' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary-custom" (click)="closeModal()">Close Details</button>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+}

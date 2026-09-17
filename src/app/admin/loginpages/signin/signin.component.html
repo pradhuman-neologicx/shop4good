@@ -1,0 +1,125 @@
+<div class="auth-layout">
+  <div class="glass-auth-card">
+    <div class="card-glow"></div>
+
+    <div class="auth-header text-center">
+      <div class="logo-wrapper">
+        <img ngSrc="assets/logo.png" width="300" height="160" class="auth-logo" alt="Shop4Good" />
+      </div>
+      <h2 class="auth-title">{{ title }}</h2>
+      <p class="auth-subtitle">Please enter your credentials to continue</p>
+    </div>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- Login Form                               -->
+    <!-- ════════════════════════════════════════ -->
+    <form [formGroup]="signIn" (ngSubmit)="onLogin()" class="auth-form" [@fadeSlide]>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label class="auth-label">Email Address</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-envelope input-icon"></i>
+          <input
+            type="email"
+            class="auth-input"
+            formControlName="email"
+            placeholder="Enter your email"
+            [ngClass]="{'input-error': signIn.controls['email'].touched && signIn.controls['email'].errors}"
+            />
+        </div>
+        @if (signIn.controls['email'].touched && signIn.controls['email'].errors) {
+          <div class="error-text">
+            @if (signIn.controls['email'].errors['required']) {
+              <span>Email is required</span>
+            }
+            @if (signIn.controls['email'].errors['email']) {
+              <span>Please enter a valid email address</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group mt-4">
+        <div class="mb-1">
+          <label class="auth-label mb-0">Password</label>
+        </div>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-lock input-icon"></i>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            class="auth-input"
+            formControlName="password"
+            placeholder="Enter your password"
+            [ngClass]="{'input-error': signIn.controls['password'].touched && signIn.controls['password'].errors}"
+            />
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="showPassword = !showPassword"
+            tabindex="-1"
+            >
+            <i
+              class="fa-solid"
+              [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+            ></i>
+          </button>
+        </div>
+        @if (signIn.controls['password'].touched && signIn.controls['password'].errors) {
+          <div class="error-text">
+            @if (signIn.controls['password'].errors['required']) {
+              <span>Password is required</span>
+            }
+            @if (signIn.controls['password'].errors['minlength']) {
+              <span>Password must be at least 6 characters</span>
+            }
+          </div>
+        }
+
+        <!-- Forgot Password Link -->
+        <div class="text-end mt-2">
+          <a routerLink="/forgot_password" class="forgot-link">Forgot Password?</a>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <div class="actions mt-5">
+        <button type="submit" class="btn-auth-primary" [disabled]="isLoading">
+          @if (!isLoading) {
+            <span class="btn-text">Login</span>
+          }
+          @if (isLoading) {
+            <span class="btn-text">Logging in...</span>
+          }
+          @if (!isLoading) {
+            <i class="fa-solid fa-right-to-bracket btn-icon"></i>
+          }
+          @if (isLoading) {
+            <i class="fa-solid fa-spinner fa-spin btn-icon"></i>
+          }
+        </button>
+
+        @if (errorMessage) {
+          <div class="api-error">
+            <p>{{ errorMessage }}</p>
+          </div>
+        }
+      </div>
+    </form>
+  </div>
+
+  <!-- Success Toast -->
+  @if (openSecondsuccess) {
+    <div class="success-toast" [@slideIn]>
+      <div class="toast-content">
+        <div class="toast-icon">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <div class="toast-text">
+          <p>Logged in successfully!</p>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,61 @@
+.contact-page {
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+.custom-select-wrap {
+  position: relative;
+  user-select: none;
+}
+
+.custom-select-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    border-color: #0d9488;
+  }
+}
+
+.select-placeholder {
+  color: #94a3b8;
+}
+
+.custom-select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 0.25rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.custom-select-option {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: #f0fdfa;
+    color: #0f766e;
+  }
+  
+  &.selected {
+    background-color: #ccfbf1;
+    color: #0f766e;
+    font-weight: 600;
+  }
+}

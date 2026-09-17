@@ -1,0 +1,32 @@
+<!-- correct code -->
+<div class="screenResponsive">
+  <div class="responsive-admin-header">
+    <app-sidenav-header
+      (toggleCollapsed)="adminState.toggleCollapsed()"
+      [isMobile]="adminState.isMobile()"
+    ></app-sidenav-header>
+  </div>
+  <mat-sidenav-container class="admin-container">
+    <mat-sidenav
+      [opened]="!adminState.isMobile() ? true : adminState.sidenavOpened()"
+      [mode]="adminState.isMobile() ? 'over' : adminState.sidenavMode()"
+      [style.width]="adminState.isMobile() ? '100vw' : adminState.sidenavWidth()"
+      (closedStart)="adminState.setSidenavOpened(false)"
+      class="responsive-sidenav"
+    >
+      <app-sidenav
+        [collapsed]="adminState.collapsed()"
+        (closeSidenav)="adminState.setSidenavOpened(false)"
+        [isMobile]="adminState.isMobile()"
+      ></app-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content
+      [style.margin-left]="adminState.isMobile() ? '0' : adminState.contentMargin()"
+      [style.transition]="'margin-left 0.3s ease-in-out'"
+      class="pt-4"
+    >
+      <app-spinner></app-spinner>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

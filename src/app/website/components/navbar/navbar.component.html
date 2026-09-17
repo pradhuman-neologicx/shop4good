@@ -1,0 +1,63 @@
+<!-- ── STICKY NAVBAR ── -->
+<nav class="navbar" [class.navbar--scrolled]="isScrolled || forceScrolled" [class.navbar--menu-open]="isMenuOpen">
+  <div class="navbar__container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- ── LEFT: LOGO ── -->
+    <a routerLink="/" class="navbar__logo" (click)="closeMenu()">
+      <img ngSrc="assets/logo.png" width="70" height="50" priority alt="Shop4Good" />
+    </a>
+
+    <!-- ── CENTER: NAV LINKS (Desktop) ── -->
+    <ul class="navbar__links">
+      <li>
+        <a routerLink="/" class="navbar__link">Home</a>
+      </li>
+      <li>
+        <a routerLink="/causes" class="navbar__link">Causes</a>
+      </li>
+      <li>
+        <a routerLink="/marketplaces" class="navbar__link">Marketplaces</a>
+      </li>
+      <li>
+        <a routerLink="/contact" class="navbar__link">Contact</a>
+      </li>
+    </ul>
+
+    <!-- ── RIGHT: CTA + MOBILE TOGGLE ── -->
+    <div class="navbar__actions">
+      <a routerLink="/auth/login" class="navbar__cta" (click)="closeMenu()">
+        <i class="fa-solid fa-user"></i>
+        <span>Login / Sign Up</span>
+      </a>
+
+      <button class="navbar__hamburger" (click)="toggleMenu()" aria-label="Toggle menu">
+        <span class="navbar__hamburger-line" [class.open]="isMenuOpen"></span>
+        <span class="navbar__hamburger-line" [class.open]="isMenuOpen"></span>
+        <span class="navbar__hamburger-line" [class.open]="isMenuOpen"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── MOBILE MENU ── -->
+  <div class="navbar__mobile" [class.open]="isMenuOpen">
+    <div class="navbar__mobile-inner">
+      <a routerLink="/" class="navbar__mobile-link" (click)="closeMenu()">
+        <span><i class="fa-solid fa-house"></i> Home</span>
+      </a>
+      <a routerLink="/causes" class="navbar__mobile-link" (click)="closeMenu()">
+        <span><i class="fa-solid fa-hand-holding-heart"></i> Causes</span>
+      </a>
+      <a routerLink="/marketplaces" class="navbar__mobile-link" (click)="closeMenu()">
+        <span><i class="fa-solid fa-store"></i> Marketplaces</span>
+      </a>
+      <a routerLink="/contact" class="navbar__mobile-link" (click)="closeMenu()">
+        <span><i class="fa-solid fa-envelope"></i> Contact</span>
+      </a>
+
+      <!-- Mobile CTA -->
+      <a routerLink="/auth/login" class="navbar__mobile-cta" (click)="closeMenu()">
+        <i class="fa-solid fa-user"></i>
+        Login / Sign Up
+      </a>
+    </div>
+  </div>
+</nav>

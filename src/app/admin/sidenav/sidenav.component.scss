@@ -1,0 +1,306 @@
+// ── Premium Sidenav Design System ──
+$primary-gradient: linear-gradient(135deg, #032826 0%, #05413e 100%);
+$active-bg: rgba(5, 65, 62, 0.08);
+$hover-bg: #f8fafc;
+$text-main: #1e293b;
+$text-mute: #64748b;
+$border-color: #f1f5f9;
+$transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+:host {
+  display: block;
+  height: 100%;
+  background: #fff;
+}
+
+.custom-scrollbar {
+  height: 100%;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+// ── Main Navigation List ──
+mat-nav-list {
+  padding: 8px 12px !important;
+  flex: 1;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+
+    &:hover {
+      background: #cbd5e1;
+    }
+  }
+}
+
+// Base Menu Item Style
+.menu-item,
+.submenu-item {
+  height: 48px !important;
+  margin-bottom: 4px !important;
+  border-radius: 10px !important;
+  transition: $transition !important;
+  color: $text-mute !important;
+  position: relative;
+  overflow: hidden;
+
+  mat-icon {
+    color: $text-mute;
+    margin-right: 5px !important;
+    font-size: 18px;
+    transition: $transition;
+  }
+
+  span {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1px;
+  }
+
+  &:hover {
+    background: $hover-bg !important;
+    color: $text-main !important;
+
+    mat-icon {
+      color: #05413e;
+      transform: scale(1.1);
+    }
+  }
+}
+
+// Active State for Main Menu
+.active-link {
+  background: $active-bg !important;
+  color: #05413e !important;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 15%;
+    height: 70%;
+    width: 4px;
+    background: #05413e !important;
+    border-radius: 0 4px 4px 0;
+  }
+
+  mat-icon {
+    color: #05413e !important;
+  }
+}
+
+// ── Submenu / Expansion Panel Styles ──
+::ng-deep {
+  .mat-expansion-panel {
+    background: transparent !important;
+    box-shadow: none !important;
+    margin-bottom: 4px !important;
+
+    .mat-expansion-panel-header {
+      padding: 0 12px !important;
+      height: 48px !important;
+      border-radius: 10px !important;
+      transition: $transition;
+
+      &:hover {
+        background: $hover-bg !important;
+      }
+
+      &.mat-expanded {
+        .menu-text {
+          color: #05413e !important;
+        }
+
+        .mat-icon {
+          color: #05413e !important;
+        }
+      }
+
+      .mat-content {
+        align-items: center;
+      }
+
+      .mat-expansion-indicator::after {
+        color: $text-mute;
+        border-width: 0 2px 2px 0;
+      }
+    }
+
+    .mat-expansion-panel-content {
+      .mat-expansion-panel-body {
+        padding: 4px 0 4px 28px !important;
+        position: relative;
+
+        // Submenu vertical line
+        &::before {
+          content: '';
+          position: absolute;
+          left: 14px;
+          top: 0;
+          bottom: 15px;
+          width: 1.5px;
+          background: #e2e8f0;
+        }
+      }
+    }
+  }
+}
+
+.menu-item-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  .menu-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: $text-mute;
+    transition: $transition;
+  }
+
+  .mat-icon {
+    color: $text-mute;
+    margin-right: 12px !important;
+    font-size: 22px;
+    transition: $transition;
+  }
+}
+
+.submenu-item {
+  height: 40px !important;
+  padding-left: 12px !important;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: -14px;
+    top: 20px;
+    width: 10px;
+    height: 1.5px;
+    background: #e2e8f0;
+  }
+
+  span {
+    font-weight: 500;
+    font-size: 13.5px;
+  }
+
+  &.selected-submenu {
+    color: #05413e !important;
+    font-weight: 700 !important;
+    background: rgba(5, 65, 62, 0.05) !important;
+
+    &::after {
+      background: #05413e;
+    }
+
+    mat-icon {
+      color: #05413e !important;
+    }
+  }
+}
+
+// ── Footer Section ──
+.sidenav-footer {
+  margin-top: auto;
+  padding: 16px 12px;
+  border-top: 1px solid $border-color;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.logout-btn {
+  width: 100% !important;
+  height: 44px !important;
+  border-radius: 10px !important;
+  color: #ef4444 !important;
+  transition: $transition !important;
+  background: transparent !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+
+  mat-icon {
+    color: #ef4444 !important;
+    margin-right: 12px !important;
+    font-size: 20px;
+    transition: $transition;
+  }
+
+  span {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  &:hover {
+    background: #fef2f2 !important;
+    transform: translateY(-1px);
+
+    mat-icon {
+      transform: rotate(-10deg);
+    }
+  }
+}
+
+// ── Collapsed View Adjustments ──
+.collapsed-state {
+  .sidenav-footer {
+    padding: 16px 8px;
+  }
+
+  .logout-btn {
+    justify-content: center !important;
+    padding: 0 !important;
+
+    mat-icon {
+      margin-right: 0 !important;
+    }
+  }
+
+  .menu-item {
+    justify-content: center !important;
+    padding: 0 !important;
+
+    mat-icon {
+      margin-right: 0 !important;
+    }
+
+    span {
+      display: none;
+    }
+  }
+
+  .menu-item-wrapper {
+    justify-content: center !important;
+
+    .mat-icon {
+      margin-right: 0 !important;
+    }
+
+    .menu-text {
+      display: none;
+    }
+  }
+
+  ::ng-deep .mat-expansion-panel-header {
+    justify-content: center !important;
+    padding: 0 !important;
+
+    .mat-expansion-indicator {
+      display: none !important;
+    }
+  }
+}

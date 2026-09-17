@@ -1,0 +1,82 @@
+<div class="dashboard-container" *ngIf="!isLoading; else loadingState">
+  <div class="dashboard-header">
+    <h1>Welcome back, Admin!</h1>
+    <p>Here is the high-level overview of the Shop4Good platform.</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="icon-wrapper">
+        <i class="fa fa-users"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Total Users</h3>
+        <p class="value">{{ stats.totalUsers | number }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="icon-wrapper">
+        <i class="fa fa-dollar-sign"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Total Donations</h3>
+        <p class="value">{{ stats.totalDonations | currency:'USD' }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="icon-wrapper">
+        <i class="fa fa-store"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Marketplaces</h3>
+        <p class="value">{{ stats.totalMarketplaces }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="icon-wrapper">
+        <i class="fa fa-heart"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Active Causes</h3>
+        <p class="value">{{ stats.activeCauses }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent-donations-section">
+    <h2>Recent Donations</h2>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Cause / Charity</th>
+            <th>Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let don of stats.recentDonations">
+            <td>{{ don.user }}</td>
+            <td>{{ don.cause }}</td>
+            <td class="text-primary fw-bold">{{ don.amount | currency:'USD' }}</td>
+            <td>{{ don.date | date:'mediumDate' }}</td>
+          </tr>
+          <tr *ngIf="!stats.recentDonations?.length">
+            <td colspan="4" class="text-center py-4 text-muted">No recent donations found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingState>
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading dashboard...</p>
+  </div>
+</ng-template>

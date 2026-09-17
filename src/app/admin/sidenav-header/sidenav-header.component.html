@@ -1,0 +1,137 @@
+<div class="header-container" [class.mobile-header]="isMobile()">
+  <!-- Left Side: Toggle & Logo -->
+  <div class="header-left">
+    <button mat-icon-button (click)="toggleCollapsed.emit()" class="toggle-btn">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <img
+      ngSrc="assets/logo.png" width="70" height="50"
+      class="admin-theme-logo"
+      alt="Shop4Good Logo"
+      routerLink="/admin/dashboard"
+      style="cursor: pointer"
+      />
+  </div>
+
+  <!-- Right Side: Actions & Profile -->
+  <div class="header-right">
+    <!-- Home Button -->
+    <!-- <div class="action-icon-btn" routerLink="/home" title="Home">
+    <i class="fa-solid fa-house"></i>
+  </div> -->
+
+  <!-- Notifications -->
+  <div
+    class="action-icon-btn"
+    [class.has-notification]="notifications.length > 0"
+    (click)="toggleMenu()"
+    appTooltipTrigger tooltipText="Notifications"
+    appPopoverTrigger popoverPlacement="bottom"
+    (opened)="onInputChange()" 
+    >
+    <i class="fa-solid fa-bell"></i>
+    @if (notifications.length > 0) {
+      <span class="notification-badge">{{
+        notifications.length
+      }}</span>
+    }
+
+    @if (isMenuOpen) {
+      <div
+        class="header-dropdown notification-dropdown"
+        (click)="$event.stopPropagation()"
+        >
+        <div class="dropdown-header">
+          <div class="header-title">
+            <i class="fa-solid fa-bell me-2" style="color: #f89b1d"></i>
+            Notifications
+          </div>
+          @if (notifications.length > 0) {
+            <button
+              class="clear-btn"
+              (click)="clearNotifications()"
+              >
+              Clear All
+            </button>
+          }
+        </div>
+        <div class="notification-list custom-scrollbar">
+          @if (notifications.length > 0) {
+            @for (notification of notifications; track notification) {
+              <div
+                class="notification-item"
+                (click)="markAsRead(notification.id, $event)"
+                style="cursor: pointer"
+                >
+                <div class="notify-icon success">
+                  <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div class="notify-body">
+                  <div class="notify-title">
+                    New Booking: {{ notification.data.booking_id }}
+                  </div>
+                  <div class="notify-message">
+                    <strong>{{ notification.data.member_name }}</strong> requested
+                    <strong>{{ notification.data.asset_name }}</strong>
+                  </div>
+                  <div class="notify-time">
+                    <i class="fa-regular fa-clock me-1"></i>
+                    {{ notification.created_at | date: "dd MMM, hh:mm a" }}
+                  </div>
+                </div>
+                <div class="mark-read-hint">
+                  <i
+                    class="fa-solid fa-check-double text-muted small"
+                    title="Mark as Read"
+                  ></i>
+                </div>
+              </div>
+            }
+          } @else {
+            <div class="empty-notifications">
+              <div class="empty-icon">
+                <i class="fa-solid fa-bell-slash"></i>
+              </div>
+              <p>No new notifications</p>
+              <span class="sub-text"
+                >We'll notify you when something's new</span
+                >
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- User Profile Section -->
+    <div class="profile-wrapper">
+      <div class="profile-trigger" (click)="profile()">
+        <div class="user-avatar">
+          {{ adminName ? (adminName | slice: 0 : 1 | uppercase) : "A" }}
+        </div>
+        <mat-icon style="font-size: 18px; color: #94a3b8">expand_more</mat-icon>
+      </div>
+
+      <!-- Clean Profile Dropdown -->
+      @if (isProfileOpen) {
+        <div class="header-dropdown">
+          <ul>
+            <!-- <li class="dropdown-item">
+            <i class="fa-solid fa-user-gear"></i>
+            <span>My Profile</span>
+          </li>
+          <li class="dropdown-item">
+            <i class="fa-solid fa-gear"></i>
+            <span>Settings</span>
+          </li> -->
+          <li style="border-top: 1px solid #f1f5f9; margin: 4px 0"></li>
+          <li class="dropdown-item logout-item" (click)="logout()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Sign Out</span>
+          </li>
+        </ul>
+      </div>
+    }
+  </div>
+</div>
+</div>

@@ -1,0 +1,287 @@
+// ── Layout Wrapper ──
+.auth-layout {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Premium modern gradient background instead of a busy image */
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+}
+
+/* Decorative background blobs for a modern feel */
+.auth-layout::before,
+.auth-layout::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  opacity: 0.6;
+}
+
+.auth-layout::before {
+  width: 500px;
+  height: 500px;
+  background: rgba(5, 65, 62, 0.15); /* Soft primary tint */
+  top: -100px;
+  left: -100px;
+}
+
+.auth-layout::after {
+  width: 400px;
+  height: 400px;
+  background: rgba(5, 65, 62, 0.08); /* Softer primary tint */
+  bottom: -50px;
+  right: -50px;
+}
+
+// ── Card Styles ──
+$card-bg: #ffffff;
+$primary-color: #05413e;
+$primary-hover: #032826; // Darkened version of #05413e
+$text-main: #1e293b;
+$text-mute: #64748b;
+$transition: all 0.3s ease;
+
+.glass-auth-card {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
+  background: $card-bg;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  animation: cardAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auth-header {
+  margin-bottom: 32px;
+
+  .logo-wrapper {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+
+    .auth-logo {
+      max-width: 180px;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+
+  .auth-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: $text-main;
+    margin-bottom: 8px;
+  }
+
+  .auth-subtitle {
+    font-size: 14px;
+    color: $text-mute;
+    margin: 0;
+  }
+}
+
+// ── Form Controls ──
+.auth-form {
+  position: relative;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.auth-label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: $text-main;
+  margin-bottom: 8px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .input-icon {
+    position: absolute;
+    left: 16px;
+    color: #94a3b8;
+    font-size: 14px;
+    transition: $transition;
+  }
+
+  .auth-input {
+    width: 100%;
+    height: 48px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0 16px 0 44px;
+    font-size: 14.5px;
+    color: $text-main;
+    transition: $transition;
+
+    &::placeholder { color: #94a3b8; }
+
+    &:focus {
+      outline: none;
+      background: #ffffff;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 4px rgba(42, 111, 151, 0.1);
+      & + .input-icon { color: $primary-color; }
+    }
+
+    &.input-error {
+      border-color: #ef4444;
+      &:focus { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1); }
+    }
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+    transition: $transition;
+
+    &:hover { color: $text-main; }
+  }
+}
+
+.error-text {
+  font-size: 12px;
+  color: #ef4444;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.forgot-link {
+  font-size: 13px;
+  color: $primary-color;
+  text-decoration: none;
+  font-weight: 600;
+  transition: $transition;
+
+  &:hover {
+    color: $primary-hover;
+    text-decoration: underline;
+  }
+}
+
+// ── Action Button ──
+.actions {
+  margin-top: 32px;
+}
+
+.btn-auth-primary {
+  width: 100%;
+  height: 48px;
+  background: $primary-color;
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $transition;
+  box-shadow: 0 4px 12px rgba(42, 111, 151, 0.25);
+
+  &:hover:not(:disabled) {
+    background: $primary-hover;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(1, 42, 74, 0.3);
+  }
+
+  &:active:not(:disabled) { transform: translateY(0); }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  .btn-icon { transition: $transition; font-size: 14px; }
+  &:hover:not(:disabled) .btn-icon { transform: translateX(4px); }
+}
+
+.api-error {
+  margin-top: 16px;
+  background: #fef2f2;
+  border-radius: 8px;
+  padding: 12px;
+  p { color: #ef4444; font-size: 13px; font-weight: 500; margin: 0; text-align: center; }
+}
+
+// ── Success Toast ──
+.success-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border-left: 4px solid #10b981;
+  
+  .toast-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .toast-icon {
+    width: 28px;
+    height: 28px;
+    background: #10b981;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  .toast-text p {
+    margin: 0;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1e293b;
+  }
+}
+
+// ── Animations ──
+@keyframes cardAppear {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// ── Responsive Adjustments ──
+@media (max-width: 576px) {
+  .auth-layout {
+    padding: 16px;
+  }
+  
+  .glass-auth-card { 
+    padding: 32px 24px; 
+    border-radius: 20px; 
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .auth-header .auth-title { 
+    font-size: 22px; 
+  }
+}

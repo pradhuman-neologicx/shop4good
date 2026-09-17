@@ -1,0 +1,31 @@
+<section class="hero-section">
+  <!-- Image Background (Optimized) -->
+  <img class="hero-image" [ngSrc]="imageSrc" alt="Header Background" fill priority />
+
+  <!-- Overlay -->
+  <div class="hero-overlay"></div>
+
+  <!-- Content -->
+  <div class="hero-content">
+    @if (eyebrow) {
+      <span class="hero-eyebrow">
+        @if (icon) {
+          <i [class]="icon"></i>
+        }
+        {{ eyebrow }}
+      </span>
+    }
+
+    <h1 class="hero-title">
+      {{ title }} @if (accentTitle) {
+      <em>{{ accentTitle }}</em>
+    }
+  </h1>
+
+  @if (subtitle) {
+    <p class="hero-subtitle">
+      {{ subtitle }}
+    </p>
+  }
+</div>
+</section>

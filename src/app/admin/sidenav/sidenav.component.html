@@ -1,0 +1,59 @@
+<div class="custom-scrollbar" [class.collapsed-state]="collapsed()">
+  <!-- Navigation Menu -->
+  <mat-nav-list>
+    @for (item of menuItems; track item) {
+      <!-- Menu Item with Sub-items -->
+      @if (item.subItems && item.subItems.length > 0) {
+        <mat-expansion-panel
+          [expanded]="isSubmenuExpanded(item.route)"
+          class="dept-expansion-panel"
+          >
+          <mat-expansion-panel-header
+            (click)="toggleSubmenu(item.route)"
+            class="admin-sidenav"
+            >
+            <div class="menu-item-wrapper">
+              <mat-icon class="mat-icon">{{ item.icon }}</mat-icon>
+              <span class="menu-text">{{ item.label }}</span>
+            </div>
+          </mat-expansion-panel-header>
+          <mat-nav-list class="submenu-list">
+            @for (subItem of item.subItems; track subItem) {
+              <a
+                mat-list-item
+                [routerLink]="subItem.route"
+                routerLinkActive="selected-submenu"
+                class="submenu-item"
+                >
+                <mat-icon matListItemIcon>{{ subItem.icon }}</mat-icon>
+                <span matListItemTitle>{{ subItem.label }}</span>
+              </a>
+            }
+          </mat-nav-list>
+        </mat-expansion-panel>
+      } @else {
+        <a
+          mat-list-item
+          [routerLink]="item.route"
+          (click)="closeSubmenu()"
+          routerLinkActive="active-link"
+          class="menu-item"
+          >
+          <mat-icon matListItemIcon class="mat-icon">{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      }
+      <!-- Standard Menu Item -->
+    }
+  </mat-nav-list>
+
+  <!-- Premium Logout Footer -->
+  <div class="sidenav-footer">
+    <button mat-list-item class="logout-btn cursor-pointer" (click)="logout()">
+      <mat-icon matListItemIcon>logout</mat-icon>
+      @if (!collapsed()) {
+        <span matListItemTitle>Sign Out</span>
+      }
+    </button>
+  </div>
+</div>

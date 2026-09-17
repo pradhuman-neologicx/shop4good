@@ -1,0 +1,191 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="title-section">
+      <h1>Marketplaces</h1>
+      <p>Configure participating e-commerce platforms and affiliate links.</p>
+    </div>
+    <button class="btn-primary-custom" (click)="openAddModal()">
+      <i class="fa fa-plus me-2"></i> Add Marketplace
+    </button>
+  </div>
+
+  @if (!isLoading) {
+  <div class="card">
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Logo</th>
+            <th>Name</th>
+            <th>Associate URL</th>
+            <th>Tracking Param</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of marketplaces; track item.id || $index) {
+          <tr>
+            <td>
+              @if (item.imageUrl) {
+              <img [src]="item.imageUrl" alt="Logo" class="rounded bg-white p-1"
+                style="width: 40px; height: 40px; object-fit: contain; border: 1px solid #e2e8f0;">
+              } @else {
+              <div class="rounded bg-light d-flex align-items-center justify-content-center text-muted"
+                style="width: 40px; height: 40px;">
+                <i class="fa fa-image"></i>
+              </div>
+              }
+            </td>
+            <td class="fw-bold">{{ item.name }}</td>
+            <td><a [href]="item.associateUrl" target="_blank" class="text-primary text-decoration-none">{{ item.associateUrl
+                }}</a></td>
+            <td><code class="bg-light px-2 py-1 rounded">{{ item.trackingParam }}</code></td>
+            <td>
+              <span class="status-badge" [ngClass]="item.status === 'Active' ? 'active' : 'inactive'">
+                {{ item.status }}
+              </span>
+            </td>
+            <td class="text-end">
+              <button class="btn-action" title="View" (click)="viewMarketplace(item)">
+                <i class="fa fa-eye"></i>
+              </button>
+              <button class="btn-action" title="Edit" (click)="openEditModal(item)">
+                <i class="fa fa-pen"></i>
+              </button>
+              <button class="btn-action" [title]="item.status === 'Active' ? 'Deactivate' : 'Activate'"
+                (click)="toggleStatus(item)">
+                <i class="fa"
+                  [ngClass]="item.status === 'Active' ? 'fa-toggle-on text-success' : 'fa-toggle-off text-muted'"></i>
+              </button>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="6" class="text-center py-4 text-muted">No marketplaces configured.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  } @else {
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading marketplaces...</p>
+  </div>
+  }
+</div>
+
+<!-- Simple Overlay Modal -->
+@if (isModalOpen) {
+<div class="custom-modal-overlay">
+  <div class="custom-modal">
+    <div class="modal-header">
+      <h2>{{ isViewMode ? 'View Marketplace' : (isEditMode ? 'Edit Marketplace' : 'Add New Marketplace') }}</h2>
+      <button class="close-btn" (click)="closeModal()"><i class="fa fa-times"></i></button>
+    </div>
+
+    <div class="modal-body">
+      @if (!isViewMode) {
+      <!-- Edit/Add Form -->
+      <form [formGroup]="marketForm" (ngSubmit)="onSubmit()">
+        <div class="form-group mb-3">
+          <label>Marketplace Name</label>
+          <input type="text" class="form-control" formControlName="name" placeholder="e.g. Amazon">
+          @if (submitted && marketForm.get('name')?.invalid) {
+          <div class="text-danger small mt-1">
+            Name is required.
+          </div>
+          }
+        </div>
+
+        <div class="form-group mb-3">
+          <label>Associate URL</label>
+          <input type="url" class="form-control" formControlName="associateUrl" placeholder="https://amazon.com">
+          @if (submitted && marketForm.get('associateUrl')?.invalid) {
+          <div class="text-danger small mt-1">
+            Valid URL is required.
+          </div>
+          }
+        </div>
+
+        <div class="form-group mb-3">
+          <label>Upload Logo</label>
+          <label class="file-label d-flex flex-column align-items-center justify-content-center"
+            style="background-color: #f8fafc; border: 1px dashed #cbd5e1; cursor: pointer;">
+            @if (marketForm.get('imageUrl')?.value) {
+            <img [src]="marketForm.get('imageUrl')?.value" alt="Preview" class="rounded"
+              style="max-height: 80px; object-fit: contain;">
+            } @else {
+            <div class="text-muted mt-2">
+              <i class="fa fa-cloud-upload-alt fs-3 mb-2"></i>
+              <p class="mb-0" style="font-size: 13px;">Click to browse logo</p>
+            </div>
+            }
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+          </label>
+        </div>
+
+        <div class="form-group mb-3">
+          <label>Affiliate Tracking Parameter</label>
+          <input type="text" class="form-control" formControlName="trackingParam" placeholder="tag=shop4good-20">
+          @if (submitted && marketForm.get('trackingParam')?.invalid) {
+          <div class="text-danger small mt-1">
+            Tracking parameter is required.
+          </div>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary-custom">
+            {{ isEditMode ? 'Save Changes' : 'Add Marketplace' }}
+          </button>
+        </div>
+      </form>
+      } @else {
+      <!-- View Details Mode -->
+      <div class="view-details">
+        <div class="detail-group full-width">
+          <label><i class="fa fa-store"></i> Marketplace Name</label>
+          <p>{{ marketForm.get('name')?.value || 'N/A' }}</p>
+        </div>
+        <div class="detail-group">
+          <label><i class="fa fa-link"></i> Associate URL</label>
+          <p><a [href]="marketForm.get('associateUrl')?.value" target="_blank">{{ marketForm.get('associateUrl')?.value || 'N/A'
+              }}</a></p>
+        </div>
+        <div class="detail-group full-width">
+          <label><i class="fa fa-image"></i> Logo Image</label>
+          <div>
+            @if (marketForm.get('imageUrl')?.value) {
+            <img [src]="marketForm.get('imageUrl')?.value" alt="Logo" class="rounded mt-2 bg-white p-2"
+              style="max-width: 200px; max-height: 100px; object-fit: contain; border: 1px solid #e2e8f0;">
+            } @else {
+            <p class="text-muted mt-2">No image provided</p>
+            }
+          </div>
+        </div>
+        <div class="detail-group">
+          <label><i class="fa fa-hashtag"></i> Tracking Parameter</label>
+          <p><code>{{ marketForm.get('trackingParam')?.value || 'N/A' }}</code></p>
+        </div>
+        <div class="detail-group">
+          <label><i class="fa fa-toggle-on"></i> Status</label>
+          <div>
+            <span class="status-badge" [ngClass]="marketForm.get('status')?.value === 'Active' ? 'active' : 'inactive'">
+              {{ marketForm.get('status')?.value || 'Unknown' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary-custom" (click)="closeModal()">Close Details</button>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+}

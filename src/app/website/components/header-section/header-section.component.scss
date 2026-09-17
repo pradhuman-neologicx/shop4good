@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+
+// ── TOKENS ──────────────────────────────────
+$cream: #FAF7F2;
+$pista: #5BAF8E;
+$pista-mid: #8ECFB8;
+$peach: #C9714A;
+$peach-mid: #E8A882;
+$deep: #2A2118;
+
+$font-serif: 'Cormorant Garamond', Georgia, serif;
+$font-sans: 'DM Sans', sans-serif;
+
+// ── HERO ─────────────────────────────────────
+.hero-section {
+  position: relative;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 24px 70px;
+  background: $deep;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba($peach, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba($pista, 0.12) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 2;
+  }
+}
+
+// ── IMAGE BACKGROUND ─────────────────────────
+.hero-image {
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(0.85) contrast(1.05);
+}
+
+// ── OVERLAY ──────────────────────────────────
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      rgba($deep, 0.75) 0%,
+      rgba($deep, 0.5) 50%,
+      rgba($deep, 0.8) 100%);
+  z-index: 1;
+}
+
+// ── CONTENT ──────────────────────────────────
+.hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: 800px;
+  animation: heroFadeUp 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $pista-mid; // was $blush → now pista
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 8px 24px;
+  border-radius: 100px;
+  border: 1px solid rgba($pista, 0.25); // was $blush → pista
+
+  i {
+    font-size: 13px;
+    color: $pista; // was $rose → now pista
+  }
+}
+
+.hero-title {
+  font-family: $font-serif;
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 300;
+  color: #ffffff;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
+
+}
+
+.hero-subtitle {
+  font-family: $font-sans;
+  font-size: clamp(16px, 2vw, 18px);
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 580px;
+  margin: 0 auto;
+  font-weight: 400;
+}
+
+// ── ANIMATIONS ───────────────────────────────
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── RESPONSIVE ───────────────────────────────
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 400px;
+    padding: 120px 20px 80px;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 15px;
+  }
+}

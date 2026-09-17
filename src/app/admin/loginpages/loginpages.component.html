@@ -1,0 +1,24 @@
+<section class="login-wrapper">
+  <div class="login-overlay"></div>
+  <div class="container-fluid login-container">
+    <div class="row min-vh-100 align-items-center justify-content-center g-0">
+      <!-- Brand Content (Left/Top) -->
+      <div class="col-lg-5 d-none d-lg-flex align-items-center justify-content-center p-5">
+        <div class="brand-image-card">
+          <img ngSrc="assets/login.jpeg" width="600" height="400" alt="Shop4Good Banner" class="brand-banner" priority />
+
+          <!-- <div class="brand-badge">
+            <img ngSrc="assets/logo.png" width="300" height="160" alt="Shop4Good Logo" />
+          </div> -->
+        </div>
+      </div>
+
+      <!-- Auth Content (Right) -->
+      <div class="col-lg-5 col-md-8 col-11 d-flex align-items-center justify-content-center">
+        <div class="auth-card-container">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

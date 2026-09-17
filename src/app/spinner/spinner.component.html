@@ -1,0 +1,16 @@
+<!-- <div *ngIf="this.loader.getLoading()" class="cssload-container">
+<div class="cssload-speeding-wheel"></div>
+</div> -->
+
+@if (this.loader.getLoading()) {
+<div class="cssload-container">
+  <div class="bikaji-loader-wrapper">
+    <div class="bikaji-logo-inner">
+      <img ngSrc="assets/logo.png" width="100" height="72" alt="Shop4Good Logo" class="pulse-logo" />
+    </div>
+    <div class="orbit-ring"></div>
+    <div class="orbit-ring-delayed"></div>
+    <div class="loading-text">Shop4Good</div>
+  </div>
+</div>
+}

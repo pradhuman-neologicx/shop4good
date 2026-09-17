@@ -1,0 +1,59 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="title-section">
+      <h1>Donations & Transactions</h1>
+      <p>View all donations generated from affiliate marketplace transactions.</p>
+    </div>
+  </div>
+
+  <div class="card" *ngIf="!isLoading; else loadingState">
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Txn ID</th>
+            <th>Date</th>
+            <th>Marketplace</th>
+            <th>Txn Amount</th>
+            <th>Donation</th>
+            <th>User</th>
+            <th>Cause</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let don of donations">
+            <td><code class="bg-light px-2 py-1 rounded text-secondary">{{ don.transactionId }}</code></td>
+            <td>{{ don.date | date:'mediumDate' }}</td>
+            <td class="fw-bold">{{ don.marketplace }}</td>
+            <td>{{ don.amount | currency:'USD' }}</td>
+            <td class="fw-bold text-success">{{ don.donationAmount | currency:'USD' }}</td>
+            <td>
+              <span *ngIf="don.user">{{ don.user }}</span>
+              <span *ngIf="!don.user" class="text-danger"><i class="fa fa-exclamation-circle"></i> Unmatched</span>
+            </td>
+            <td>
+              <span class="badge-cause" *ngIf="don.cause !== 'Pending'">{{ don.cause }}</span>
+              <span class="text-muted" *ngIf="don.cause === 'Pending'">Pending</span>
+            </td>
+            <td>
+              <span class="status-badge" [ngClass]="don.status === 'Matched' ? 'active' : 'inactive'">
+                {{ don.status }}
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="!donations.length">
+            <td colspan="8" class="text-center py-4 text-muted">No donations found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingState>
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading donations...</p>
+  </div>
+</ng-template>

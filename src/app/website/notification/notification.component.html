@@ -1,0 +1,19 @@
+@if (visible) {
+  <div class="notification-container" [@slideInOut]>
+    <div class="notification" [ngClass]="type">
+      <div class="notification-icon">
+        <i
+          class="fas"
+        [ngClass]="{
+          'fa-check-circle': type === 'success',
+          'fa-exclamation-circle': type === 'error',
+          'fa-info-circle': type === 'info'
+        }"
+        ></i>
+      </div>
+      <div class="notification-content">
+        <p>{{ message }}</p>
+      </div>
+    </div>
+  </div>
+}
