@@ -65,7 +65,7 @@ export class AdminMockApiService {
         { id: 103, user: 'mike.ross@example.com', amount: 3.25, cause: 'Animal Shelter', date: new Date().toISOString() }
       ]
     };
-    return of({ status: 200, data: stats }).pipe(delay(300));
+    return of({ status: 200, data: stats });
   }
 
   // -----------------------------------------------------
@@ -86,14 +86,14 @@ export class AdminMockApiService {
     }
     
     const result = this.paginateData(data, page, limit);
-    return of({ status: 200, message: 'Users fetched successfully', ...result }).pipe(delay(300));
+    return of({ status: 200, message: 'Users fetched successfully', ...result });
   }
 
   addUser(user: any): Observable<any> {
     const newUser = { id: Math.floor(Math.random() * 100), ...user };
     const current = this.usersSubject.value;
     this.usersSubject.next([...current, newUser]);
-    return of({ status: 200, message: 'User added successfully', data: newUser }).pipe(delay(300));
+    return of({ status: 200, message: 'User added successfully', data: newUser });
   }
 
   updateUser(id: number, user: any): Observable<any> {
@@ -103,13 +103,13 @@ export class AdminMockApiService {
       current[index] = { ...current[index], ...user };
       this.usersSubject.next([...current]);
     }
-    return of({ status: 200, message: 'User updated successfully', data: { id, ...user } }).pipe(delay(300));
+    return of({ status: 200, message: 'User updated successfully', data: { id, ...user } });
   }
 
   deleteUser(id: number): Observable<any> {
     const current = this.usersSubject.value;
     this.usersSubject.next(current.filter(u => u.id !== id));
-    return of({ status: 200, message: 'User deleted successfully' }).pipe(delay(300));
+    return of({ status: 200, message: 'User deleted successfully' });
   }
 
   // -----------------------------------------------------
@@ -127,14 +127,14 @@ export class AdminMockApiService {
     }
 
     const result = this.paginateData(data, page, limit);
-    return of({ status: 200, message: 'Charities fetched successfully', ...result }).pipe(delay(300));
+    return of({ status: 200, message: 'Charities fetched successfully', ...result });
   }
 
   addCharity(charity: any): Observable<any> {
     const newCharity = { id: Math.floor(Math.random() * 100), ...charity };
     const current = this.charitiesSubject.value;
     this.charitiesSubject.next([...current, newCharity]);
-    return of({ status: 200, message: 'Charity added successfully', data: newCharity }).pipe(delay(300));
+    return of({ status: 200, message: 'Charity added successfully', data: newCharity });
   }
 
   updateCharity(id: number, charity: any): Observable<any> {
@@ -144,13 +144,13 @@ export class AdminMockApiService {
       current[index] = { ...current[index], ...charity };
       this.charitiesSubject.next([...current]);
     }
-    return of({ status: 200, message: 'Charity updated successfully', data: { id, ...charity } }).pipe(delay(300));
+    return of({ status: 200, message: 'Charity updated successfully', data: { id, ...charity } });
   }
 
   deleteCharity(id: number): Observable<any> {
     const current = this.charitiesSubject.value;
     this.charitiesSubject.next(current.filter(c => c.id !== id));
-    return of({ status: 200, message: 'Charity deleted successfully' }).pipe(delay(300));
+    return of({ status: 200, message: 'Charity deleted successfully' });
   }
 
   // -----------------------------------------------------
@@ -168,14 +168,14 @@ export class AdminMockApiService {
     }
 
     const result = this.paginateData(data, page, limit);
-    return of({ status: 200, message: 'Marketplaces fetched successfully', ...result }).pipe(delay(300));
+    return of({ status: 200, message: 'Marketplaces fetched successfully', ...result });
   }
 
   addMarketplace(marketplace: any): Observable<any> {
     const newMarket = { id: Math.floor(Math.random() * 100), ...marketplace };
     const current = this.marketplacesSubject.value;
     this.marketplacesSubject.next([...current, newMarket]);
-    return of({ status: 200, message: 'Marketplace added successfully', data: newMarket }).pipe(delay(300));
+    return of({ status: 200, message: 'Marketplace added successfully', data: newMarket });
   }
 
   updateMarketplace(id: number, marketplace: any): Observable<any> {
@@ -185,13 +185,13 @@ export class AdminMockApiService {
       current[index] = { ...current[index], ...marketplace };
       this.marketplacesSubject.next([...current]);
     }
-    return of({ status: 200, message: 'Marketplace updated successfully', data: { id, ...marketplace } }).pipe(delay(300));
+    return of({ status: 200, message: 'Marketplace updated successfully', data: { id, ...marketplace } });
   }
 
   deleteMarketplace(id: number): Observable<any> {
     const current = this.marketplacesSubject.value;
     this.marketplacesSubject.next(current.filter(m => m.id !== id));
-    return of({ status: 200, message: 'Marketplace deleted successfully' }).pipe(delay(300));
+    return of({ status: 200, message: 'Marketplace deleted successfully' });
   }
 
   // -----------------------------------------------------
@@ -221,7 +221,7 @@ export class AdminMockApiService {
     }
 
     const result = this.paginateData(data, page, limit);
-    return of({ status: 200, message: 'Donations fetched successfully', ...result }).pipe(delay(300));
+    return of({ status: 200, message: 'Donations fetched successfully', ...result });
   }
 
   // -----------------------------------------------------
@@ -246,11 +246,11 @@ export class AdminMockApiService {
     }
 
     const result = this.paginateData(data, page, limit);
-    return of({ status: 200, message: 'Unmatched transactions fetched successfully', ...result }).pipe(delay(300));
+    return of({ status: 200, message: 'Unmatched transactions fetched successfully', ...result });
   }
 
   reconcileTransaction(transactionId: number, userId: number): Observable<any> {
-    return of({ status: 200, message: 'Transaction reconciled successfully' }).pipe(delay(300));
+    return of({ status: 200, message: 'Transaction reconciled successfully' });
   }
 
 }
