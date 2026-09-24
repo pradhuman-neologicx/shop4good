@@ -2,7 +2,7 @@
   <div class="absolute inset-0 bg-gradient-to-br from-[#032826] to-[#05413e] opacity-5"></div>
   <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
   
-  <div class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden relative z-10 border border-slate-100">
+  <div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden relative z-10 border border-slate-100">
     <div class="p-8 sm:p-12">
       <!-- Logo -->
       <div class="flex justify-center mb-8">
@@ -16,74 +16,115 @@
         <p class="text-slate-500 text-sm">Join Shop4Good and start making a difference with every purchase.</p>
       </div>
 
-      <form class="space-y-5">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
         <div>
           <label for="name" class="block text-sm font-semibold text-slate-700 mb-2">Full Name</label>
           <div class="relative">
-            <i class="fa-solid fa-user absolute left-4 top-3.5 text-slate-400"></i>
-            <input type="text" id="name" name="name" placeholder="John Doe" required 
-              class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" />
+            <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input type="text" id="name" formControlName="name" placeholder="John Doe" 
+              class="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
+              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['name'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['name'].errors)}" />
+          </div>
+          <div *ngIf="submitted && f['name'].errors" class="text-red-500 text-xs mt-1">
+            <div *ngIf="f['name'].errors['required']">Name is required</div>
+            <div *ngIf="f['name'].errors['minlength']">Name must be at least 3 characters</div>
           </div>
         </div>
 
         <div>
           <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
           <div class="relative">
-            <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-400"></i>
-            <input type="email" id="email" name="email" placeholder="you@example.com" required 
-              class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" />
+            <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input type="email" id="email" formControlName="email" placeholder="you@example.com" 
+              class="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
+              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['email'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['email'].errors)}" />
+          </div>
+          <div *ngIf="submitted && f['email'].errors" class="text-red-500 text-xs mt-1">
+            <div *ngIf="f['email'].errors['required']">Email is required</div>
+            <div *ngIf="f['email'].errors['email']">Email must be a valid email address</div>
           </div>
         </div>
 
-        <div>
+        <div class="relative">
           <label for="password" class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
           <div class="relative">
-            <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-400"></i>
-            <input type="password" id="password" name="password" placeholder="••••••••" required 
-              class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" />
+            <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" placeholder="••••••••" 
+              (focus)="passwordFocused = true" (blur)="passwordFocused = false"
+              class="w-full pl-10 pr-12 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
+              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['password'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['password'].errors)}" />
+            <button type="button" (click)="togglePassword('password')" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-600 transition-colors focus:outline-none">
+              <i class="fa-solid" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+            </button>
+          </div>
+          <div *ngIf="submitted && f['password'].errors?.['required']" class="text-red-500 text-xs mt-1">Password is required</div>
+          
+          <!-- Password Requirements Tooltip/List -->
+          <div *ngIf="passwordFocused || (f['password'].value && f['password'].invalid)" class="mt-2 bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-600 space-y-1 absolute z-20 w-full shadow-lg left-0 top-full">
+            <p class="font-semibold text-slate-700 mb-2">Password must contain:</p>
+            <div class="flex items-center gap-2" [ngClass]="passwordReqs.length ? 'text-emerald-600' : 'text-slate-500'">
+              <i class="fa-solid fa-circle-check" *ngIf="passwordReqs.length"></i>
+              <i class="fa-regular fa-circle" *ngIf="!passwordReqs.length"></i>
+              At least 8 characters
+            </div>
+            <div class="flex items-center gap-2" [ngClass]="passwordReqs.upper ? 'text-emerald-600' : 'text-slate-500'">
+              <i class="fa-solid fa-circle-check" *ngIf="passwordReqs.upper"></i>
+              <i class="fa-regular fa-circle" *ngIf="!passwordReqs.upper"></i>
+              One uppercase letter
+            </div>
+            <div class="flex items-center gap-2" [ngClass]="passwordReqs.lower ? 'text-emerald-600' : 'text-slate-500'">
+              <i class="fa-solid fa-circle-check" *ngIf="passwordReqs.lower"></i>
+              <i class="fa-regular fa-circle" *ngIf="!passwordReqs.lower"></i>
+              One lowercase letter
+            </div>
+            <div class="flex items-center gap-2" [ngClass]="passwordReqs.number ? 'text-emerald-600' : 'text-slate-500'">
+              <i class="fa-solid fa-circle-check" *ngIf="passwordReqs.number"></i>
+              <i class="fa-regular fa-circle" *ngIf="!passwordReqs.number"></i>
+              One number
+            </div>
+            <div class="flex items-center gap-2" [ngClass]="passwordReqs.special ? 'text-emerald-600' : 'text-slate-500'">
+              <i class="fa-solid fa-circle-check" *ngIf="passwordReqs.special"></i>
+              <i class="fa-regular fa-circle" *ngIf="!passwordReqs.special"></i>
+              One special character (@$!%*?&)
+            </div>
           </div>
         </div>
         
         <div>
           <label for="confirm-password" class="block text-sm font-semibold text-slate-700 mb-2">Confirm Password</label>
           <div class="relative">
-            <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-400"></i>
-            <input type="password" id="confirm-password" name="confirm-password" placeholder="••••••••" required 
-              class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" />
+            <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirm-password" formControlName="confirmPassword" placeholder="••••••••" 
+              class="w-full pl-10 pr-12 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
+              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['confirmPassword'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['confirmPassword'].errors)}" />
+            <button type="button" (click)="togglePassword('confirm')" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-600 transition-colors focus:outline-none">
+              <i class="fa-solid" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword"></i>
+            </button>
+          </div>
+          <div *ngIf="submitted && f['confirmPassword'].errors" class="text-red-500 text-xs mt-1">
+            <div *ngIf="f['confirmPassword'].errors['required']">Please confirm your password</div>
+            <div *ngIf="f['confirmPassword'].errors['passwordMismatch']">Passwords do not match</div>
           </div>
         </div>
 
-        <div class="flex items-start">
-          <input id="terms" name="terms" type="checkbox" required class="h-4 w-4 mt-1 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded">
-          <label for="terms" class="ml-2 block text-sm text-slate-600">
-            I agree to the <a routerLink="/terms-and-conditions" class="text-emerald-600 hover:underline">Terms of Service</a> and <a routerLink="/privacy-policy" class="text-emerald-600 hover:underline">Privacy Policy</a>
-          </label>
+        <div class="flex flex-col md:col-span-2">
+          <div class="flex items-start">
+            <input id="terms" formControlName="terms" type="checkbox" class="h-4 w-4 mt-1 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded">
+            <label for="terms" class="ml-2 block text-sm text-slate-600">
+              I agree to the <a routerLink="/terms-and-conditions" class="text-emerald-600 hover:underline">Terms of Service</a> and <a routerLink="/privacy-policy" class="text-emerald-600 hover:underline">Privacy Policy</a>
+            </label>
+          </div>
+          <div *ngIf="submitted && f['terms'].errors" class="text-red-500 text-xs mt-1 ml-6">
+            You must agree to the Terms of Service and Privacy Policy
+          </div>
         </div>
 
-        <div>
+        <div class="md:col-span-2 mt-2">
           <button type="submit" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all">
             Sign Up
           </button>
         </div>
       </form>
-      
-      <div class="mt-8 relative">
-        <div class="absolute inset-0 flex items-center">
-          <div class="w-full border-t border-slate-200"></div>
-        </div>
-        <div class="relative flex justify-center text-sm">
-          <span class="px-2 bg-white text-slate-500">Or sign up with</span>
-        </div>
-      </div>
-      
-      <div class="mt-6 grid grid-cols-2 gap-4">
-        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-slate-300 rounded-lg shadow-sm bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
-          <i class="fa-brands fa-google text-red-500"></i> Google
-        </button>
-        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-slate-300 rounded-lg shadow-sm bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
-          <i class="fa-brands fa-apple text-slate-800"></i> Apple
-        </button>
-      </div>
 
     </div>
     

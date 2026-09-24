@@ -9,4 +9,9 @@ import { RouterLink } from '@angular/router';
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
+  showPassword = false;
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
 }
