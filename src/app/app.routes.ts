@@ -4,8 +4,7 @@ import { AuthGuard } from './core/auth/auth-guard';
 export const routes: Routes = [
   {
     path: '',
-    // loadComponent: () => import('./website/home/home.component').then(c => c.HomeComponent) 
-    loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES)
+    loadComponent: () => import('./website/home/home.component').then(c => c.HomeComponent) 
   },
   {
     path: 'privacy-policy',
@@ -31,6 +30,10 @@ export const routes: Routes = [
   {
     path: 'admin/login',
     loadComponent: () => import('./admin/loginpages/signin/signin.component').then(c => c.SigninComponent)
+  },
+  {
+    path: 'admin/forgot-password',
+    loadComponent: () => import('./admin/loginpages/forgot-password/forgot-password.component').then(c => c.ForgotPasswordComponent)
   },
   {
     path: 'admin',

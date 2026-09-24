@@ -8,14 +8,15 @@ import { DataService } from '../../../core/services/data.service';
 import { JwtService } from '../../../core/services/jwt.service';
 import { LoginService } from '../../../core/services/login.service';
 import { NotificationService } from '../../../core/services/notificationnew.service';
-import { NgClass } from '@angular/common';
+import { NgClass, NgOptimizedImage } from '@angular/common';
+import { of, delay } from 'rxjs';
 
 @Component({
     selector: 'app-forgot-password',
     templateUrl: './forgot-password.component.html',
     styleUrls: ['./forgot-password.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [FormsModule, ReactiveFormsModule, NgClass, RouterLink]
+    imports: [FormsModule, ReactiveFormsModule, NgClass, RouterLink, NgOptimizedImage]
 })
 export class ForgotPasswordComponent implements OnInit {
   title = 'Forgot Password';
@@ -88,40 +89,25 @@ export class ForgotPasswordComponent implements OnInit {
     this.errorMessage = '';
     if (this.ForgotForm.get('Email')?.valid) {
       this.isLoading = true;
-      const formData: FormData = new FormData();
-      formData.append('email', this.ForgotForm.get('Email')?.value);
+      const email = this.ForgotForm.get('Email')?.value;
 
-      this.loginService.AdminForgetPasswordApi(formData).subscribe(
-        (response: any) => {
+      // Mock API flow
+      of({ status: 200, message: 'OTP sent successfully to ' + email })
+        .pipe(delay(1500))
+        .subscribe((response: any) => {
           this.isLoading = false;
           this.errorMessage = response.message;
-          if (response.status === 200) {
-            this.notificationService.show(response.message, 'success', 3000);
-            this.isEmailSent = true;
-            this.title = 'Verify OTP';
-            this.subtitle =
-              'We have sent a verification code to ' +
-              this.ForgotForm.get('Email')?.value;
+          
+          this.notificationService.show(response.message, 'success', 3000);
+          this.isEmailSent = true;
+          this.title = 'Verify OTP';
+          this.subtitle = 'We have sent a verification code to ' + email;
 
-            // Enable and show other fields
-            this.ForgotForm.get('OTP')?.enable();
-            this.ForgotForm.get('Password')?.enable();
-            this.ForgotForm.get('ConfirmPassword')?.enable();
-          } else {
-            this.notificationService.show(
-              response.message || 'Something went wrong',
-              'error',
-              3000,
-            );
-            this.submitted = false;
-          }
-        },
-        (error) => {
-          this.isLoading = false;
-          this.errorMessage = error.error.message || 'Something went wrong';
-          this.notificationService.show(this.errorMessage, 'error', 3000);
-        },
-      );
+          // Enable and show other fields
+          this.ForgotForm.get('OTP')?.enable();
+          this.ForgotForm.get('Password')?.enable();
+          this.ForgotForm.get('ConfirmPassword')?.enable();
+        });
     } else {
       this.ForgotForm.get('Email')?.markAsTouched();
       this.errorMessage = 'Please enter a valid email address';
@@ -133,37 +119,17 @@ export class ForgotPasswordComponent implements OnInit {
     this.errorMessage = '';
     if (this.ForgotForm.valid) {
       this.isLoading = true;
-      const formData: FormData = new FormData();
-      formData.append('email', this.ForgotForm.get('Email')?.value);
-      formData.append('otp', this.ForgotForm.get('OTP')?.value);
-      formData.append('password', this.ForgotForm.get('Password')?.value);
-      formData.append(
-        'password_confirmation',
-        this.ForgotForm.get('ConfirmPassword')?.value,
-      );
 
-      this.loginService.AdminResetPassword(formData).subscribe(
-        (response: any) => {
+      // Mock API flow
+      of({ status: 200, message: 'Password reset successfully!' })
+        .pipe(delay(1500))
+        .subscribe((response: any) => {
           this.isLoading = false;
           this.errorMessage = response.message;
-          if (response.status === 200) {
-            this.notificationService.show(response.message, 'success', 3000);
-            this.router.navigate(['/sign_in']);
-          } else {
-            this.notificationService.show(
-              response.message || 'Reset failed',
-              'error',
-              3000,
-            );
-            this.submitted = false;
-          }
-        },
-        (error) => {
-          this.isLoading = false;
-          this.errorMessage = error.error.message || 'Reset failed';
-          this.notificationService.show(this.errorMessage, 'error', 3000);
-        },
-      );
+          
+          this.notificationService.show(response.message, 'success', 3000);
+          this.router.navigate(['/admin/login']);
+        });
     } else {
       this.ForgotForm.markAllAsTouched();
       if (this.ForgotForm.errors?.['mismatch']) {

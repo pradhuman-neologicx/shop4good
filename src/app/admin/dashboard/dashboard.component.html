@@ -1,10 +1,9 @@
 <div class="dashboard-container" *ngIf="!isLoading; else loadingState">
-  <div class="dashboard-header">
-    <h1>Welcome back, Admin!</h1>
-    <p>Here is the high-level overview of the Shop4Good platform.</p>
+  <div class="dashboard-header mb-4">
+    <h1 class="text-2xl font-semibold">Dashboard</h1>
   </div>
 
-  <div class="stats-grid">
+  <div class="stats-grid mb-4">
     <div class="stat-card">
       <div class="icon-wrapper">
         <i class="fa fa-users"></i>
@@ -46,10 +45,77 @@
     </div>
   </div>
 
-  <div class="recent-donations-section">
-    <h2>Recent Donations</h2>
+  <div class="charts-grid-main mb-4">
+    <div class="chart-card">
+      <h3 class="chart-title">Transactions Trend</h3>
+      <apx-chart
+        [series]="transactionsTrendOptions.series!"
+        [chart]="transactionsTrendOptions.chart!"
+        [xaxis]="transactionsTrendOptions.xaxis!"
+        [yaxis]="transactionsTrendOptions.yaxis!"
+        [title]="transactionsTrendOptions.title!"
+        [labels]="transactionsTrendOptions.labels!"
+        [stroke]="transactionsTrendOptions.stroke!"
+        [dataLabels]="transactionsTrendOptions.dataLabels!"
+        [colors]="transactionsTrendOptions.colors!"
+        [legend]="transactionsTrendOptions.legend!"
+        [grid]="transactionsTrendOptions.grid!">
+      </apx-chart>
+    </div>
+
+    <div class="chart-card">
+      <h3 class="chart-title">Donation Amount Trend</h3>
+      <apx-chart
+        [series]="donationTrendOptions.series!"
+        [chart]="donationTrendOptions.chart!"
+        [xaxis]="donationTrendOptions.xaxis!"
+        [yaxis]="donationTrendOptions.yaxis!"
+        [title]="donationTrendOptions.title!"
+        [labels]="donationTrendOptions.labels!"
+        [stroke]="donationTrendOptions.stroke!"
+        [dataLabels]="donationTrendOptions.dataLabels!"
+        [colors]="donationTrendOptions.colors!"
+        [legend]="donationTrendOptions.legend!"
+        [grid]="donationTrendOptions.grid!">
+      </apx-chart>
+    </div>
+  </div>
+
+  <div class="charts-grid-secondary">
+    <div class="chart-card">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3 class="chart-title m-0">Donations by Cause</h3>
+        <a href="#" class="text-primary text-decoration-none" style="font-size: 0.9rem;">View All &rarr;</a>
+      </div>
+      <apx-chart
+        [series]="donationsByCauseOptions.series!"
+        [chart]="donationsByCauseOptions.chart!"
+        [labels]="donationsByCauseOptions.labels!"
+        [colors]="donationsByCauseOptions.colors!"
+        [plotOptions]="donationsByCauseOptions.plotOptions!"
+        [dataLabels]="donationsByCauseOptions.dataLabels!"
+        [legend]="donationsByCauseOptions.legend!">
+      </apx-chart>
+    </div>
+
+    <div class="chart-card">
+      <h3 class="chart-title mb-2">Transaction Processing Status</h3>
+      <apx-chart
+        [series]="transactionStatusOptions.series!"
+        [chart]="transactionStatusOptions.chart!"
+        [labels]="transactionStatusOptions.labels!"
+        [colors]="transactionStatusOptions.colors!"
+        [plotOptions]="transactionStatusOptions.plotOptions!"
+        [dataLabels]="transactionStatusOptions.dataLabels!"
+        [legend]="transactionStatusOptions.legend!">
+      </apx-chart>
+    </div>
+  </div>
+
+  <div class="recent-donations-section mt-4">
+    <h2 class="mb-3 text-xl font-semibold">Recent Donations</h2>
     <div class="table-responsive">
-      <table>
+      <table class="table">
         <thead>
           <tr>
             <th>User</th>
@@ -75,8 +141,10 @@
 </div>
 
 <ng-template #loadingState>
-  <div class="loading-state">
-    <div class="spinner"></div>
-    <p>Loading dashboard...</p>
+  <div class="loading-state d-flex flex-column align-items-center justify-content-center" style="min-height: 60vh;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 text-muted">Loading dashboard...</p>
   </div>
 </ng-template>
