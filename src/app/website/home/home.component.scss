@@ -277,7 +277,7 @@
 // ── HOW IT WORKS / STEPS SECTION ─────────────
 .steps-section {
   background: var(--w-bg-section, #FFFFFF);
-  padding: 80px 24px;
+  padding: 100px 24px;
 }
 
 .steps-section__header {
@@ -308,145 +308,143 @@
   }
 }
 
-// Timeline container
-.steps-section__timeline {
-  position: relative;
-  max-width: 700px;
+.steps-section__inner {
+  max-width: 1100px;
   margin: 0 auto;
-  padding-left: 40px;
-
-  // Vertical connecting line
-  &::before {
-    content: '';
-    position: absolute;
-    left: 19px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(
-      180deg,
-      var(--w-accent, #10B981) 0%,
-      var(--w-border, #E0E0E0) 30%,
-      var(--w-border, #E0E0E0) 70%,
-      var(--w-accent, #10B981) 100%
-    );
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: flex-start;
 }
 
-// Each step row
-.steps-section__step {
-  position: relative;
+// Left Side: Cards container
+.steps-section__cards {
   display: flex;
-  align-items: flex-start;
-  gap: 24px;
-  margin-bottom: 32px;
+  flex-direction: column;
+  padding-bottom: 100px; // extra space to scroll past the last card
+}
+
+// Sticky Card
+.steps-section__card {
+  position: sticky;
+  display: flex;
+  align-items: stretch;
+  background: var(--w-bg-section-alt, #F7F7F7);
+  border: 1px solid var(--w-border-light, #F0F0F0);
+  border-radius: var(--w-radius-lg, 16px);
+  padding: 32px;
+  margin-bottom: 24px; // space between cards when not stacked
+  box-shadow: 0 -10px 20px rgba(0,0,0,0.02); // shadow to separate stacked cards
+  transition: transform 0.35s ease;
 
   &:last-child {
     margin-bottom: 0;
   }
 }
 
-// Number circle on the timeline
 .steps-section__number {
-  position: absolute;
-  left: -40px;
-  top: 24px;
-  width: 40px;
-  height: 40px;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: var(--w-bg-section, #FFFFFF);
-  border: 2px solid var(--w-accent, #10B981);
-  color: var(--w-accent, #10B981);
+  background: var(--w-accent, #10B981);
+  color: var(--w-white, #FFFFFF);
   font-family: var(--w-font-serif, 'Cormorant Garamond', serif);
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
-  transition: all 0.3s ease;
-
-  .steps-section__step:hover & {
-    background: var(--w-accent, #10B981);
-    color: var(--w-white, #FFFFFF);
-    transform: scale(1.1);
-    box-shadow: 0 0 0 6px var(--w-accent-muted, rgba(16, 185, 129, 0.15));
-  }
+  margin-right: 24px;
 }
 
-// Step card
-.steps-section__card {
+.steps-section__card-content {
   flex: 1;
-  background: var(--w-bg-section-alt, #F7F7F7);
-  border: 1px solid var(--w-border-light, #F0F0F0);
-  border-radius: var(--w-radius-lg, 16px);
-  padding: 28px 32px;
-  transition: all 0.35s ease;
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--w-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.1));
-    border-color: var(--w-accent-muted, rgba(16, 185, 129, 0.15));
-  }
 
   h3 {
     font-family: var(--w-font-primary, 'DM Sans', sans-serif);
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     color: var(--w-text-primary, #0A0A0A);
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
 
   p {
     font-family: var(--w-font-primary, 'DM Sans', sans-serif);
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.7;
     color: var(--w-text-secondary, #555555);
     margin: 0;
   }
 }
 
-// Icon inside card
 .steps-section__icon {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: var(--w-radius-md, 10px);
   background: var(--w-accent-muted, rgba(16, 185, 129, 0.15));
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 
   i {
-    font-size: 18px;
+    font-size: 20px;
     color: var(--w-accent, #10B981);
+  }
+}
+
+// Right Side: Sticky Visual
+.steps-section__visual {
+  position: sticky;
+  top: 120px; // align with first card
+}
+
+.steps-section__image-wrapper {
+  border-radius: var(--w-radius-lg, 16px);
+  overflow: hidden;
+  box-shadow: var(--w-shadow-md, 0 8px 24px rgba(0, 0, 0, 0.08));
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    aspect-ratio: 3/4;
   }
 }
 
 // Steps responsive
 @media (max-width: 768px) {
   .steps-section {
-    padding: 56px 20px;
+    padding: 60px 20px;
   }
 
-  .steps-section__timeline {
-    padding-left: 36px;
-
-    &::before {
-      left: 15px;
-    }
+  .steps-section__inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
-
-  .steps-section__number {
-    left: -36px;
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
-    top: 20px;
+  
+  .steps-section__visual {
+    position: static;
+    order: -1; // show image above cards on mobile
   }
 
   .steps-section__card {
-    padding: 20px 24px;
+    position: static; // disable sticky stacking on mobile
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  
+  .steps-section__cards {
+    padding-bottom: 0;
+  }
+
+  .steps-section__number {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    margin-right: 16px;
   }
 }
 
