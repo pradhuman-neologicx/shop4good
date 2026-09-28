@@ -25,10 +25,12 @@
               class="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
               [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['name'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['name'].errors)}" />
           </div>
-          <div *ngIf="submitted && f['name'].errors" class="text-red-500 text-xs mt-1">
-            <div *ngIf="f['name'].errors['required']">Name is required</div>
-            <div *ngIf="f['name'].errors['minlength']">Name must be at least 3 characters</div>
-          </div>
+          @if (submitted && f['name'].errors) {
+            <div class="text-red-500 text-xs mt-1">
+              @if (f['name'].errors?.['required']) { <div>Name is required</div> }
+              @if (f['name'].errors?.['minlength']) { <div>Name must be at least 3 characters</div> }
+            </div>
+          }
         </div>
 
         <div>
@@ -39,10 +41,110 @@
               class="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
               [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['email'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['email'].errors)}" />
           </div>
-          <div *ngIf="submitted && f['email'].errors" class="text-red-500 text-xs mt-1">
-            <div *ngIf="f['email'].errors['required']">Email is required</div>
-            <div *ngIf="f['email'].errors['email']">Email must be a valid email address</div>
+          @if (submitted && f['email'].errors) {
+            <div class="text-red-500 text-xs mt-1">
+              @if (f['email'].errors?.['required']) { <div>Email is required</div> }
+              @if (f['email'].errors?.['email']) { <div>Email must be a valid email address</div> }
+            </div>
+          }
+        </div>
+
+        <!-- Phone Number with Country Code -->
+        <div class="md:col-span-2">
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Phone Number</label>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <!-- Country Code Select -->
+            <div class="relative w-full sm:w-1/3">
+              <select id="countryCode" formControlName="countryCode" 
+                class="w-full pl-4 pr-8 py-3 rounded-lg border focus:ring-2 outline-none transition-all appearance-none bg-white"
+                [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['countryCode'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['countryCode'].errors)}">
+                @for (country of countries; track country.code) {
+                  <option [value]="country.code">{{ country.code }} ({{ country.name }})</option>
+                }
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+              </div>
+            </div>
+            
+            <!-- Phone Input -->
+            <div class="relative w-full sm:w-2/3">
+              <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <input type="tel" id="phone" formControlName="phone" placeholder="Enter phone number" 
+                class="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
+                [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['phone'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['phone'].errors)}">
+            </div>
           </div>
+          @if (submitted && (f['phone'].errors || f['countryCode'].errors)) {
+            <div class="text-red-500 text-xs mt-1">
+              @if (f['phone'].errors?.['required'] || f['countryCode'].errors?.['required']) { <div>Valid phone number is required</div> }
+              @if (f['phone'].errors?.['pattern']) { <div>Please enter a 10-digit phone number</div> }
+            </div>
+          }
+        </div>
+
+        <!-- State -->
+        <div>
+          <label for="state" class="block text-sm font-semibold text-slate-700 mb-2">State</label>
+          <div class="relative">
+            <i class="fa-solid fa-map-location-dot absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <select id="state" formControlName="state" 
+              class="w-full pl-10 pr-8 py-3 rounded-lg border focus:ring-2 outline-none transition-all appearance-none bg-white"
+              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['state'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['state'].errors)}">
+              <option value="" disabled selected>Select State</option>
+              @for (state of states; track state.name) {
+                <option [value]="state.name">{{ state.name }}</option>
+              }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </div>
+          </div>
+          @if (submitted && f['state'].errors) {
+            <div class="text-red-500 text-xs mt-1">
+              @if (f['state'].errors?.['required']) { <div>State is required</div> }
+            </div>
+          }
+        </div>
+
+        <!-- City -->
+        <div>
+          <label for="city" class="block text-sm font-semibold text-slate-700 mb-2">City</label>
+          <div class="relative">
+            <i class="fa-solid fa-building absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <select id="city" formControlName="city" 
+              class="w-full pl-10 pr-8 py-3 rounded-lg border focus:ring-2 outline-none transition-all appearance-none bg-white"
+              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['city'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['city'].errors)}">
+              <option value="" disabled selected>Select City</option>
+              @for (city of cities; track city.name) {
+                <option [value]="city.name">{{ city.name }}</option>
+              }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </div>
+          </div>
+          @if (submitted && f['city'].errors) {
+            <div class="text-red-500 text-xs mt-1">
+              @if (f['city'].errors?.['required']) { <div>City is required</div> }
+            </div>
+          }
+        </div>
+
+        <!-- Address -->
+        <div class="md:col-span-2">
+          <label for="address" class="block text-sm font-semibold text-slate-700 mb-2">Address</label>
+          <div class="relative">
+            <i class="fa-solid fa-location-dot absolute left-4 top-4 text-slate-400"></i>
+            <textarea id="address" formControlName="address" placeholder="123 Goodness Lane, Appt 4B..." rows="2"
+              class="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all resize-none"
+              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['address'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['address'].errors)}"></textarea>
+          </div>
+          @if (submitted && f['address'].errors) {
+            <div class="text-red-500 text-xs mt-1">
+              @if (f['address'].errors?.['required']) { <div>Address is required</div> }
+            </div>
+          }
         </div>
 
         <div class="relative">
@@ -57,37 +159,36 @@
               <i class="fa-solid" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
             </button>
           </div>
-          <div *ngIf="submitted && f['password'].errors?.['required']" class="text-red-500 text-xs mt-1">Password is required</div>
+          @if (submitted && f['password'].errors?.['required']) {
+            <div class="text-red-500 text-xs mt-1">Password is required</div>
+          }
           
           <!-- Password Requirements Tooltip/List -->
-          <div *ngIf="passwordFocused || (f['password'].value && f['password'].invalid)" class="mt-2 bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-600 space-y-1 absolute z-20 w-full shadow-lg left-0 top-full">
-            <p class="font-semibold text-slate-700 mb-2">Password must contain:</p>
-            <div class="flex items-center gap-2" [ngClass]="passwordReqs.length ? 'text-emerald-600' : 'text-slate-500'">
-              <i class="fa-solid fa-circle-check" *ngIf="passwordReqs.length"></i>
-              <i class="fa-regular fa-circle" *ngIf="!passwordReqs.length"></i>
-              At least 8 characters
+          @if (passwordFocused || (f['password'].value && f['password'].invalid)) {
+            <div class="mt-2 bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-600 space-y-1 absolute z-20 w-full shadow-lg left-0 top-full">
+              <p class="font-semibold text-slate-700 mb-2">Password must contain:</p>
+              <div class="flex items-center gap-2" [ngClass]="passwordReqs.length ? 'text-emerald-600' : 'text-slate-500'">
+                @if (passwordReqs.length) { <i class="fa-solid fa-circle-check"></i> } @else { <i class="fa-regular fa-circle"></i> }
+                At least 8 characters
+              </div>
+              <div class="flex items-center gap-2" [ngClass]="passwordReqs.upper ? 'text-emerald-600' : 'text-slate-500'">
+                @if (passwordReqs.upper) { <i class="fa-solid fa-circle-check"></i> } @else { <i class="fa-regular fa-circle"></i> }
+                One uppercase letter
+              </div>
+              <div class="flex items-center gap-2" [ngClass]="passwordReqs.lower ? 'text-emerald-600' : 'text-slate-500'">
+                @if (passwordReqs.lower) { <i class="fa-solid fa-circle-check"></i> } @else { <i class="fa-regular fa-circle"></i> }
+                One lowercase letter
+              </div>
+              <div class="flex items-center gap-2" [ngClass]="passwordReqs.number ? 'text-emerald-600' : 'text-slate-500'">
+                @if (passwordReqs.number) { <i class="fa-solid fa-circle-check"></i> } @else { <i class="fa-regular fa-circle"></i> }
+                One number
+              </div>
+              <div class="flex items-center gap-2" [ngClass]="passwordReqs.special ? 'text-emerald-600' : 'text-slate-500'">
+                @if (passwordReqs.special) { <i class="fa-solid fa-circle-check"></i> } @else { <i class="fa-regular fa-circle"></i> }
+                One special character (@$!%*?&)
+              </div>
             </div>
-            <div class="flex items-center gap-2" [ngClass]="passwordReqs.upper ? 'text-emerald-600' : 'text-slate-500'">
-              <i class="fa-solid fa-circle-check" *ngIf="passwordReqs.upper"></i>
-              <i class="fa-regular fa-circle" *ngIf="!passwordReqs.upper"></i>
-              One uppercase letter
-            </div>
-            <div class="flex items-center gap-2" [ngClass]="passwordReqs.lower ? 'text-emerald-600' : 'text-slate-500'">
-              <i class="fa-solid fa-circle-check" *ngIf="passwordReqs.lower"></i>
-              <i class="fa-regular fa-circle" *ngIf="!passwordReqs.lower"></i>
-              One lowercase letter
-            </div>
-            <div class="flex items-center gap-2" [ngClass]="passwordReqs.number ? 'text-emerald-600' : 'text-slate-500'">
-              <i class="fa-solid fa-circle-check" *ngIf="passwordReqs.number"></i>
-              <i class="fa-regular fa-circle" *ngIf="!passwordReqs.number"></i>
-              One number
-            </div>
-            <div class="flex items-center gap-2" [ngClass]="passwordReqs.special ? 'text-emerald-600' : 'text-slate-500'">
-              <i class="fa-solid fa-circle-check" *ngIf="passwordReqs.special"></i>
-              <i class="fa-regular fa-circle" *ngIf="!passwordReqs.special"></i>
-              One special character (@$!%*?&)
-            </div>
-          </div>
+          }
         </div>
         
         <div>
@@ -101,10 +202,12 @@
               <i class="fa-solid" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword"></i>
             </button>
           </div>
-          <div *ngIf="submitted && f['confirmPassword'].errors" class="text-red-500 text-xs mt-1">
-            <div *ngIf="f['confirmPassword'].errors['required']">Please confirm your password</div>
-            <div *ngIf="f['confirmPassword'].errors['passwordMismatch']">Passwords do not match</div>
-          </div>
+          @if (submitted && f['confirmPassword'].errors) {
+            <div class="text-red-500 text-xs mt-1">
+              @if (f['confirmPassword'].errors?.['required']) { <div>Please confirm your password</div> }
+              @if (f['confirmPassword'].errors?.['passwordMismatch']) { <div>Passwords do not match</div> }
+            </div>
+          }
         </div>
 
         <div class="flex flex-col md:col-span-2">
@@ -114,9 +217,11 @@
               I agree to the <a routerLink="/terms-and-conditions" class="text-emerald-600 hover:underline">Terms of Service</a> and <a routerLink="/privacy-policy" class="text-emerald-600 hover:underline">Privacy Policy</a>
             </label>
           </div>
-          <div *ngIf="submitted && f['terms'].errors" class="text-red-500 text-xs mt-1 ml-6">
-            You must agree to the Terms of Service and Privacy Policy
-          </div>
+          @if (submitted && f['terms'].errors) {
+            <div class="text-red-500 text-xs mt-1 ml-6">
+              You must agree to the Terms of Service and Privacy Policy
+            </div>
+          }
         </div>
 
         <div class="md:col-span-2 mt-2">

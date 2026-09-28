@@ -1,0 +1,48 @@
+@if (isOpen) {
+<div class="marketplace-modal-backdrop" (click)="onClose()">
+  <div class="marketplace-modal" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="marketplace-modal__header">
+      <div class="marketplace-modal__title-group">
+        <div class="marketplace-modal__icon">🛍️</div>
+        <div>
+          <h2 class="marketplace-modal__title">Where do you want to shop today?</h2>
+          <p class="marketplace-modal__subtitle">Shop from your favorite brands to generate donations.</p>
+        </div>
+      </div>
+      <button class="marketplace-modal__close-btn" (click)="onClose()" aria-label="Close modal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <!-- Content / Grid -->
+    <div class="marketplace-modal__content">
+      @if (marketplaces.length > 0) {
+        <div class="marketplace-grid">
+          @for (brand of marketplaces; track brand.name) {
+            <a [href]="brand.url || '#'" target="_blank" class="marketplace-card">
+              <div class="marketplace-card__img-wrapper">
+                <img [src]="brand.src" [alt]="brand.name" class="marketplace-card__img">
+              </div>
+              <div class="marketplace-card__info">
+                <span class="marketplace-card__name">{{ brand.name }}</span>
+                @if (brand.description) {
+                  <span class="marketplace-card__desc">{{ brand.description }}</span>
+                }
+              </div>
+              <div class="marketplace-card__action">
+                <span>Shop Now</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </div>
+            </a>
+          }
+        </div>
+      } @else {
+        <div class="marketplace-modal__empty">
+          <p>No marketplaces available at the moment.</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+}

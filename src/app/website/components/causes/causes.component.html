@@ -1,0 +1,51 @@
+<section class="causes-section">
+  <div class="causes-section__container">
+    <div class="causes-section__header">
+      <div class="causes-section__header-text">
+        <p class="causes-section__eyebrow">Discover Your Impact</p>
+        <h2 class="causes-section__title">Support Causes You Care About</h2>
+      </div>
+      <div class="causes-section__nav">
+        <button class="nav-btn prev" (click)="scrollCauses('left')" aria-label="Previous">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </button>
+        <button class="nav-btn next" (click)="scrollCauses('right')" aria-label="Next">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </div>
+    </div>
+    
+    <div class="causes-section__slider-wrapper">
+      <div class="causes-section__slider" #causesSlider>
+        @for (cause of causes; track cause.id) {
+          <div class="cause-card">
+            <div class="cause-card__image">
+              <img [src]="cause.image" [alt]="cause.title">
+              <div class="cause-card__overlay" [style.background]="cause.color"></div>
+              <div class="cause-card__icon">{{ cause.icon }}</div>
+            </div>
+            <div class="cause-card__content">
+              <h3 class="cause-card__title">{{ cause.title }}</h3>
+              <p class="cause-card__desc">{{ cause.description }}</p>
+              <div class="cause-card__actions">
+                <a [routerLink]="['/causes', cause.slug]" class="cause-card__link">
+                  View Now
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+                <button class="cause-card__donate-btn" (click)="openMarketplace()">
+                  Donate Now
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-marketplace-modal 
+  [isOpen]="isMarketplaceOpen" 
+  [marketplaces]="marketplaces"
+  (closeModal)="isMarketplaceOpen = false">
+</app-marketplace-modal>

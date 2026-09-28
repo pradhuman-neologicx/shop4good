@@ -20,12 +20,12 @@ export const routes: Routes = [
   },
 
   {
-    path: 'ngo',
-    loadComponent: () => import('./website/ngo/ngo.component').then(c => c.NgoComponent)
+    path: 'causes',
+    loadComponent: () => import('./website/causes/ngo.component').then(c => c.NgoComponent)
   },
   {
-    path: 'ngo/:slug',
-    loadComponent: () => import('./website/ngo/slug/slug.component').then(c => c.SlugComponent)
+    path: 'causes/:slug',
+    loadComponent: () => import('./website/causes/slug/slug.component').then(c => c.SlugComponent)
   },
   {
     path: 'auth/login',

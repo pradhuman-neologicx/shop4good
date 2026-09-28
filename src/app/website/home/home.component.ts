@@ -8,6 +8,7 @@ import { FooterComponent } from '../components/footer/footer.component';
 import { HeroComponent } from '../components/hero/hero.component';
 import { NgoImpactComponent } from '../components/ngo-impact/ngo-impact.component';
 import { FaqComponent } from '../components/faq/faq.component';
+import { CausesComponent } from '../components/causes/causes.component';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,7 @@ import { FaqComponent } from '../components/faq/faq.component';
     HeroComponent,
     NgoImpactComponent,
     FaqComponent,
+    CausesComponent,
   ],
 })
 export class HomeComponent {
