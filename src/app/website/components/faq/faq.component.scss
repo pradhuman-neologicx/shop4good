@@ -1,0 +1,198 @@
+// ── FAQ SECTION ──────────────────────────────
+.faq-section {
+  background: var(--w-bg-section, #FFFFFF);
+  padding: 80px 24px;
+}
+
+.faq-section__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 64px;
+  align-items: flex-start;
+}
+
+// ── Left: Header & Image ─────────────────────
+.faq-section__left {
+  position: sticky;
+  top: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.faq-section__header {
+  // Styles applied here
+}
+
+.faq-section__eyebrow {
+  font-family: var(--w-font-primary, 'DM Sans', sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--w-accent, #10B981);
+  margin-bottom: 16px;
+}
+
+.faq-section__title {
+  font-family: var(--w-font-serif, 'Cormorant Garamond', serif);
+  font-size: clamp(30px, 4vw, 42px);
+  font-weight: 600;
+  color: var(--w-text-primary, #0A0A0A);
+  line-height: 1.15;
+  margin-bottom: 20px;
+
+  span {
+    color: var(--w-accent, #10B981);
+    font-style: italic;
+  }
+}
+
+.faq-section__subtitle {
+  font-family: var(--w-font-primary, 'DM Sans', sans-serif);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--w-text-secondary, #555555);
+}
+
+.faq-section__contact-link {
+  color: var(--w-accent, #10B981);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-bottom-color: var(--w-accent, #10B981);
+  }
+}
+
+.faq-section__image {
+  border-radius: var(--w-radius-lg, 16px);
+  overflow: hidden;
+  box-shadow: var(--w-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.1));
+
+  img {
+    width: 100%;
+    height: auto;
+    max-height: 350px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// ── Right: Accordion ─────────────────────────
+.faq-section__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.faq-section__item {
+  border-bottom: 1px solid var(--w-border, #E0E0E0);
+
+  &:first-child {
+    border-top: 1px solid var(--w-border, #E0E0E0);
+  }
+
+  &--open {
+    .faq-section__question {
+      color: var(--w-accent-dark, #059669);
+
+      i {
+        color: var(--w-accent, #10B981);
+        background: var(--w-accent-muted, rgba(16, 185, 129, 0.15));
+      }
+    }
+  }
+}
+
+.faq-section__question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--w-font-primary, 'DM Sans', sans-serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--w-text-primary, #0A0A0A);
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--w-accent-dark, #059669);
+  }
+
+  i {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 12px;
+    color: var(--w-text-muted, #9E9E9E);
+    background: var(--w-bg-section-alt, #F7F7F7);
+    transition: all 0.25s ease;
+  }
+}
+
+.faq-section__answer {
+  padding: 0 0 22px;
+  animation: faqSlideDown 0.3s ease forwards;
+
+  p {
+    font-family: var(--w-font-primary, 'DM Sans', sans-serif);
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--w-text-secondary, #555555);
+    margin: 0;
+    max-width: 520px;
+  }
+}
+
+@keyframes faqSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── RESPONSIVE ───────────────────────────────
+@media (max-width: 768px) {
+  .faq-section {
+    padding: 56px 20px;
+  }
+
+  .faq-section__inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .faq-section__header {
+    position: static;
+    text-align: center;
+  }
+
+  .faq-section__question {
+    font-size: 15px;
+    padding: 18px 0;
+  }
+}

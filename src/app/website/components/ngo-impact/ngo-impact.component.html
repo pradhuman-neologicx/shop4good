@@ -1,0 +1,53 @@
+<!-- ═══ NGO IMPACT SECTION ═══ -->
+<section class="ngo-impact">
+  <!-- Top: Feature highlights -->
+  <div class="ngo-impact__features">
+    @for (feature of features; track feature.icon) {
+      <div class="ngo-impact__feature">
+        <div class="ngo-impact__feature-icon">
+          <i [class]="feature.icon"></i>
+        </div>
+        <span>{{ feature.text }}</span>
+      </div>
+    }
+  </div>
+
+  <!-- Main: Split layout -->
+  <div class="ngo-impact__main">
+    <!-- Left: Image -->
+    <div class="ngo-impact__image-wrap">
+      <img src="assets/ngo_impact.jpg" alt="Lives changed through Shop4Good" />
+      <div class="ngo-impact__image-overlay"></div>
+    </div>
+
+    <!-- Right: Banner text + NGO logos -->
+    <div class="ngo-impact__content">
+      <div class="ngo-impact__banner">
+        <p class="ngo-impact__banner-eyebrow">Real Stories, Real Impact</p>
+        <h2 class="ngo-impact__banner-title">
+          A Child's Life Changes<br/>When You Shop More
+        </h2>
+        <p class="ngo-impact__banner-text">
+          Every time you shop through Shop4Good, a percentage of your purchase
+          goes directly to verified NGOs working on education, healthcare, and
+          community development across India.
+        </p>
+      </div>
+
+      <!-- NGO Partner Logos -->
+      <div class="ngo-impact__partners">
+        <p class="ngo-impact__partners-label">Our NGO Partners</p>
+        <div class="ngo-impact__partners-grid">
+          @for (ngo of ngos; track ngo.name) {
+            <div class="ngo-impact__ngo-card">
+              <div class="ngo-impact__ngo-icon">
+                <i [class]="ngo.icon"></i>
+              </div>
+              <span>{{ ngo.name }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

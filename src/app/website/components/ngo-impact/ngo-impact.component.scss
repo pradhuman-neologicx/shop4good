@@ -1,0 +1,260 @@
+// ── NGO IMPACT SECTION ───────────────────────
+.ngo-impact {
+  overflow: hidden;
+}
+
+// ── Feature Highlights Strip ─────────────────
+.ngo-impact__features {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: var(--w-bg-section-alt, #F7F7F7);
+  border-bottom: 1px solid var(--w-border-light, #F0F0F0);
+  flex-wrap: wrap;
+}
+
+.ngo-impact__feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 36px;
+  font-family: var(--w-font-primary, 'DM Sans', sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--w-text-primary, #0A0A0A);
+  border-right: 1px solid var(--w-border-light, #F0F0F0);
+  transition: all 0.3s ease;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &:hover {
+    background: var(--w-accent-muted, rgba(16, 185, 129, 0.15));
+    color: var(--w-accent-dark, #059669);
+  }
+}
+
+.ngo-impact__feature-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--w-accent-muted, rgba(16, 185, 129, 0.15));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  i {
+    font-size: 14px;
+    color: var(--w-accent, #10B981);
+  }
+}
+
+// ── Main Split Layout ────────────────────────
+.ngo-impact__main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 560px;
+}
+
+// Image side
+.ngo-impact__image-wrap {
+  position: relative;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 8s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.ngo-impact__image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 60%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  pointer-events: none;
+}
+
+// Content side
+.ngo-impact__content {
+  background: var(--w-black, #0A0A0A);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 56px;
+}
+
+// Banner text
+.ngo-impact__banner {
+  margin-bottom: 48px;
+}
+
+.ngo-impact__banner-eyebrow {
+  font-family: var(--w-font-primary, 'DM Sans', sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--w-accent, #10B981);
+  margin-bottom: 20px;
+}
+
+.ngo-impact__banner-title {
+  font-family: var(--w-font-serif, 'Cormorant Garamond', serif);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 400;
+  color: var(--w-white, #FFFFFF);
+  line-height: 1.2;
+  margin-bottom: 24px;
+  letter-spacing: 0.02em;
+}
+
+.ngo-impact__banner-text {
+  font-family: var(--w-font-primary, 'DM Sans', sans-serif);
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--w-grey-400, #9E9E9E);
+  max-width: 440px;
+}
+
+// NGO Partners grid
+.ngo-impact__partners {
+  border-top: 1px solid var(--w-grey-800, #2E2E2E);
+  padding-top: 32px;
+}
+
+.ngo-impact__partners-label {
+  font-family: var(--w-font-primary, 'DM Sans', sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--w-grey-500, #717171);
+  margin-bottom: 20px;
+}
+
+.ngo-impact__partners-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.ngo-impact__ngo-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--w-grey-900, #1C1C1C);
+  border: 1px solid var(--w-grey-800, #2E2E2E);
+  border-radius: var(--w-radius-md, 10px);
+  transition: all 0.3s ease;
+  cursor: default;
+
+  span {
+    font-family: var(--w-font-primary, 'DM Sans', sans-serif);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--w-grey-300, #BDBDBD);
+    white-space: nowrap;
+  }
+
+  &:hover {
+    border-color: var(--w-accent, #10B981);
+    background: rgba(16, 185, 129, 0.05);
+    transform: translateY(-2px);
+
+    span {
+      color: var(--w-white, #FFFFFF);
+    }
+  }
+}
+
+.ngo-impact__ngo-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--w-accent-muted, rgba(16, 185, 129, 0.15));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  i {
+    font-size: 12px;
+    color: var(--w-accent, #10B981);
+  }
+}
+
+// ── RESPONSIVE ───────────────────────────────
+@media (max-width: 1024px) {
+  .ngo-impact__main {
+    grid-template-columns: 1fr;
+  }
+
+  .ngo-impact__image-wrap {
+    height: 360px;
+  }
+
+  .ngo-impact__content {
+    padding: 48px 32px;
+  }
+
+  .ngo-impact__partners-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .ngo-impact__features {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .ngo-impact__feature {
+    width: 100%;
+    justify-content: center;
+    padding: 16px 24px;
+    border-right: none;
+    border-bottom: 1px solid var(--w-border-light, #F0F0F0);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .ngo-impact__image-wrap {
+    height: 300px;
+  }
+
+  .ngo-impact__content {
+    padding: 40px 24px;
+  }
+
+  .ngo-impact__partners-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .ngo-impact__ngo-card {
+    padding: 10px 12px;
+
+    span {
+      font-size: 11px;
+    }
+  }
+}

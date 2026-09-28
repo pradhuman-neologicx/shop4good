@@ -93,6 +93,87 @@ body {
   --sidebar-ring: oklch(0.439 0 0);
 }
 
+// ═══════════════════════════════════════════════════════════════
+// WEBSITE THEME — Black & Grey with Gold Accent (from Figma)
+// Scoped to .website-theme so admin side remains unaffected
+// ═══════════════════════════════════════════════════════════════
+.website-theme {
+  // Force light mode — ignore system dark preference
+  color-scheme: light only;
+
+  // Override dark class if applied by system/browser
+  &, &.dark, .dark & {
+    --background: oklch(0.99 0.01 40);
+    --foreground: oklch(0.2 0 0);
+  }
+  --w-black: #0A0A0A;
+  --w-black-soft: #1A1A1A;
+  --w-black-mid: #2A2A2A;
+
+  --w-grey-900: #1C1C1C;
+  --w-grey-800: #2E2E2E;
+  --w-grey-700: #3D3D3D;
+  --w-grey-600: #555555;
+  --w-grey-500: #717171;
+  --w-grey-400: #9E9E9E;
+  --w-grey-300: #BDBDBD;
+  --w-grey-200: #E0E0E0;
+  --w-grey-100: #F0F0F0;
+  --w-grey-50: #F7F7F7;
+
+  --w-white: #FFFFFF;
+  --w-white-soft: #FAFAFA;
+
+  // ── Accent: Emerald ─────────────────────────
+  --w-accent: #10B981;
+  --w-accent-light: #34D399;
+  --w-accent-dark: #059669;
+  --w-accent-muted: rgba(16, 185, 129, 0.15);
+
+  // ── Semantic Mappings ───────────────────────
+  --w-bg-primary: var(--w-black);
+  --w-bg-secondary: var(--w-grey-900);
+  --w-bg-section: var(--w-white);
+  --w-bg-section-alt: var(--w-grey-50);
+  --w-bg-card: var(--w-white);
+  --w-bg-card-hover: var(--w-grey-100);
+
+  --w-text-primary: var(--w-black);
+  --w-text-secondary: var(--w-grey-600);
+  --w-text-muted: var(--w-grey-400);
+  --w-text-on-dark: var(--w-white);
+  --w-text-on-dark-muted: var(--w-grey-300);
+  --w-text-accent: var(--w-accent);
+
+  // ── Borders & Dividers ──────────────────────
+  --w-border: var(--w-grey-200);
+  --w-border-light: var(--w-grey-100);
+  --w-border-dark: var(--w-grey-700);
+
+  // ── Shadows ─────────────────────────────────
+  --w-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --w-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --w-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --w-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.16);
+
+  // ── Typography ──────────────────────────────
+  --w-font-primary: 'DM Sans', 'Inter', sans-serif;
+  --w-font-serif: 'Cormorant Garamond', Georgia, serif;
+  --w-font-script: 'Great Vibes', cursive;
+
+  // ── Spacing / Radius ────────────────────────
+  --w-radius-sm: 6px;
+  --w-radius-md: 10px;
+  --w-radius-lg: 16px;
+  --w-radius-xl: 24px;
+  --w-radius-full: 9999px;
+
+  // ── Transitions ─────────────────────────────
+  --w-transition-fast: 0.15s ease;
+  --w-transition: 0.3s ease;
+  --w-transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 $primary-color: #05413e;
 $primary-foreground: oklch(1 0 0);
 

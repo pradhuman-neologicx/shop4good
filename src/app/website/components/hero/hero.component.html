@@ -1,0 +1,71 @@
+<!-- ═══ HERO SLIDER ═══ -->
+<section class="hero">
+  <!-- Background Slides -->
+  <div class="hero__slides">
+    @for (slide of slides; track slide.id; let i = $index) {
+      <div
+        class="hero__slide"
+        [class.hero__slide--active]="i === currentSlide"
+        [style.backgroundImage]="'url(' + slide.image + ')'"
+      ></div>
+    }
+  </div>
+
+  <!-- Dark Overlay -->
+  <div class="hero__overlay"></div>
+
+  <!-- Content -->
+  <div class="hero__content">
+    <!-- Eyebrow / Tagline -->
+    <div class="hero__eyebrow">
+      <span class="hero__eyebrow-dot"></span>
+      Shop4Good
+    </div>
+
+    <!-- Main Title with Gold Accent -->
+    <h1 class="hero__title">
+      <span class="hero__title-line1">{{ slides[currentSlide].titleLine1 }}</span>
+      <span class="hero__title-accent">{{ slides[currentSlide].titleAccent }}</span>
+    </h1>
+
+    <!-- Description -->
+    <p class="hero__description">
+      {{ slides[currentSlide].description }}
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="hero__cta-group">
+      <a routerLink="/auth/register" class="hero__cta hero__cta--primary">
+        Get Started <i class="fa-solid fa-arrow-right"></i>
+      </a>
+      <a routerLink="/contact" class="hero__cta hero__cta--outline">
+        Learn More
+      </a>
+    </div>
+
+    <!-- Slide Indicators -->
+    <div class="hero__indicators">
+      @for (slide of slides; track slide.id; let i = $index) {
+        <button
+          class="hero__dot"
+          [class.hero__dot--active]="i === currentSlide"
+          (click)="goToSlide(i)"
+          [attr.aria-label]="'Go to slide ' + (i + 1)"
+        ></button>
+      }
+    </div>
+  </div>
+
+  <!-- Marquee Strip -->
+  <div class="hero__marquee">
+    <div class="hero__marquee-track">
+      @for (item of marqueeItems; track $index) {
+        <span class="hero__marquee-item">
+          SHOP <span class="hero__marquee-dot">•</span>
+          DONATE <span class="hero__marquee-dot">•</span>
+          REPEAT
+        </span>
+      }
+    </div>
+  </div>
+</section>

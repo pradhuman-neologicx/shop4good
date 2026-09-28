@@ -1,0 +1,37 @@
+<!-- ═══ FAQ SECTION ═══ -->
+<section class="faq-section">
+  <div class="faq-section__inner">
+    <!-- Left: Header & Image -->
+    <div class="faq-section__left">
+      <div class="faq-section__header">
+        <p class="faq-section__eyebrow">Got Questions?</p>
+        <h2 class="faq-section__title">Frequently Asked<br/><span>Questions</span></h2>
+        <p class="faq-section__subtitle">
+          Everything you need to know about Shop4Good. Can't find an answer?
+          <a routerLink="/contact" class="faq-section__contact-link">Contact us</a>
+        </p>
+      </div>
+
+      <div class="faq-section__image">
+        <img src="assets/faq_image.jpg" alt="Friendly support" />
+      </div>
+    </div>
+
+    <!-- Right: Accordion -->
+    <div class="faq-section__list">
+      @for (item of faqs; track item.question; let i = $index) {
+        <div class="faq-section__item" [class.faq-section__item--open]="openIndex === i">
+          <button class="faq-section__question" (click)="toggle(i)">
+            <span>{{ item.question }}</span>
+            <i class="fa-solid" [class.fa-plus]="openIndex !== i" [class.fa-minus]="openIndex === i"></i>
+          </button>
+          @if (openIndex === i) {
+            <div class="faq-section__answer">
+              <p>{{ item.answer }}</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>
