@@ -36,7 +36,6 @@ export class FooterComponent {
   quickLinks = [
     { label: 'Home', href: '/' },
     { label: 'Our Causes', href: '/causes' },
-    { label: 'Marketplaces', href: '/marketplaces' },
     { label: 'Contact Us', href: '/contact' },
     { label: 'Admin Login', href: '/admin/login' },
   ];
