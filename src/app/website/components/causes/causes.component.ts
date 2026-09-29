@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import {
   Component,
   ChangeDetectionStrategy,
@@ -10,7 +11,7 @@ import { MarketplaceModalComponent, Marketplace } from '../marketplace-modal/mar
 @Component({
   selector: 'app-causes',
   standalone: true,
-  imports: [RouterLink, MarketplaceModalComponent],
+  imports: [RouterLink, MarketplaceModalComponent, NgOptimizedImage],
   templateUrl: './causes.component.html',
   styleUrl: './causes.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

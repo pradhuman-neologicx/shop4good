@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
@@ -5,7 +6,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   templateUrl: './ngo-impact.component.html',
   styleUrl: './ngo-impact.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [NgOptimizedImage],
 })
 export class NgoImpactComponent {
   features = [

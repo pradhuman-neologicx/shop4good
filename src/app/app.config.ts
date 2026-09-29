@@ -3,7 +3,7 @@ import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { DatePipe, CommonModule, NgOptimizedImage } from '@angular/common';
+import { DatePipe, CommonModule } from '@angular/common';
 
 import { DataService } from './core/services/data.service';
 import { ApiService } from './core/services/api.service';
@@ -42,8 +42,7 @@ export const appConfig: ApplicationConfig = {
       NgSelectModule, 
       CommonModule, 
       MatMenuModule, 
-      NgxPaginationModule,
-      NgOptimizedImage
+      NgxPaginationModule
     )
   ]
 };

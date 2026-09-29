@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -11,7 +12,7 @@ export interface Marketplace {
 @Component({
   selector: 'app-marketplace-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgOptimizedImage],
   templateUrl: './marketplace-modal.component.html',
   styleUrl: './marketplace-modal.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

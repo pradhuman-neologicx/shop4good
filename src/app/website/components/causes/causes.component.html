@@ -20,7 +20,7 @@
         @for (cause of causes; track cause.id) {
           <div class="cause-card">
             <div class="cause-card__image">
-              <img [src]="cause.image" [alt]="cause.title">
+              <img [ngSrc]="cause.image" width="400" height="300" [alt]="cause.title">
               <div class="cause-card__overlay" [style.background]="cause.color"></div>
               <div class="cause-card__icon">{{ cause.icon }}</div>
             </div>

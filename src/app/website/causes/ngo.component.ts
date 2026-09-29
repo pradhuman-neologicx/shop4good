@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -5,10 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { Ngo, MOCK_NGOS } from './ngo-mock-data';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
+import { MarketplaceModalComponent, Marketplace } from '../components/marketplace-modal/marketplace-modal.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, NavbarComponent, FooterComponent],
+  imports: [CommonModule, RouterModule, FormsModule, NavbarComponent, FooterComponent, MarketplaceModalComponent, NgOptimizedImage],
   selector: 'app-ngo',
   styleUrl: './ngo.component.scss',
   templateUrl: './ngo.component.html',
@@ -23,6 +25,20 @@ export class NgoComponent implements OnInit {
   
   // Available causes for filter
   availableCauses: string[] = [];
+
+  isMarketplaceOpen = false;
+  marketplaces: Marketplace[] = [
+    { name: 'Amazon', src: 'assets/brands/amazon.svg', description: 'Up to 5% donation' },
+    { name: 'Flipkart', src: 'assets/brands/flipkart.svg', description: 'Up to 3% donation' },
+    { name: 'Myntra', src: 'assets/brands/myntra.svg', description: 'Up to 4% donation' },
+    { name: 'Ajio', src: 'assets/brands/ajio.svg', description: 'Up to 6% donation' },
+    { name: 'Nykaa', src: 'assets/brands/nykaa.svg', description: 'Up to 2% donation' },
+    { name: 'Meesho', src: 'assets/brands/meesho.svg', description: 'Up to 1% donation' },
+  ];
+
+  openMarketplace() {
+    this.isMarketplaceOpen = true;
+  }
 
   ngOnInit() {
     this.filteredNgos = [...this.allNgos];

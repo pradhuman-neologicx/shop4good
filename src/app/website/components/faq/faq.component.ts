@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -6,7 +7,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './faq.component.html',
   styleUrl: './faq.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink, NgOptimizedImage],
 })
 export class FaqComponent {
   openIndex: number | null = 0;

@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import {
   Component,
   ChangeDetectionStrategy,
@@ -15,15 +16,13 @@ import { CausesComponent } from '../components/causes/causes.component';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [
-    NavbarComponent,
+  imports: [NavbarComponent,
     RouterLink,
     FooterComponent,
     HeroComponent,
     NgoImpactComponent,
     FaqComponent,
-    CausesComponent,
-  ],
+    CausesComponent,NgOptimizedImage],
 })
 export class HomeComponent {
   brandLogos = [

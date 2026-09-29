@@ -10,6 +10,19 @@ export interface Ngo {
   location: string;
   establishedYear: number;
   website: string;
+  causeDetail?: {
+    name: string;
+    description: string;
+    goal_amount: number;
+    raised_amount: number;
+    is_active: boolean;
+    is_featured: boolean;
+    sort_order: number;
+    starts_at: string;
+    ends_at: string;
+    images: string[];
+    donors_count: number;
+  };
 }
 
 export const MOCK_NGOS: Ngo[] = [
@@ -24,7 +37,24 @@ export const MOCK_NGOS: Ngo[] = [
     causes: ['Environment', 'Sustainability', 'Climate Change'],
     location: 'New York, USA',
     establishedYear: 2005,
-    website: 'https://example.com'
+    website: 'https://example.com',
+    causeDetail: {
+      name: "Education for Every Child",
+      description: "Long-form story shown on the cause detail page.",
+      goal_amount: 500000,
+      raised_amount: 0,
+      is_active: true,
+      is_featured: true,
+      sort_order: 1,
+      starts_at: "2026-01-01",
+      ends_at: "2026-12-31",
+      images: [
+        'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+        'https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+        'https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80'
+      ],
+      donors_count: 1245
+    }
   },
   {
     id: 2,
@@ -37,7 +67,24 @@ export const MOCK_NGOS: Ngo[] = [
     causes: ['Education', 'Children', 'Poverty Alleviation'],
     location: 'London, UK',
     establishedYear: 2010,
-    website: 'https://example.com'
+    website: 'https://example.com',
+    causeDetail: {
+      name: "Empowering Rural Women",
+      description: "Providing skill development and micro-financing options for women in rural areas.",
+      goal_amount: 250000,
+      raised_amount: 100000,
+      is_active: true,
+      is_featured: false,
+      sort_order: 2,
+      starts_at: "2026-03-01",
+      ends_at: "2026-09-30",
+      images: [
+        'https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80',
+        'https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80',
+        'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80'
+      ],
+      donors_count: 890
+    }
   },
   {
     id: 3,

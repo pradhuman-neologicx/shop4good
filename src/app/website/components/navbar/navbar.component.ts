@@ -1,6 +1,6 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, HostListener, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, NavigationEnd, RouterLink } from '@angular/router';
-import { NgOptimizedImage } from '@angular/common';
 import { filter } from 'rxjs/operators';
 
 @Component({

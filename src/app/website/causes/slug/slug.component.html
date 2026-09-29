@@ -6,13 +6,13 @@
     <!-- Hero Section -->
     <div class="relative bg-gray-900">
       <div class="absolute inset-0">
-        <img [src]="ngo.coverImage" [alt]="ngo.name + ' cover'" class="w-full h-full object-cover opacity-40">
+        <img [ngSrc]="ngo.coverImage" fill [alt]="ngo.name + ' cover'" class="w-full h-full object-cover opacity-40">
       </div>
       <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
         <div class="md:flex md:items-center md:space-x-8">
           <div class="flex-shrink-0 mb-6 md:mb-0">
-            <div class="w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-white overflow-hidden bg-white shadow-xl">
-               <img [src]="ngo.logo" [alt]="ngo.name + ' logo'" class="w-full h-full object-cover">
+            <div class="relative w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-white overflow-hidden bg-white shadow-xl">
+               <img [ngSrc]="ngo.logo" fill [alt]="ngo.name + ' logo'" class="w-full h-full object-cover">
             </div>
           </div>
           <div>
@@ -36,6 +36,79 @@
         
         <!-- Main Content -->
         <div class="lg:col-span-2 space-y-10">
+          @if (causeDetail) {
+          <!-- Cause Details & Gallery Section -->
+          <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 md:p-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+              
+              <!-- Left: Gallery -->
+              <div class="flex flex-col gap-4">
+                <!-- Main Image -->
+                <div class="rounded-2xl overflow-hidden aspect-[4/3] relative bg-gray-100">
+                  <img [ngSrc]="causeDetail.images[selectedImageIndex]" fill [alt]="causeDetail.name" class="w-full h-full object-cover">
+                </div>
+                <!-- Thumbnails -->
+                <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                  @for (img of causeDetail.images; track $index) {
+                  <button 
+                    (click)="selectedImageIndex = $index" 
+                    class="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all duration-200 hover:opacity-100"
+                    [class.border-emerald-500]="selectedImageIndex === $index"
+                    [class.border-transparent]="selectedImageIndex !== $index"
+                    [class.opacity-100]="selectedImageIndex === $index"
+                    [class.opacity-60]="selectedImageIndex !== $index">
+                    <img [ngSrc]="img" fill alt="Thumbnail" class="w-full h-full object-cover">
+                  </button>
+                  }
+                </div>
+              </div>
+
+              <!-- Right: Details -->
+              <div class="flex flex-col justify-center space-y-6">
+                <div>
+                  <div class="flex items-center gap-3 mb-3">
+                    @if (causeDetail.is_featured) {
+                      <span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-bold uppercase rounded-full tracking-wide">Featured</span>
+                    }
+                    @if (causeDetail.is_active) {
+                      <span class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold uppercase rounded-full tracking-wide">Active</span>
+                    }
+                  </div>
+                  <h2 class="text-3xl font-extrabold text-gray-900">{{ causeDetail.name }}</h2>
+                </div>
+
+                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4">
+                  <div>
+                    <div class="flex justify-between text-sm font-semibold mb-2">
+                      <span class="text-gray-500">Raised</span>
+                      <span class="text-gray-900">{{ causeDetail.raised_amount | currency:'INR':'symbol':'1.0-0' }} of {{ causeDetail.goal_amount | currency:'INR':'symbol':'1.0-0' }}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                      <div class="bg-emerald-500 h-3 rounded-full" [style.width]="(causeDetail.raised_amount / causeDetail.goal_amount * 100) + '%'"></div>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
+                    <div>
+                      <div class="text-xs text-gray-500 font-semibold uppercase tracking-wide">Starts At</div>
+                      <div class="text-sm text-gray-900 font-medium">{{ causeDetail.starts_at | date:'mediumDate' }}</div>
+                    </div>
+                    <div>
+                      <div class="text-xs text-gray-500 font-semibold uppercase tracking-wide">Ends At</div>
+                      <div class="text-sm text-gray-900 font-medium">{{ causeDetail.ends_at | date:'mediumDate' }}</div>
+                    </div>
+                    <div>
+                      <div class="text-xs text-gray-500 font-semibold uppercase tracking-wide">Donors</div>
+                      <div class="text-sm text-gray-900 font-medium">{{ causeDetail.donors_count | number }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- About Us -->
           <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 md:p-10">
             <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center">
               <span class="bg-emerald-100 text-emerald-600 p-2 rounded-lg mr-4">
@@ -44,33 +117,10 @@
               About Us
             </h2>
             <div class="prose prose-lg text-gray-600 max-w-none leading-relaxed">
-              <p>{{ ngo.longDescription }}</p>
+              <p>{{ causeDetail.description }}</p>
             </div>
           </div>
-
-          <!-- Impact Metrics (Mock) -->
-          <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 md:p-10">
-             <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
-              <span class="bg-blue-100 text-blue-600 p-2 rounded-lg mr-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-              </span>
-              Our Impact
-             </h2>
-             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-               <div class="p-6 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl border border-emerald-100">
-                 <div class="text-4xl font-black text-emerald-700 mb-2">10K+</div>
-                 <div class="text-sm text-emerald-900 font-semibold uppercase tracking-wide">Lives Impacted</div>
-               </div>
-               <div class="p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl border border-blue-100">
-                 <div class="text-4xl font-black text-blue-700 mb-2">50+</div>
-                 <div class="text-sm text-blue-900 font-semibold uppercase tracking-wide">Active Projects</div>
-               </div>
-               <div class="p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl border border-purple-100">
-                 <div class="text-4xl font-black text-purple-700 mb-2">15</div>
-                 <div class="text-sm text-purple-900 font-semibold uppercase tracking-wide">Countries</div>
-               </div>
-             </div>
-          </div>
+          }
         </div>
 
         <!-- Sidebar -->

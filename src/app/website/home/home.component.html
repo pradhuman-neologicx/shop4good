@@ -67,7 +67,7 @@
       <div class="brands-section__track brands-section__track--ltr">
         @for (item of [1,2,3,4,5,6,7,8,9,10,11,12]; track $index) {
           <div class="brands-section__logo-card">
-            <img [src]="brandLogos[($index) % brandLogos.length].src" [alt]="brandLogos[($index) % brandLogos.length].name" />
+            <img [ngSrc]="brandLogos[($index) % brandLogos.length].src" width="150" height="60" [alt]="brandLogos[($index) % brandLogos.length].name" />
           </div>
         }
       </div>
@@ -78,7 +78,7 @@
       <div class="brands-section__track brands-section__track--rtl">
         @for (item of [1,2,3,4,5,6,7,8,9,10,11,12]; track $index) {
           <div class="brands-section__logo-card">
-            <img [src]="brandLogos[(($index) + 3) % brandLogos.length].src" [alt]="brandLogos[(($index) + 3) % brandLogos.length].name" />
+            <img [ngSrc]="brandLogos[(($index) + 3) % brandLogos.length].src" width="150" height="60" [alt]="brandLogos[(($index) + 3) % brandLogos.length].name" />
           </div>
         }
       </div>
@@ -161,7 +161,7 @@
       <!-- Right Side: Sticky Image -->
       <div class="steps-section__visual">
         <div class="steps-section__image-wrapper">
-          <img src="assets/steps_image.jpg" alt="How it works" />
+          <img ngSrc="assets/steps_image.jpg" width="800" height="600" alt="How it works" />
         </div>
       </div>
     </div>
