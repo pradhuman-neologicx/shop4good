@@ -985,7 +985,7 @@ input[type="file"] {
 .custom-modal-overlay {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); z-index: 1050; display: flex; align-items: center; justify-content: center; padding: 16px;
   .custom-modal {
-    background: #fff; width: 100%; max-width: 500px; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); animation: modalSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; max-height: 90vh;
+    background: #fff; width: 100%; max-width: 700px; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); animation: modalSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; max-height: 90vh;
     .modal-header {
       padding: 20px 24px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;
       h2 { margin: 0; font-size: 18px; font-weight: 600; color: #1e293b; }
@@ -1005,82 +1005,7 @@ input[type="file"] {
 
 /* Premium View Details Modal Styling */
 .view-details {
-  padding: 16px;
-  background: linear-gradient(145deg, #f8fafc, #f1f5f9);
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  
-  @media (max-width: 540px) {
-    grid-template-columns: 1fr;
-  }
-  
-  .detail-group {
-    background: #ffffff;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
-    border: 1px solid rgba(5, 65, 62, 0.05);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    &:hover {
-      border-color: rgba(5, 65, 62, 0.2);
-      box-shadow: 0 10px 15px -3px rgba(5, 65, 62, 0.1), 0 4px 6px -2px rgba(5, 65, 62, 0.05);
-      transform: translateY(-3px);
-    }
-    
-    label {
-      display: flex;
-      align-items: center;
-      font-size: 0.75rem;
-      color: #05413e;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      font-weight: 700;
-      opacity: 0.85;
-      
-      i {
-        margin-right: 8px;
-        font-size: 14px;
-        color: #05413e;
-      }
-    }
-    
-    p {
-      font-size: 1rem;
-      color: #1e293b;
-      margin: 0;
-      font-weight: 600;
-      line-height: 1.5;
-      word-break: break-word;
-    }
-
-    &.full-width {
-      grid-column: 1 / -1;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      margin-top: 2px;
-      padding: 6px 16px;
-      font-size: 13px;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-  }
-
-  .modal-footer {
-    grid-column: 1 / -1;
-    margin-top: 12px;
-    padding-top: 16px;
-    border-top: 1px dashed #cbd5e1;
-    background: transparent;
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-right: 0;
-  }
+  padding: 0;
+  display: block;
 }
 

@@ -170,80 +170,148 @@
           <!-- Edit/Add Form -->
           <form [formGroup]="charityForm" (ngSubmit)="onSubmit()">
             <div class="form-group mb-3">
-              <label>Cause Name</label>
+              <label>Cause Name <span class="text-danger">*</span></label>
               <input
                 type="text"
                 class="form-control"
                 formControlName="name"
                 placeholder="Enter cause name"
+                [class.is-invalid]="submitted && charityForm.get('name')?.invalid"
               />
               @if (submitted && charityForm.get("name")?.invalid) {
-                <div class="text-danger small mt-1">Name is required.</div>
+                @if (charityForm.get("name")?.errors?.["required"]) {
+                  <div class="text-danger small mt-1">Name is required.</div>
+                } @else if (charityForm.get("name")?.errors?.["minlength"]) {
+                  <div class="text-danger small mt-1">Name must be at least 3 characters.</div>
+                } @else if (charityForm.get("name")?.errors?.["maxlength"]) {
+                  <div class="text-danger small mt-1">Name cannot exceed 100 characters.</div>
+                }
               }
             </div>
 
-
+            <div class="form-group mb-3">
+              <label>Tags <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="tags" placeholder="e.g. Environment, Education, Health (comma separated)"
+                [class.is-invalid]="submitted && charityForm.get('tags')?.invalid" />
+              @if (submitted && charityForm.get("tags")?.invalid) {
+                <div class="text-danger small mt-1">At least one tag is required.</div>
+              }
+            </div>
 
             <div class="form-group mb-3">
-              <label>Short Description</label>
+              <label>Short Description <span class="text-danger">*</span></label>
               <textarea
                 class="form-control"
                 formControlName="shortDescription"
                 rows="2"
-                placeholder="Enter short description"
+                placeholder="Enter short description (min 10 characters)"
+                [class.is-invalid]="submitted && charityForm.get('shortDescription')?.invalid"
               ></textarea>
+              @if (submitted && charityForm.get("shortDescription")?.invalid) {
+                @if (charityForm.get("shortDescription")?.errors?.["required"]) {
+                  <div class="text-danger small mt-1">Short description is required.</div>
+                } @else if (charityForm.get("shortDescription")?.errors?.["minlength"]) {
+                  <div class="text-danger small mt-1">Must be at least 10 characters.</div>
+                } @else if (charityForm.get("shortDescription")?.errors?.["maxlength"]) {
+                  <div class="text-danger small mt-1">Cannot exceed 300 characters.</div>
+                }
+              }
             </div>
 
             <div class="form-group mb-3">
-              <label>Long Description</label>
+              <label>Long Description <span class="text-danger">*</span></label>
               <quill-editor formControlName="longDescription" placeholder="Enter long description (Rich Text)" [styles]="{height: '250px'}"></quill-editor>
+              @if (submitted && charityForm.get("longDescription")?.invalid) {
+                <div class="text-danger small mt-1">Long description is required.</div>
+              }
             </div>
             
-
 
             <h5 class="mt-4 mb-3" style="color: #05413e; font-weight: 600;">Campaign Details</h5>
-            <div class="form-group mb-3">
-              <label>Goal Amount (₹)</label>
-              <input type="number" class="form-control" formControlName="goalAmount" />
-            </div>
-
             <div class="row">
               <div class="col-md-6 form-group mb-3">
-                <label>Starts At</label>
-                <input type="date" class="form-control" formControlName="startsAt" />
+                <label>Starts At <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" formControlName="startsAt"
+                  [min]="todayDate"
+                  [class.is-invalid]="submitted && (charityForm.get('startsAt')?.invalid || charityForm.errors?.['startInPast'] || charityForm.errors?.['endBeforeStart'])" />
+                @if (submitted && charityForm.get("startsAt")?.invalid) {
+                  <div class="text-danger small mt-1">Start date is required.</div>
+                }
+                @if (submitted && charityForm.errors?.["startInPast"]) {
+                  <div class="text-danger small mt-1">Start date cannot be in the past.</div>
+                }
+                @if (submitted && charityForm.errors?.["endBeforeStart"]) {
+                  <div class="text-danger small mt-1">Start date must be before End date.</div>
+                }
               </div>
               <div class="col-md-6 form-group mb-3">
-                <label>Ends At</label>
-                <input type="date" class="form-control" formControlName="endsAt" />
-              </div>
-            </div>
-            
-            <div class="form-group mb-3">
-              <label>Gallery Images</label>
-              <label class="file-label d-flex flex-column align-items-center justify-content-center mb-3" style="background-color: #f8fafc; border: 1px dashed #cbd5e1; cursor: pointer; padding: 20px;">
-                <div class="text-muted text-center">
-                  <i class="fa fa-cloud-upload-alt fs-3 mb-2"></i>
-                  <p class="mb-0" style="font-size: 13px;">Click to browse gallery images (Multiple allowed)</p>
-                </div>
-                <input type="file" multiple (change)="onFileSelected($event, 'galleryImages')" accept="image/*" style="display: none;">
-              </label>
-              
-              <!-- Gallery Preview -->
-              <div class="d-flex flex-wrap gap-2">
-                @for (img of charityForm.get('galleryImages')?.value; track $index) {
-                  <div class="position-relative" style="width: 80px; height: 80px;">
-                    <img [src]="img" class="rounded object-fit-cover w-100 h-100 border" alt="Gallery preview">
-                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0 rounded-circle" style="width: 20px; height: 20px; transform: translate(30%, -30%);" (click)="removeGalleryImage($index)">
-                      <i class="fa fa-times" style="font-size: 10px;"></i>
-                    </button>
-                  </div>
+                <label>Ends At <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" formControlName="endsAt"
+                  [min]="charityForm.get('startsAt')?.value || todayDate"
+                  [class.is-invalid]="submitted && (charityForm.get('endsAt')?.invalid || charityForm.errors?.['endBeforeStart'])" />
+                @if (submitted && charityForm.get("endsAt")?.invalid) {
+                  <div class="text-danger small mt-1">End date is required.</div>
+                }
+                @if (submitted && charityForm.errors?.["endBeforeStart"]) {
+                  <div class="text-danger small mt-1">End date must be after Start date.</div>
                 }
               </div>
             </div>
+            
+            <div class="form-group mb-3">
+              <label>Gallery Images <span class="text-muted small">({{ charityForm.get('galleryImages')?.value?.length || 0 }} / 5)</span></label>
+              @if ((charityForm.get('galleryImages')?.value?.length || 0) < 5) {
+              <label class="file-label d-flex flex-column align-items-center justify-content-center mb-3" style="background-color: #f8fafc; border: 1px dashed #cbd5e1; cursor: pointer; padding: 20px;">
+                <div class="text-muted text-center">
+                  <i class="fa fa-cloud-upload-alt fs-3 mb-2"></i>
+                  <p class="mb-0" style="font-size: 13px;">Click to browse gallery images (Max 5)</p>
+                </div>
+                <input type="file" multiple (change)="onFileSelected($event, 'galleryImages')" accept="image/*" style="display: none;">
+              </label>
+              } @else {
+              <div class="alert alert-warning py-2 px-3 mb-3" style="font-size: 13px;">
+                <i class="fa fa-exclamation-triangle me-1"></i> Maximum 5 images reached. Remove an image to add a new one.
+              </div>
+              }
+              
+              <!-- Gallery Preview with Drag & Drop -->
+              <div class="d-flex flex-wrap gap-2">
+                @for (img of charityForm.get('galleryImages')?.value; track $index) {
+                  <div class="position-relative"
+                    style="width: 90px; height: 90px; cursor: grab;"
+                    draggable="true"
+                    (dragstart)="onDragStart($index)"
+                    (dragover)="onDragOver($event)"
+                    (drop)="onDrop($event, $index)"
+                    (dragend)="onDragEnd()"
+                    [style.opacity]="dragIndex === $index ? '0.4' : '1'"
+                    [style.transform]="dragIndex === $index ? 'scale(0.95)' : 'scale(1)'"
+                    [style.transition]="'all 0.2s ease'">
+                    <img [src]="img" class="rounded object-fit-cover w-100 h-100 border" alt="Gallery preview" style="pointer-events: none;">
+                    <!-- Order badge -->
+                    <span class="position-absolute badge rounded-circle bg-dark" style="top: -6px; left: -6px; width: 22px; height: 22px; font-size: 10px; display: flex; align-items: center; justify-content: center;">
+                      {{ $index + 1 }}
+                    </span>
+                    <!-- Remove button -->
+                    <button type="button" class="btn btn-sm btn-danger position-absolute p-0 rounded-circle" style="width: 20px; height: 20px; top: -6px; right: -6px;" (click)="removeGalleryImage($index)">
+                      <i class="fa fa-times" style="font-size: 10px;"></i>
+                    </button>
+                    <!-- Drag hint -->
+                    <div class="position-absolute d-flex align-items-center justify-content-center" style="bottom: 2px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.5); border-radius: 4px; padding: 1px 6px;">
+                      <i class="fa fa-grip-horizontal" style="font-size: 9px; color: #fff;"></i>
+                    </div>
+                  </div>
+                }
+              </div>
+              @if ((charityForm.get('galleryImages')?.value?.length || 0) > 0) {
+              <p class="text-muted small mt-2 mb-0"><i class="fa fa-arrows-alt me-1"></i> Drag images to reorder. First image will be the main cover.</p>
+              }
+            </div>
 
             <div class="form-group mb-3">
-              <label>Upload Cover Image</label>
-              <label class="file-label d-flex flex-column align-items-center justify-content-center" style="background-color: #f8fafc; border: 1px dashed #cbd5e1; cursor: pointer;">
+              <label>Upload Cover Image <span class="text-danger">*</span></label>
+              <label class="file-label d-flex flex-column align-items-center justify-content-center" style="background-color: #f8fafc; border: 1px dashed #cbd5e1; cursor: pointer;"
+                [style.border-color]="submitted && charityForm.get('coverImage')?.invalid ? '#dc3545' : '#cbd5e1'">
                 @if (charityForm.get('coverImage')?.value) {
                   <img [src]="charityForm.get('coverImage')?.value" alt="Preview" class="rounded" style="max-height: 80px; object-fit: contain;">
                 } @else {
@@ -254,6 +322,9 @@
                 }
                 <input type="file" (change)="onFileSelected($event, 'coverImage')" accept="image/*" style="display: none;">
               </label>
+              @if (submitted && charityForm.get("coverImage")?.invalid) {
+                <div class="text-danger small mt-1">Cover image is required.</div>
+              }
             </div>
 
             <div class="modal-footer">
@@ -270,63 +341,92 @@
             </div>
           </form>
         } @else {
-          <!-- View Details Mode -->
-          <div class="view-details">
-            <div class="detail-group full-width">
-              <label><i class="fa fa-hand-holding-heart"></i> Cause Name</label>
-              <p>{{ charityForm.get("name")?.value || "N/A" }}</p>
+          <!-- View Details Mode (Redesigned) -->
+          <div class="view-details" style="padding: 8px 0;">
+
+            <!-- Cover Image Banner -->
+            @if (charityForm.get("coverImage")?.value) {
+            <div style="border-radius: 12px; overflow: hidden; margin-bottom: 24px; max-height: 180px;">
+              <img [src]="charityForm.get('coverImage')?.value" alt="Cover" style="width: 100%; height: 180px; object-fit: cover;">
             </div>
-            <div class="detail-group full-width">
-              <label><i class="fa fa-align-left"></i> Short Description</label>
-              <p>
-                {{
-                  charityForm.get("shortDescription")?.value ||
-                    "No description provided"
-                }}
+            }
+
+            <!-- Name & Tags -->
+            <div style="margin-bottom: 20px;">
+              <h3 style="font-size: 22px; font-weight: 700; color: #111; margin: 0 0 8px;">
+                {{ charityForm.get("name")?.value || "N/A" }}
+              </h3>
+              @if (charityForm.get("tags")?.value) {
+              <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                @for (tag of charityForm.get("tags")?.value?.split(","); track $index) {
+                <span style="padding: 4px 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; background: #f0fdf4; color: #059669; border-radius: 100px; border: 1px solid #d1fae5;">
+                  {{ tag.trim() }}
+                </span>
+                }
+              </div>
+              }
+            </div>
+
+            <!-- Short Description -->
+            <div style="background: #f8fafc; border-radius: 10px; padding: 16px; margin-bottom: 16px; border: 1px solid #f0f0f0;">
+              <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 6px;">
+                <i class="fa fa-align-left me-1"></i> Short Description
+              </div>
+              <p style="margin: 0; color: #333; line-height: 1.6; font-size: 14px;">
+                {{ charityForm.get("shortDescription")?.value || "No description provided" }}
               </p>
             </div>
-            <div class="detail-group full-width">
-              <label><i class="fa fa-align-left"></i> Long Description</label>
-              <div class="p-3 border rounded bg-light" [innerHTML]="charityForm.get('longDescription')?.value || 'No description provided'"></div>
+
+            <!-- Long Description -->
+            <div style="background: #f8fafc; border-radius: 10px; padding: 16px; margin-bottom: 16px; border: 1px solid #f0f0f0;">
+              <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 6px;">
+                <i class="fa fa-file-alt me-1"></i> Long Description
+              </div>
+              <div style="color: #333; line-height: 1.7; font-size: 14px;" [innerHTML]="charityForm.get('longDescription')?.value || 'No description provided'"></div>
             </div>
-            <div class="detail-group full-width">
-              <label><i class="fa fa-image"></i> Cover Image</label>
-              <div class="mt-2">
-                @if (charityForm.get("coverImage")?.value) {
-                  <img
-                    [src]="charityForm.get('coverImage')?.value"
-                    alt="Cover"
-                    class="rounded"
-                    style="max-width: 200px; max-height: 100px; object-fit: cover;"
-                  />
-                } @else {
-                  <p class="text-muted mt-2">No cover provided</p>
+
+            <!-- Campaign Dates -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+              <div style="background: #f8fafc; border-radius: 10px; padding: 14px; border: 1px solid #f0f0f0; text-align: center;">
+                <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 4px;">
+                  <i class="fa fa-calendar-check me-1"></i> Starts At
+                </div>
+                <div style="font-size: 15px; font-weight: 600; color: #111;">
+                  {{ charityForm.get("startsAt")?.value || "N/A" }}
+                </div>
+              </div>
+              <div style="background: #f8fafc; border-radius: 10px; padding: 14px; border: 1px solid #f0f0f0; text-align: center;">
+                <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 4px;">
+                  <i class="fa fa-calendar-times me-1"></i> Ends At
+                </div>
+                <div style="font-size: 15px; font-weight: 600; color: #111;">
+                  {{ charityForm.get("endsAt")?.value || "N/A" }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Gallery Images -->
+            @if (charityForm.get("galleryImages")?.value?.length > 0) {
+            <div style="margin-bottom: 20px;">
+              <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 10px;">
+                <i class="fa fa-images me-1"></i> Gallery ({{ charityForm.get("galleryImages")?.value?.length }} images)
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                @for (img of charityForm.get("galleryImages")?.value; track $index) {
+                <div style="width: 100px; height: 75px; border-radius: 8px; overflow: hidden; border: 2px solid #e5e7eb; position: relative;">
+                  <img [src]="img" alt="Gallery" style="width: 100%; height: 100%; object-fit: cover;">
+                  <span style="position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.6); color: #fff; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 4px;">
+                    {{ $index + 1 }}
+                  </span>
+                </div>
                 }
               </div>
             </div>
+            }
 
-            <div class="detail-group">
-              <label><i class="fa fa-toggle-on"></i> Status</label>
-              <div>
-                <span
-                  class="status-badge"
-                  [ngClass]="
-                    charityForm.get('status')?.value === 'Active'
-                      ? 'active'
-                      : 'inactive'
-                  "
-                >
-                  {{ charityForm.get("status")?.value || "Unknown" }}
-                </span>
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-primary-custom"
-                (click)="closeModal()"
-              >
+            <!-- Footer -->
+            <div style="display: flex; justify-content: flex-end; padding-top: 16px; border-top: 1px solid #f0f0f0;">
+              <button type="button" class="btn" style="background: #05413e; color: #fff; padding: 10px 28px; border-radius: 8px; font-weight: 600; font-size: 14px;" (click)="closeModal()">
                 Close Details
               </button>
             </div>

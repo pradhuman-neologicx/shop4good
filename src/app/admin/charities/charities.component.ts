@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AdminMockApiService } from 'src/app/core/services/admin-mock-api.service';
 import { NotificationService } from 'src/app/core/services/notificationnew.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -34,6 +34,7 @@ export class CharitiesComponent implements OnInit {
   
   charityForm!: FormGroup;
   submitted = false;
+  todayDate = new Date().toISOString().split('T')[0];
 
   private destroyRef = inject(DestroyRef);
 
@@ -51,17 +52,37 @@ export class CharitiesComponent implements OnInit {
 
   initForm() {
     this.charityForm = this.fb.group({
-      name: ['', Validators.required],
-      shortDescription: [''],
-      longDescription: [''],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+      shortDescription: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(300)]],
+      tags: ['', Validators.required],
+      longDescription: ['', Validators.required],
       logo: [''],
-      coverImage: [''],
+      coverImage: ['', Validators.required],
       status: ['Active', Validators.required],
-      goalAmount: [0],
-      startsAt: [''],
-      endsAt: [''],
-      galleryImages: [[]]
-    });
+      startsAt: ['', Validators.required],
+      endsAt: ['', Validators.required],
+      galleryImages: [[], Validators.required]
+    }, { validators: this.dateRangeValidator });
+  }
+
+  dateRangeValidator(group: AbstractControl): ValidationErrors | null {
+    const startsAt = group.get('startsAt')?.value;
+    const endsAt = group.get('endsAt')?.value;
+    const errors: any = {};
+
+    if (startsAt) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (new Date(startsAt) < today) {
+        errors.startInPast = true;
+      }
+    }
+
+    if (startsAt && endsAt && new Date(startsAt) >= new Date(endsAt)) {
+      errors.endBeforeStart = true;
+    }
+
+    return Object.keys(errors).length ? errors : null;
   }
 
   loadCharities() {
@@ -188,16 +209,27 @@ export class CharitiesComponent implements OnInit {
     });
   }
 
+  dragIndex: number | null = null;
+
   onFileSelected(event: any, field: string) {
     if (field === 'galleryImages') {
       const files = event.target.files;
       if (files && files.length > 0) {
         const currentImages = this.charityForm.get('galleryImages')?.value || [];
-        Array.from(files).forEach((file: any) => {
+        const remaining = 5 - currentImages.length;
+        if (remaining <= 0) {
+          this.notification.show('Maximum 5 gallery images allowed', 'error');
+          return;
+        }
+        const filesToProcess = Array.from(files).slice(0, remaining);
+        if (files.length > remaining) {
+          this.notification.show(`Only ${remaining} more image(s) can be added (max 5)`, 'error');
+        }
+        filesToProcess.forEach((file: any) => {
           const reader = new FileReader();
           reader.onload = (e: any) => {
             currentImages.push(e.target.result);
-            this.charityForm.patchValue({ galleryImages: currentImages });
+            this.charityForm.patchValue({ galleryImages: [...currentImages] });
             this.cdr.detectChanges();
           };
           reader.readAsDataURL(file);
@@ -219,6 +251,29 @@ export class CharitiesComponent implements OnInit {
   removeGalleryImage(index: number) {
     const currentImages = this.charityForm.get('galleryImages')?.value || [];
     currentImages.splice(index, 1);
-    this.charityForm.patchValue({ galleryImages: currentImages });
+    this.charityForm.patchValue({ galleryImages: [...currentImages] });
+  }
+
+  onDragStart(index: number) {
+    this.dragIndex = index;
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
+
+  onDrop(event: DragEvent, dropIndex: number) {
+    event.preventDefault();
+    if (this.dragIndex === null || this.dragIndex === dropIndex) return;
+    const images = [...(this.charityForm.get('galleryImages')?.value || [])];
+    const [moved] = images.splice(this.dragIndex, 1);
+    images.splice(dropIndex, 0, moved);
+    this.charityForm.patchValue({ galleryImages: images });
+    this.dragIndex = null;
+    this.cdr.detectChanges();
+  }
+
+  onDragEnd() {
+    this.dragIndex = null;
   }
 }
