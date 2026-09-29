@@ -5,11 +5,12 @@ import { AdminMockApiService } from 'src/app/core/services/admin-mock-api.servic
 import { NotificationService } from 'src/app/core/services/notificationnew.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'app-charities',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, NgxPaginationModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, NgxPaginationModule, QuillModule],
   styleUrls: ['./charities.component.scss'],
   templateUrl: './charities.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -51,9 +52,15 @@ export class CharitiesComponent implements OnInit {
   initForm() {
     this.charityForm = this.fb.group({
       name: ['', Validators.required],
-      description: [''],
-      imageUrl: [''],
-      status: ['Active', Validators.required]
+      shortDescription: [''],
+      longDescription: [''],
+      logo: [''],
+      coverImage: [''],
+      status: ['Active', Validators.required],
+      goalAmount: [0],
+      startsAt: [''],
+      endsAt: [''],
+      galleryImages: [[]]
     });
   }
 
@@ -181,15 +188,37 @@ export class CharitiesComponent implements OnInit {
     });
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.charityForm.patchValue({ imageUrl: e.target.result });
-        this.cdr.detectChanges();
-      };
-      reader.readAsDataURL(file);
+  onFileSelected(event: any, field: string) {
+    if (field === 'galleryImages') {
+      const files = event.target.files;
+      if (files && files.length > 0) {
+        const currentImages = this.charityForm.get('galleryImages')?.value || [];
+        Array.from(files).forEach((file: any) => {
+          const reader = new FileReader();
+          reader.onload = (e: any) => {
+            currentImages.push(e.target.result);
+            this.charityForm.patchValue({ galleryImages: currentImages });
+            this.cdr.detectChanges();
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+    } else {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.charityForm.patchValue({ [field]: e.target.result });
+          this.cdr.detectChanges();
+        };
+        reader.readAsDataURL(file);
+      }
     }
+  }
+
+  removeGalleryImage(index: number) {
+    const currentImages = this.charityForm.get('galleryImages')?.value || [];
+    currentImages.splice(index, 1);
+    this.charityForm.patchValue({ galleryImages: currentImages });
   }
 }

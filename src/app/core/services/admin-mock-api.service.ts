@@ -18,9 +18,9 @@ export class AdminMockApiService {
   ]);
   
   private charitiesSubject = new BehaviorSubject<any[]>([
-    { id: 1, name: 'Save the Oceans', description: 'Protecting marine life and cleaning oceans.', imageUrl: 'https://images.unsplash.com/photo-1484291470158-b8f8d608850d?w=200&h=200&fit=crop', status: 'Active' },
-    { id: 2, name: 'Education for All', description: 'Providing free education to underprivileged children.', imageUrl: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=200&h=200&fit=crop', status: 'Active' },
-    { id: 3, name: 'Animal Shelter', description: 'Rescue and rehabilitation for street animals.', imageUrl: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=200&h=200&fit=crop', status: 'Inactive' }
+    { id: 1, name: 'Save the Oceans', slug: 'save-the-oceans', shortDescription: 'Protecting marine life and cleaning oceans.', logo: 'https://images.unsplash.com/photo-1484291470158-b8f8d608850d?w=200&h=200&fit=crop', status: 'Active' },
+    { id: 2, name: 'Education for All', slug: 'education-for-all', shortDescription: 'Providing free education to underprivileged children.', logo: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=200&h=200&fit=crop', status: 'Active' },
+    { id: 3, name: 'Animal Shelter', slug: 'animal-shelter', shortDescription: 'Rescue and rehabilitation for street animals.', logo: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=200&h=200&fit=crop', status: 'Inactive' }
   ]);
 
   private marketplacesSubject = new BehaviorSubject<any[]>([
