@@ -71,7 +71,7 @@ export class CausesComponent {
     { name: 'Amazon', src: 'assets/brands/amazon.svg', description: 'Up to 5% donation' },
     { name: 'Flipkart', src: 'assets/brands/flipkart.svg', description: 'Up to 3% donation' },
     { name: 'Myntra', src: 'assets/brands/myntra.svg', description: 'Up to 4% donation' },
-    { name: 'Ajio', src: 'assets/brands/ajio.svg', description: 'Up to 6% donation' },
+    { name: 'Tata Cliq', src: 'assets/brands/tata-cliq.svg', description: 'Up to 6% donation' },
     { name: 'Nykaa', src: 'assets/brands/nykaa.svg', description: 'Up to 2% donation' },
     { name: 'Meesho', src: 'assets/brands/meesho.svg', description: 'Up to 1% donation' },
   ];
