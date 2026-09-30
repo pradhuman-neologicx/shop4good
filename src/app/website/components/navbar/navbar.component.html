@@ -21,10 +21,50 @@
 
     <!-- ── RIGHT: CTA + MOBILE TOGGLE ── -->
     <div class="navbar__actions">
-      <a routerLink="/auth/login" class="navbar__cta" (click)="closeMenu()">
-        <i class="fa-solid fa-user"></i>
-        <span>Login / Sign Up</span>
-      </a>
+      @if (!currentUser) {
+        <a routerLink="/auth/login" class="navbar__cta" (click)="closeMenu()">
+          <i class="fa-solid fa-user"></i>
+          <span>Login / Sign Up</span>
+        </a>
+      } @else {
+        <div class="navbar__profile relative" (mouseenter)="isProfileMenuOpen = true" (mouseleave)="isProfileMenuOpen = false">
+          <button class="navbar__profile-btn flex items-center gap-2 focus:outline-none py-2" (click)="isProfileMenuOpen = !isProfileMenuOpen">
+            <div class="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold border border-emerald-200">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <span class="hidden sm:block font-medium text-slate-700">{{ currentUser.name }}</span>
+            <i class="fa-solid fa-chevron-down text-xs text-slate-400"></i>
+          </button>
+          
+          <!-- Dropdown Menu -->
+          @if (isProfileMenuOpen) {
+            <div class="absolute right-0 top-[100%] w-56 z-50 pt-2 transition-opacity duration-200">
+              <div class="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden">
+                <div class="p-3 border-b border-slate-100">
+                  <p class="font-semibold text-slate-800">{{ currentUser.name }}</p>
+                  <p class="text-xs text-slate-500 truncate">{{ currentUser.email }}</p>
+                </div>
+                <div class="p-2 flex flex-col gap-1">
+                  <a routerLink="/profile" (click)="isProfileMenuOpen = false" class="px-3 py-2 text-sm text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg transition-colors flex items-center gap-3">
+                    <i class="fa-solid fa-user w-4 text-center"></i> Profile
+                  </a>
+                  <a routerLink="/transactions" (click)="isProfileMenuOpen = false" class="px-3 py-2 text-sm text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg transition-colors flex items-center gap-3">
+                    <i class="fa-solid fa-receipt w-4 text-center"></i> Transactions
+                  </a>
+                  <a routerLink="/donations" (click)="isProfileMenuOpen = false" class="px-3 py-2 text-sm text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg transition-colors flex items-center gap-3">
+                    <i class="fa-solid fa-hand-holding-heart w-4 text-center"></i> Donations
+                  </a>
+                </div>
+                <div class="p-2 border-t border-slate-100">
+                  <button (click)="logout()" class="w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-3 text-left">
+                    <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
 
       <button class="navbar__hamburger" (click)="toggleMenu()" aria-label="Toggle menu">
         <span class="navbar__hamburger-line" [class.open]="isMenuOpen"></span>
@@ -51,10 +91,36 @@
       </a>
 
       <!-- Mobile CTA -->
-      <a routerLink="/auth/login" class="navbar__mobile-cta" (click)="closeMenu()">
-        <i class="fa-solid fa-user"></i>
-        Login / Sign Up
-      </a>
+      @if (!currentUser) {
+        <a routerLink="/auth/login" class="navbar__mobile-cta" (click)="closeMenu()">
+          <i class="fa-solid fa-user"></i>
+          Login / Sign Up
+        </a>
+      } @else {
+        <div class="mt-4 border-t border-slate-200/20 pt-4 flex flex-col gap-2">
+          <div class="flex items-center gap-3 px-4 py-2 mb-2">
+             <div class="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold">
+               <i class="fa-solid fa-user"></i>
+             </div>
+             <div>
+               <p class="font-bold text-white">{{ currentUser.name }}</p>
+               <p class="text-xs text-white/70">{{ currentUser.email }}</p>
+             </div>
+          </div>
+          <a routerLink="/profile" class="navbar__mobile-link" (click)="closeMenu()">
+            <span><i class="fa-solid fa-user"></i> Profile</span>
+          </a>
+          <a routerLink="/transactions" class="navbar__mobile-link" (click)="closeMenu()">
+            <span><i class="fa-solid fa-receipt"></i> Transactions</span>
+          </a>
+          <a routerLink="/donations" class="navbar__mobile-link" (click)="closeMenu()">
+            <span><i class="fa-solid fa-hand-holding-heart"></i> Donations</span>
+          </a>
+          <button (click)="logout()" class="navbar__mobile-link !text-red-400 mt-2 text-left w-full">
+            <span><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</span>
+          </button>
+        </div>
+      }
     </div>
   </div>
 </nav>

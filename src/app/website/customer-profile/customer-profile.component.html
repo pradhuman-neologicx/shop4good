@@ -1,0 +1,431 @@
+<div class="profile-page flex flex-col min-h-screen">
+  <app-navbar></app-navbar>
+
+  <!-- ── HERO BANNER ── -->
+  <div class="pt-32 pb-24 relative overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/assets/charity-illustration.png');"></div>
+    <!-- Dark Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-r from-[#032826]/90 to-[#05413e]/85"></div>
+    <!-- Decorative circles -->
+    <div class="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-emerald-500/10 blur-3xl"></div>
+    <div class="absolute -bottom-16 -left-16 w-56 h-56 rounded-full bg-teal-400/10 blur-3xl"></div>
+
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+      <div class="flex flex-col md:flex-row items-center gap-6">
+        <!-- Avatar -->
+        <div class="h-28 w-28 rounded-full bg-emerald-500/20 border-4 border-emerald-400/30 flex items-center justify-center text-emerald-300 text-5xl shadow-xl backdrop-blur-sm">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="text-center md:text-left">
+          <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-1">{{ user?.name || 'Customer' }}</h1>
+          <p class="text-emerald-300/80 text-lg">{{ user?.email }}</p>
+          <div class="flex flex-wrap justify-center md:justify-start gap-3 mt-4">
+            <span class="px-4 py-1.5 bg-emerald-500/20 text-emerald-300 text-xs font-bold rounded-full border border-emerald-500/30 backdrop-blur-sm">
+              <i class="fa-solid fa-shield-check mr-1.5"></i> Verified Account
+            </span>
+            <span class="px-4 py-1.5 bg-white/10 text-white/80 text-xs font-bold rounded-full border border-white/20 backdrop-blur-sm">
+              <i class="fa-solid fa-calendar mr-1.5"></i> Member since 2024
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STATS BAR ── -->
+  <div class="max-w-7xl mx-auto px-4 -mt-8 relative z-20 w-full">
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-100 grid grid-cols-3 divide-x divide-slate-100">
+      <div class="p-5 md:p-6 text-center">
+        <div class="text-2xl md:text-3xl font-extrabold text-emerald-600">12</div>
+        <div class="text-xs md:text-sm text-slate-500 mt-1 font-medium">Total Orders</div>
+      </div>
+      <div class="p-5 md:p-6 text-center">
+        <div class="text-2xl md:text-3xl font-extrabold text-blue-600">₹2,450</div>
+        <div class="text-xs md:text-sm text-slate-500 mt-1 font-medium">Total Donated</div>
+      </div>
+      <div class="p-5 md:p-6 text-center">
+        <div class="text-2xl md:text-3xl font-extrabold text-amber-600">5</div>
+        <div class="text-xs md:text-sm text-slate-500 mt-1 font-medium">Causes Supported</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MAIN CONTENT ── -->
+  <div class="flex-1 bg-slate-50 py-10">
+    <div class="max-w-7xl mx-auto px-4">
+
+      <!-- Loader -->
+      @if (isLoading) {
+        <div class="fixed inset-0 bg-white/80 backdrop-blur-sm z-[100] flex items-center justify-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+        </div>
+      }
+
+      <!-- Messages -->
+      @if (successMessage) {
+        <div class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-700 px-5 py-3.5 rounded-xl flex items-center gap-3 shadow-sm animate-fade-in">
+          <i class="fa-solid fa-circle-check text-lg"></i>
+          <span class="font-medium">{{ successMessage }}</span>
+        </div>
+      }
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- ── LEFT SIDEBAR ── -->
+        <div class="lg:col-span-3 flex flex-col gap-4">
+          <!-- Navigation Tabs -->
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="p-4">
+              <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-3">Account</p>
+              <button (click)="activeTab = 'personal'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all" [ngClass]="activeTab === 'personal' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50'">
+                <i class="fa-solid fa-user w-5 text-center"></i> Personal Info
+              </button>
+              <button (click)="activeTab = 'security'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all" [ngClass]="activeTab === 'security' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50'">
+                <i class="fa-solid fa-lock w-5 text-center"></i> Change Password
+              </button>
+              <a routerLink="/transactions" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-all">
+                <i class="fa-solid fa-receipt w-5 text-center"></i> Transactions
+              </a>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-3">Quick Actions</p>
+            <a routerLink="/causes" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 transition-all">
+              <i class="fa-solid fa-hand-holding-heart w-5 text-center"></i> Browse Causes
+            </a>
+           
+            <div class="w-full h-px bg-slate-100 my-2"></div>
+            <button (click)="logout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition-all">
+              <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout
+            </button>
+          </div>
+        </div>
+
+        <!-- ── RIGHT CONTENT ── -->
+        <div class="lg:col-span-9">
+
+          <!-- ======== PERSONAL INFO TAB ======== -->
+          @if (activeTab === 'personal') {
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+              <div class="px-6 md:px-8 py-5 border-b border-slate-100 flex items-center justify-between">
+                <div>
+                  <h3 class="text-lg font-bold text-slate-800">Personal Information</h3>
+                  <p class="text-sm text-slate-500 mt-0.5">Your account details</p>
+                </div>
+                @if (!isEditing) {
+                  <button (click)="toggleEdit()" class="px-5 py-2 text-sm font-bold text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors flex items-center gap-2 border border-emerald-200">
+                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                  </button>
+                }
+              </div>
+
+              <!-- ── VIEW MODE ── -->
+              @if (!isEditing) {
+                <div class="p-6 md:p-8">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex items-start gap-4">
+                      <div class="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-user"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Full Name</p>
+                        <p class="text-sm font-semibold text-slate-800 mt-1">{{ user?.name }}</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                      <div class="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-envelope"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Email Address</p>
+                        <p class="text-sm font-semibold text-slate-800 mt-1">{{ user?.email }}</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                      <div class="h-10 w-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-phone"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Phone Number</p>
+                        <p class="text-sm font-semibold text-slate-800 mt-1">{{ user?.countryCode }} {{ user?.phone }}</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                      <div class="h-10 w-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-map"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">State</p>
+                        <p class="text-sm font-semibold text-slate-800 mt-1">{{ user?.state }}</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                      <div class="h-10 w-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-city"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">City</p>
+                        <p class="text-sm font-semibold text-slate-800 mt-1">{{ user?.city }}</p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                      <div class="h-10 w-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-location-dot"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Address</p>
+                        <p class="text-sm font-semibold text-slate-800 mt-1">{{ user?.address }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              <!-- ── EDIT MODE ── -->
+              @if (isEditing) {
+                <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()" class="p-6 md:p-8">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+
+                    <!-- Name -->
+                    <div>
+                      <label class="block text-sm font-semibold text-slate-700 mb-2">Full Name</label>
+                      <div class="relative">
+                        <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input type="text" formControlName="name"
+                          class="w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                          [ngClass]="{'border-red-400': profileForm.get('name')?.invalid && profileForm.get('name')?.touched, 'border-slate-200': !(profileForm.get('name')?.invalid && profileForm.get('name')?.touched)}">
+                      </div>
+                      @if (profileForm.get('name')?.invalid && profileForm.get('name')?.touched) {
+                        <p class="text-red-500 text-xs mt-1.5">Name must be at least 3 characters.</p>
+                      }
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                      <label class="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
+                      <div class="flex gap-2">
+                        <div class="relative flex-1">
+                          <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                          <input type="email" formControlName="email"
+                            class="w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            [ngClass]="{'border-red-400': profileForm.get('email')?.invalid && profileForm.get('email')?.touched, 'border-slate-200': !(profileForm.get('email')?.invalid && profileForm.get('email')?.touched)}">
+                        </div>
+                        @if (profileForm.get('email')?.value !== user?.email && profileForm.get('email')?.valid) {
+                          <button type="button" (click)="triggerEmailVerification()" class="px-4 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-all whitespace-nowrap">
+                            <i class="fa-solid fa-paper-plane mr-1"></i> Verify
+                          </button>
+                        }
+                      </div>
+                      @if (profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
+                        <p class="text-red-500 text-xs mt-1.5">Enter a valid email address.</p>
+                      }
+                      <p class="text-xs text-slate-400 mt-1.5"><i class="fa-solid fa-circle-info mr-1"></i> Changing email requires OTP verification</p>
+                    </div>
+
+                    <!-- Country Code + Phone -->
+                    <div>
+                      <label class="block text-sm font-semibold text-slate-700 mb-2">Phone Number</label>
+                      <div class="flex gap-2">
+                        <select formControlName="countryCode"
+                          class="w-24 px-2 py-2.5 rounded-lg border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 border-slate-200 appearance-none bg-no-repeat bg-[right_8px_center] bg-[length:12px] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDEyIDEyIj48cGF0aCBkPSJNNiA4TDEgM2gxMEw2IDh6IiBmaWxsPSIjNjQ3NDhCIi8+PC9zdmc+')]">
+                          @for (c of countries; track c.code) {
+                            <option [value]="c.code">{{ c.code }}</option>
+                          }
+                        </select>
+                        <div class="relative flex-1">
+                          <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                          <input type="tel" formControlName="phone"
+                            class="w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            [ngClass]="{'border-red-400': profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched, 'border-slate-200': !(profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched)}">
+                        </div>
+                      </div>
+                      @if (profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched) {
+                        <p class="text-red-500 text-xs mt-1.5">Enter a valid 10-digit number.</p>
+                      }
+                    </div>
+
+                    <!-- State -->
+                    <div>
+                      <label class="block text-sm font-semibold text-slate-700 mb-2">State</label>
+                      <div class="relative">
+                        <i class="fa-solid fa-map absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <select formControlName="state"
+                          class="w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 border-slate-200 appearance-none bg-no-repeat bg-[right_12px_center] bg-[length:12px] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDEyIDEyIj48cGF0aCBkPSJNNiA4TDEgM2gxMEw2IDh6IiBmaWxsPSIjNjQ3NDhCIi8+PC9zdmc+')]">
+                          <option value="">Select State</option>
+                          @for (s of states; track s.name) {
+                            <option [value]="s.name">{{ s.name }}</option>
+                          }
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- City -->
+                    <div>
+                      <label class="block text-sm font-semibold text-slate-700 mb-2">City</label>
+                      <div class="relative">
+                        <i class="fa-solid fa-city absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <select formControlName="city"
+                          class="w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 border-slate-200 appearance-none bg-no-repeat bg-[right_12px_center] bg-[length:12px] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDEyIDEyIj48cGF0aCBkPSJNNiA4TDEgM2gxMEw2IDh6IiBmaWxsPSIjNjQ3NDhCIi8+PC9zdmc+')]">
+                          <option value="">Select City</option>
+                          @for (c of cities; track c.name) {
+                            <option [value]="c.name">{{ c.name }}</option>
+                          }
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div>
+                      <label class="block text-sm font-semibold text-slate-700 mb-2">Address</label>
+                      <div class="relative">
+                        <i class="fa-solid fa-location-dot absolute left-4 top-3.5 text-slate-400 text-sm"></i>
+                        <textarea formControlName="address" rows="3"
+                          class="w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all resize-none text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                          [ngClass]="{'border-red-400': profileForm.get('address')?.invalid && profileForm.get('address')?.touched, 'border-slate-200': !(profileForm.get('address')?.invalid && profileForm.get('address')?.touched)}"></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Form Actions -->
+                  <div class="mt-8 flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
+                    <button type="button" (click)="toggleEdit()" class="px-6 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
+                      Cancel
+                    </button>
+                    <button type="submit" class="px-8 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-lg shadow-sm transition-all">
+                      Save Changes
+                    </button>
+                  </div>
+                </form>
+              }
+            </div>
+          }
+
+          <!-- ======== CHANGE PASSWORD TAB ======== -->
+          @if (activeTab === 'security') {
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+              <div class="px-6 md:px-8 py-5 border-b border-slate-100">
+                <h3 class="text-lg font-bold text-slate-800">Change Password</h3>
+                <p class="text-sm text-slate-500 mt-0.5">Update your account password</p>
+              </div>
+              <div class="p-6 md:p-8">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-slate-50 rounded-xl p-5 border border-slate-100 gap-4">
+                  <div class="flex items-center gap-4">
+                    <div class="h-12 w-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg">
+                      <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <div>
+                      <p class="font-semibold text-slate-800">Password</p>
+                      <p class="text-sm text-slate-500">Last changed 30 days ago</p>
+                    </div>
+                  </div>
+                  <button (click)="openPasswordModal()" class="px-5 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-lg shadow-sm transition-all">
+                    Change Password
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ OTP MODAL ══ -->
+  @if (showOtpModal) {
+    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" (click)="closeOtpModal()">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden" (click)="$event.stopPropagation()">
+        <div class="p-6 text-center border-b border-slate-100">
+          <div class="mx-auto w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-4">
+            <i class="fa-solid fa-envelope-open-text text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-800">Verify New Email</h3>
+          <p class="text-sm text-slate-500 mt-2">We sent a 6-digit code to <span class="font-semibold text-slate-700">{{ pendingEmailUpdate }}</span></p>
+          <p class="text-xs text-emerald-600 mt-2 font-bold bg-emerald-50 inline-block px-3 py-1 rounded-full">Mock OTP: 123456</p>
+        </div>
+        <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()" class="p-6">
+          <div class="mb-6">
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Verification Code</label>
+            <input type="text" formControlName="otp" maxlength="6" placeholder="000000"
+              class="w-full text-center text-3xl tracking-[0.5em] font-mono py-3.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all">
+            @if (otpForm.get('otp')?.errors?.['invalid']) {
+              <p class="text-red-500 text-sm text-center mt-2.5 font-medium">Invalid code. Please try again.</p>
+            }
+          </div>
+          <div class="flex gap-3">
+            <button type="button" (click)="closeOtpModal()" class="flex-1 py-2.5 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">Cancel</button>
+            <button type="submit" [disabled]="otpForm.invalid" class="flex-1 py-2.5 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-sm transition-all">Verify</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- ══ PASSWORD MODAL ══ -->
+  @if (showPasswordModal) {
+    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" (click)="closePasswordModal()">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden" (click)="$event.stopPropagation()">
+        <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-bold text-slate-800">Change Password</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Enter your current and new password</p>
+          </div>
+          <button (click)="closePasswordModal()" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" class="p-6">
+          <!-- Current Password -->
+          <div class="mb-4">
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Current Password</label>
+            <div class="relative">
+              <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+              <input type="password" formControlName="currentPassword" placeholder="••••••••"
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                [ngClass]="{'border-red-400': passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched, 'border-slate-200': !(passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched)}">
+            </div>
+            @if (passwordForm.get('currentPassword')?.errors?.['incorrect']) {
+              <p class="text-red-500 text-xs mt-1.5 font-medium">Incorrect password. <span class="text-slate-400">(Hint: customer123)</span></p>
+            }
+          </div>
+          <!-- New Password -->
+          <div class="mb-4">
+            <label class="block text-sm font-semibold text-slate-700 mb-2">New Password</label>
+            <div class="relative">
+              <i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+              <input type="password" formControlName="newPassword" placeholder="••••••••"
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                [ngClass]="{'border-red-400': passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched, 'border-slate-200': !(passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched)}">
+            </div>
+            @if (passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched) {
+              <p class="text-red-500 text-xs mt-1.5">Must be at least 8 characters.</p>
+            }
+          </div>
+          <!-- Confirm Password -->
+          <div class="mb-6">
+            <label class="block text-sm font-semibold text-slate-700 mb-2">Confirm New Password</label>
+            <div class="relative">
+              <i class="fa-solid fa-shield-halved absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+              <input type="password" formControlName="confirmPassword" placeholder="••••••••"
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                [ngClass]="{'border-red-400': passwordForm.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched, 'border-slate-200': !(passwordForm.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched)}">
+            </div>
+            @if (passwordForm.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched) {
+              <p class="text-red-500 text-xs mt-1.5">Passwords do not match.</p>
+            }
+          </div>
+          <div class="flex gap-3">
+            <button type="button" (click)="closePasswordModal()" class="flex-1 py-2.5 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">Cancel</button>
+            <button type="submit" class="flex-1 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-xl shadow-sm transition-all">Update Password</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <app-footer></app-footer>
+</div>

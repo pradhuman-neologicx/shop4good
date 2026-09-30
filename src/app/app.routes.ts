@@ -36,6 +36,14 @@ export const routes: Routes = [
     loadComponent: () => import('./website/auth/register/register.component').then(c => c.RegisterComponent)
   },
   {
+    path: 'profile',
+    loadComponent: () => import('./website/customer-profile/customer-profile.component').then(c => c.CustomerProfileComponent)
+  },
+  {
+    path: 'transactions',
+    loadComponent: () => import('./website/customer-transactions/customer-transactions.component').then(c => c.CustomerTransactionsComponent)
+  },
+  {
     path: 'admin/login',
     loadComponent: () => import('./admin/loginpages/signin/signin.component').then(c => c.SigninComponent)
   },
