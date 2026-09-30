@@ -55,30 +55,27 @@
   <app-causes></app-causes>
 
   <!-- ═══ PARTNER BRANDS ═══ -->
-  <section class="brands-section">
-    <!-- Heading -->
-    <div class="brands-section__header">
-      <h2 class="brands-section__title">Our Partner Brands</h2>
-      <p class="brands-section__subtitle">SHOP WHERE YOU ALREADY SHOP</p>
-    </div>
-
-    <!-- Scrolling Logo Row 1 (left to right) -->
-    <div class="brands-section__carousel">
-      <div class="brands-section__track brands-section__track--ltr">
-        @for (item of [1,2,3,4,5,6,7,8,9,10,11,12]; track $index) {
-          <div class="brands-section__logo-card">
-            <img [ngSrc]="brandLogos[($index) % brandLogos.length].src" width="150" height="60" [alt]="brandLogos[($index) % brandLogos.length].name" />
-          </div>
-        }
+  <section class="bg-[#131b2c] py-24 px-6 md:px-12">
+    <div class="max-w-5xl mx-auto">
+      <!-- Heading -->
+      <div class="mb-14 text-center md:text-left">
+        <p class="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mb-4">Shop from your favourite brands</p>
+        <h2 class="text-white font-serif text-4xl md:text-5xl lg:text-[56px] leading-[1.1] tracking-tight max-w-2xl mx-auto md:mx-0">
+          GREAT BRANDS<br/>
+          GREATER GOODS
+        </h2>
       </div>
-    </div>
 
-    <!-- Scrolling Logo Row 2 (right to left) -->
-    <div class="brands-section__carousel">
-      <div class="brands-section__track brands-section__track--rtl">
-        @for (item of [1,2,3,4,5,6,7,8,9,10,11,12]; track $index) {
-          <div class="brands-section__logo-card">
-            <img [ngSrc]="brandLogos[(($index) + 3) % brandLogos.length].src" width="150" height="60" [alt]="brandLogos[(($index) + 3) % brandLogos.length].name" />
+      <!-- Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-8">
+        @for (brand of brandLogos; track brand.name) {
+          <div class="bg-white rounded-3xl p-4 flex flex-col items-center justify-between h-[250px]  group cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-emerald-900/20">
+            <div class="flex-1 flex items-center justify-center w-full relative">
+              <img [ngSrc]="brand.src" width="160" height="60" [alt]="brand.name" class="w-full max-w-[110px] sm:max-w-[140px] h-auto object-contain transition-transform duration-500 group-hover:scale-110" />
+            </div>
+            <button class="w-full mt-auto bg-[#1a2335] text-white rounded-2xl py-3.5 px-4 font-semibold text-sm flex items-center justify-center gap-2 group-hover:bg-emerald-600 transition-colors duration-300 shadow-sm shadow-[#1a2335]/50">
+              Start Shopping <i class="fa-solid fa-arrow-right -rotate-45 text-sm ml-1"></i>
+            </button>
           </div>
         }
       </div>

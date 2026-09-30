@@ -29,7 +29,7 @@ export class HomeComponent {
     { name: 'Amazon', src: 'assets/brands/amazon.svg' },
     { name: 'Flipkart', src: 'assets/brands/flipkart.svg' },
     { name: 'Myntra', src: 'assets/brands/myntra.svg' },
-    { name: 'Ajio', src: 'assets/brands/ajio.svg' },
+    { name: 'Tata Cliq', src: 'assets/brands/tata-cliq.svg' },
     { name: 'Nykaa', src: 'assets/brands/nykaa.svg' },
     { name: 'Meesho', src: 'assets/brands/meesho.svg' },
   ];

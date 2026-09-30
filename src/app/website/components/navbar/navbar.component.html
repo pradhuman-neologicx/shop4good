@@ -48,12 +48,12 @@
                   <a routerLink="/profile" (click)="isProfileMenuOpen = false" class="px-3 py-2 text-sm text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg transition-colors flex items-center gap-3">
                     <i class="fa-solid fa-user w-4 text-center"></i> Profile
                   </a>
-                  <a routerLink="/transactions" (click)="isProfileMenuOpen = false" class="px-3 py-2 text-sm text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg transition-colors flex items-center gap-3">
+                  <!-- <a routerLink="/transactions" (click)="isProfileMenuOpen = false" class="px-3 py-2 text-sm text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg transition-colors flex items-center gap-3">
                     <i class="fa-solid fa-receipt w-4 text-center"></i> Transactions
                   </a>
                   <a routerLink="/donations" (click)="isProfileMenuOpen = false" class="px-3 py-2 text-sm text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg transition-colors flex items-center gap-3">
                     <i class="fa-solid fa-hand-holding-heart w-4 text-center"></i> Donations
-                  </a>
+                  </a> -->
                 </div>
                 <div class="p-2 border-t border-slate-100">
                   <button (click)="logout()" class="w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-3 text-left">
@@ -110,12 +110,12 @@
           <a routerLink="/profile" class="navbar__mobile-link" (click)="closeMenu()">
             <span><i class="fa-solid fa-user"></i> Profile</span>
           </a>
-          <a routerLink="/transactions" class="navbar__mobile-link" (click)="closeMenu()">
+          <!-- <a routerLink="/transactions" class="navbar__mobile-link" (click)="closeMenu()">
             <span><i class="fa-solid fa-receipt"></i> Transactions</span>
           </a>
           <a routerLink="/donations" class="navbar__mobile-link" (click)="closeMenu()">
             <span><i class="fa-solid fa-hand-holding-heart"></i> Donations</span>
-          </a>
+          </a> -->
           <button (click)="logout()" class="navbar__mobile-link !text-red-400 mt-2 text-left w-full">
             <span><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</span>
           </button>

@@ -40,6 +40,14 @@ export class FooterComponent {
     { label: 'Admin Login', href: '/admin/login' },
   ];
 
+  causeLinks = [
+    { label: 'Clean Oceans Initiative', href: '/causes' },
+    { label: 'Save The Trees Foundation', href: '/causes' },
+    { label: 'Girl Child Education', href: '/causes' },
+    { label: 'Rural Electrification', href: '/causes' },
+    { label: 'Wildlife Protection', href: '/causes' },
+  ];
+
   socials = [
     { icon: 'fab fa-facebook-f', href: '#' },
     { icon: 'fab fa-instagram', href: '#' },
