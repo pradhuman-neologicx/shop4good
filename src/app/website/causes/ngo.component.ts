@@ -1,23 +1,26 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Ngo, MOCK_NGOS } from './ngo-mock-data';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import { MarketplaceModalComponent, Marketplace } from '../components/marketplace-modal/marketplace-modal.component';
+import { CausesService, Cause } from '../../core/services/causes.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, NavbarComponent, FooterComponent, MarketplaceModalComponent, NgOptimizedImage],
+  imports: [CommonModule, RouterModule, FormsModule, NavbarComponent, FooterComponent, MarketplaceModalComponent, NgOptimizedImage, NgSelectModule],
   selector: 'app-ngo',
   styleUrl: './ngo.component.scss',
   templateUrl: './ngo.component.html',
 })
 export class NgoComponent implements OnInit {
-  allNgos = MOCK_NGOS;
-  filteredNgos: Ngo[] = [];
+  allNgos: any[] = [];
+  filteredNgos: any[] = [];
   
   // Filters
   searchQuery: string = '';
@@ -26,31 +29,53 @@ export class NgoComponent implements OnInit {
   // Available causes for filter
   availableCauses: string[] = [];
 
+  private destroyRef = inject(DestroyRef);
+
+  constructor(private causesService: CausesService) {}
+
   isMarketplaceOpen = false;
-  marketplaces: Marketplace[] = [
-    { name: 'Amazon', src: 'assets/brands/amazon.svg', description: 'Up to 5% donation' },
-    { name: 'Flipkart', src: 'assets/brands/flipkart.svg', description: 'Up to 3% donation' },
-    { name: 'Myntra', src: 'assets/brands/myntra.svg', description: 'Up to 4% donation' },
-    { name: 'Ajio', src: 'assets/brands/ajio.svg', description: 'Up to 6% donation' },
-    { name: 'Nykaa', src: 'assets/brands/nykaa.svg', description: 'Up to 2% donation' },
-    { name: 'Meesho', src: 'assets/brands/meesho.svg', description: 'Up to 1% donation' },
-  ];
+  marketplaces: Marketplace[] = [];
 
   openMarketplace() {
     this.isMarketplaceOpen = true;
   }
 
   ngOnInit() {
-    this.filteredNgos = [...this.allNgos];
-    this.extractCauses();
+    this.loadCauses();
   }
 
-  extractCauses() {
-    const causesSet = new Set<string>();
-    this.allNgos.forEach(ngo => {
-      ngo.causes.forEach(cause => causesSet.add(cause));
+  loadCauses() {
+    this.causesService.getWebsiteCauses().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (res) => {
+        if (res.status === 200 && res.data && res.data.items) {
+          const allTags = new Set<string>();
+
+          this.allNgos = res.data.items.map((item: any) => {
+            const rawTags = Array.isArray(item.tags) ? item.tags : (item.tags_string ? item.tags_string.split(',').map((t:string) => t.trim()) : []);
+            rawTags.forEach((t:string) => {
+              if (t) allTags.add(t);
+            });
+            
+            return {
+              id: item.id,
+              name: item.name,
+              slug: item.slug,
+              shortDescription: item.short_description,
+              description: item.description,
+              coverImage: item.cover_image_url || 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1974&auto=format&fit=crop',
+              logo: 'https://images.unsplash.com/photo-1531206715517-5c0bf140bd33?q=80&w=200&auto=format&fit=crop',
+              causes: rawTags
+            };
+          });
+          
+          this.availableCauses = Array.from(allTags).sort();
+          this.filteredNgos = [...this.allNgos];
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching causes:', err);
+      }
     });
-    this.availableCauses = Array.from(causesSet).sort();
   }
 
   toggleCause(cause: string) {
@@ -68,8 +93,7 @@ export class NgoComponent implements OnInit {
       // Check search query
       const matchesSearch = this.searchQuery === '' || 
         ngo.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        ngo.shortDescription.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        ngo.location.toLowerCase().includes(this.searchQuery.toLowerCase());
+        ngo.shortDescription.toLowerCase().includes(this.searchQuery.toLowerCase());
 
       // Check causes
       const matchesCauses = this.selectedCauses.length === 0 || 

@@ -24,6 +24,8 @@ export class ForgotPasswordComponent implements OnInit {
   Email: string = '';
   activeLink: string = 'Login';
   isEmailSent: boolean = false;
+  isOtpVerified: boolean = false;
+  reset_token: string = '';
   otp: string = '';
   showPassword = false;
   showConfirmPassword = false;
@@ -31,7 +33,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   ForgotForm!: FormGroup;
   loginAS!: number;
-  email_pattern = '^[A-Za-z0-9_.]+@[a-zA-Z]+(\\.[a-zA-Z]{2,4})+$';
+  email_pattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -91,26 +93,86 @@ export class ForgotPasswordComponent implements OnInit {
       this.isLoading = true;
       const email = this.ForgotForm.get('Email')?.value;
 
-      // Mock API flow
-      of({ status: 200, message: 'OTP sent successfully to ' + email })
-        .pipe(delay(1500))
-        .subscribe((response: any) => {
-          this.isLoading = false;
-          this.errorMessage = response.message;
-          
-          this.notificationService.show(response.message, 'success', 3000);
-          this.isEmailSent = true;
-          this.title = 'Verify OTP';
-          this.subtitle = 'We have sent a verification code to ' + email;
+      const body = {
+        email: email,
+        purpose: 'reset_password'
+      };
 
-          // Enable and show other fields
-          this.ForgotForm.get('OTP')?.enable();
-          this.ForgotForm.get('Password')?.enable();
-          this.ForgotForm.get('ConfirmPassword')?.enable();
-        });
+      this.loginService.AdminForgetPasswordApi(body).subscribe({
+        next: (response: any) => {
+          this.isLoading = false;
+          if (response.status === 200 || response.status === true || response.success) {
+            this.errorMessage = response.message || 'OTP sent successfully';
+            this.notificationService.show(this.errorMessage, 'success', 3000);
+            this.isEmailSent = true;
+            this.title = 'Verify OTP';
+            this.subtitle = 'We have sent a verification code to ' + email;
+
+            // Enable and show other fields
+            this.ForgotForm.get('OTP')?.enable();
+            // Don't enable password fields yet
+            // this.ForgotForm.get('Password')?.enable();
+            // this.ForgotForm.get('ConfirmPassword')?.enable();
+          } else {
+            this.errorMessage = response.message || 'Failed to send OTP';
+            this.notificationService.show(this.errorMessage, 'error', 3000);
+          }
+        },
+        error: (err: any) => {
+          this.isLoading = false;
+          this.errorMessage = err.error?.message || err.message || 'Server error occurred';
+          this.notificationService.show(this.errorMessage, 'error', 3000);
+        }
+      });
     } else {
       this.ForgotForm.get('Email')?.markAsTouched();
-      this.errorMessage = 'Please enter a valid email address';
+      this.errorMessage = 'Please enter a valid email format';
+      this.notificationService.show(this.errorMessage, 'error', 3000);
+    }
+  }
+
+  VerifyOtpfun() {
+    this.errorMessage = '';
+    if (this.ForgotForm.get('OTP')?.valid) {
+      this.isLoading = true;
+      const email = this.ForgotForm.get('Email')?.value;
+      const otp = this.ForgotForm.get('OTP')?.value;
+
+      const verifyBody = {
+        email: email,
+        otp: otp,
+        purpose: 'reset_password'
+      };
+
+      this.loginService.AdminVerifyOtpApi(verifyBody).subscribe({
+        next: (verifyRes: any) => {
+          this.isLoading = false;
+          if (verifyRes.status === 200 || verifyRes.status === true || verifyRes.success) {
+            
+            this.reset_token = verifyRes.data?.reset_token || verifyRes.reset_token;
+            this.isOtpVerified = true;
+            this.title = 'Reset Password';
+            this.subtitle = 'Create a new secure password';
+
+            this.ForgotForm.get('OTP')?.disable(); // disable OTP field as it's no longer needed
+            this.ForgotForm.get('Password')?.enable();
+            this.ForgotForm.get('ConfirmPassword')?.enable();
+            
+            this.notificationService.show('OTP verified successfully!', 'success', 3000);
+          } else {
+            this.errorMessage = verifyRes.message || 'Invalid OTP';
+            this.notificationService.show(this.errorMessage, 'error', 3000);
+          }
+        },
+        error: (err: any) => {
+          this.isLoading = false;
+          this.errorMessage = err.error?.message || err.message || 'Failed to verify OTP';
+          this.notificationService.show(this.errorMessage, 'error', 3000);
+        }
+      });
+    } else {
+      this.ForgotForm.get('OTP')?.markAsTouched();
+      this.errorMessage = 'Please enter a valid OTP';
       this.notificationService.show(this.errorMessage, 'error', 3000);
     }
   }
@@ -119,17 +181,34 @@ export class ForgotPasswordComponent implements OnInit {
     this.errorMessage = '';
     if (this.ForgotForm.valid) {
       this.isLoading = true;
+      const email = this.ForgotForm.get('Email')?.value;
+      const password = this.ForgotForm.get('Password')?.value;
+      const confirmPassword = this.ForgotForm.get('ConfirmPassword')?.value;
 
-      // Mock API flow
-      of({ status: 200, message: 'Password reset successfully!' })
-        .pipe(delay(1500))
-        .subscribe((response: any) => {
+      const resetBody = {
+        email: email,
+        reset_token: this.reset_token,
+        password: password,
+        password_confirmation: confirmPassword
+      };
+
+      this.loginService.AdminResetPassword(resetBody).subscribe({
+        next: (resetRes: any) => {
           this.isLoading = false;
-          this.errorMessage = response.message;
-          
-          this.notificationService.show(response.message, 'success', 3000);
-          this.router.navigate(['/admin/login']);
-        });
+          if (resetRes.status === 200 || resetRes.status === true || resetRes.success) {
+            this.notificationService.show(resetRes.message || 'Password reset successfully!', 'success', 3000);
+            this.router.navigate(['/admin/login']);
+          } else {
+            this.errorMessage = resetRes.message || 'Failed to reset password';
+            this.notificationService.show(this.errorMessage, 'error', 3000);
+          }
+        },
+        error: (err: any) => {
+          this.isLoading = false;
+          this.errorMessage = err.error?.message || err.message || 'Server error occurred during reset';
+          this.notificationService.show(this.errorMessage, 'error', 3000);
+        }
+      });
     } else {
       this.ForgotForm.markAllAsTouched();
       if (this.ForgotForm.errors?.['mismatch']) {

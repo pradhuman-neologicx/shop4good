@@ -17,25 +17,19 @@ export class LoginService {
   ) {}
 
   AdminLoginapi(body: any): Observable<any> {
-    return this.apiservice.postWithoutHeader(`login`, body);
+    return this.apiservice.postWithoutHeader(`admin/auth/login`, body);
   }
 
   AdminForgetPasswordApi(body: any): Observable<any> {
-    return this.apiservice.postWithoutHeader(`auth/forgot-password`, body).pipe(
-      tap((error: any) => {
-        console.log('Response received:', error);
-        this.erromessagefunction(error);
-      }),
-    );
+    return this.apiservice.postWithoutHeader(`auth/otp/send`, body);
+  }
+
+  AdminVerifyOtpApi(body: any): Observable<any> {
+    return this.apiservice.postWithoutHeader(`auth/otp/verify`, body);
   }
 
   AdminResetPassword(body: any): Observable<any> {
-    return this.apiservice.postWithoutHeader(`auth/reset-password`, body).pipe(
-      tap((error: any) => {
-        console.log('Response received:', error);
-        this.erromessagefunction(error);
-      }),
-    );
+    return this.apiservice.postWithoutHeader(`auth/forgot-password/reset-password`, body);
   }
 
   Adminlogout(): Observable<any> {

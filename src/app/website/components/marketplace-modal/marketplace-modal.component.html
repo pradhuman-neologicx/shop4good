@@ -17,19 +17,17 @@
 
     <!-- Content / Grid -->
     <div class="marketplace-modal__content">
-      @if (marketplaces.length > 0) {
+      @if (isLoading) {
+        <div style="display: flex; justify-content: center; align-items: center; padding: 40px;">
+          <div class="spinner-border text-success" role="status" style="width: 2.5rem; height: 2.5rem; border-width: 0.25em; color: #10B981 !important;"></div>
+        </div>
+      } @else if (displayMarketplaces.length > 0) {
         <div class="marketplace-grid">
-          @for (brand of marketplaces; track brand.name) {
+          @for (brand of displayMarketplaces; track brand.name) {
             <a [href]="brand.url || '#'" target="_blank" class="marketplace-card">
               <div class="marketplace-card__img-wrapper">
-                <img [ngSrc]="brand.src" width="100" height="40" [alt]="brand.name" class="marketplace-card__img">
+                <img [src]="brand.src" width="100" height="40" [alt]="brand.name" class="marketplace-card__img">
               </div>
-              <!-- <div class="marketplace-card__info">
-                <span class="marketplace-card__name">{{ brand.name }}</span>
-                @if (brand.description) {
-                  <span class="marketplace-card__desc">{{ brand.description }}</span>
-                }
-              </div> -->
               <div class="marketplace-card__action">
                 <span>Shop Now</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>

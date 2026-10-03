@@ -16,12 +16,12 @@ export class NgoImpactComponent {
     { icon: 'fa-solid fa-shirt', text: 'Wear Your Impact' },
   ];
 
-  ngos = [
-    { name: 'Smile Foundation', icon: 'fa-solid fa-face-smile' },
-    { name: 'CRY India', icon: 'fa-solid fa-children' },
-    { name: 'Goonj', icon: 'fa-solid fa-hand-holding-heart' },
-    { name: 'Teach For India', icon: 'fa-solid fa-graduation-cap' },
-    { name: 'Akshaya Patra', icon: 'fa-solid fa-bowl-food' },
-    { name: 'HelpAge India', icon: 'fa-solid fa-person-cane' },
+  impactPoints = [
+    { title: 'Shop as usual', desc: 'Browse and shop from your favorite partner brands with zero markup.', icon: '🛍️' },
+    { title: 'Automatic Donations', desc: 'A portion of your purchase is automatically donated at no extra cost.', icon: '💸' },
+    { title: 'Choose your cause', desc: 'Direct your impact to the charities and campaigns you care about most.', icon: '🎯' },
+    { title: 'Track your impact', desc: 'See exactly how much you have raised and the lives you have touched.', icon: '📊' },
+    { title: 'Verified NGOs', desc: 'We only partner with trusted, fully vetted organizations to ensure transparency.', icon: '✅' },
+    { title: 'Community driven', desc: 'Join thousands of shoppers making a collective difference every day.', icon: '🤝' },
   ];
 }

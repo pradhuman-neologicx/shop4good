@@ -1,7 +1,13 @@
 <div class="website-theme min-h-screen font-sans">
   <app-navbar></app-navbar>
   
-  @if (ngo) {
+  @if (isLoading) {
+  <!-- Loader -->
+  <div class="cause-loader" style="display: flex; justify-content: center; align-items: center; min-height: 60vh; flex-direction: column;">
+    <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem; border-width: 0.3em; margin-bottom: 1rem; color: #10B981 !important;"></div>
+    <p style="color: #666; font-size: 16px; font-weight: 500;">Loading cause details...</p>
+  </div>
+  } @else if (ngo) {
   <div class="cause-page">
 
     <!-- ═══════════ HERO ═══════════ -->
@@ -89,7 +95,7 @@
           <!-- Gallery -->
           <div class="cause-gallery">
             <div class="cause-gallery__main">
-              <img [ngSrc]="causeDetail.images[selectedImageIndex]" fill [alt]="causeDetail.name" class="cause-gallery__main-img">
+              <img [src]="causeDetail.images[selectedImageIndex]" [alt]="causeDetail.name" class="cause-gallery__main-img">
               <!-- Image counter badge -->
               <div class="cause-gallery__counter">
                 {{ selectedImageIndex + 1 }} / {{ causeDetail.images.length }}
@@ -110,7 +116,7 @@
                 (click)="selectedImageIndex = $index"
                 class="cause-gallery__thumb"
                 [class.cause-gallery__thumb--active]="selectedImageIndex === $index">
-                <img [ngSrc]="img" fill alt="Thumbnail" class="cause-gallery__thumb-img">
+                <img [src]="img" alt="Thumbnail" class="cause-gallery__thumb-img">
               </button>
               }
             </div>
@@ -125,7 +131,7 @@
               <h2 class="cause-about__title">About This Cause</h2>
             </div>
             <div class="cause-about__body">
-              <p>{{ causeDetail.description }}</p>
+              <div [innerHTML]="causeDetail.description"></div>
             </div>
           </div>
           }

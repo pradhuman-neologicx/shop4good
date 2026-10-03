@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, DestroyR
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AdminMockApiService } from 'src/app/core/services/admin-mock-api.service';
+import { AdminUsermanagementService } from 'src/app/core/services/admin-usermanagement.service';
 import { NotificationService } from 'src/app/core/services/notificationnew.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -17,7 +18,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 })
 export class UsersComponent implements OnInit {
   users: any[] = [];
-  causesList: any[] = [];
   isLoading = true;
   
   // Pagination & Filters
@@ -25,14 +25,13 @@ export class UsersComponent implements OnInit {
   limit = 10;
   total = 0;
   searchQuery = '';
-  filterStatus = 'All';
-  filterCause: string | null = null;
 
   // Modal state
   isModalOpen = false;
   isEditMode = false;
   isViewMode = false;
   currentUserId: number | null = null;
+  selectedUser: any = null;
   
   userForm!: FormGroup;
   submitted = false;
@@ -40,7 +39,7 @@ export class UsersComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
 
   constructor(
-    private mockApi: AdminMockApiService,
+    private adminUserService: AdminUsermanagementService,
     private fb: FormBuilder,
     private notification: NotificationService,
     private cdr: ChangeDetectorRef
@@ -48,7 +47,6 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.loadCauses();
     this.loadUsers();
   }
 
@@ -57,38 +55,35 @@ export class UsersComponent implements OnInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       mobile: ['', Validators.required],
-      cause: ['', Validators.required],
-      status: ['Active', Validators.required]
-    });
-  }
-
-  loadCauses() {
-    // Load causes to populate the ng-select dropdown
-    this.mockApi.getCharities(1, 1000).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(res => {
-      this.causesList = res.data;
-      this.cdr.markForCheck();
+      is_active: [true, Validators.required]
     });
   }
 
   loadUsers() {
     this.isLoading = true;
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
     
-    // filterCause can be null if ng-select is cleared, so fallback to 'All'
-    const causeToSend = this.filterCause ? this.filterCause : 'All';
+    let params: any = {
+      page: this.page,
+      per_page: this.limit
+    };
     
-    this.mockApi.getUsers(this.page, this.limit, this.searchQuery, this.filterStatus, causeToSend)
+    if (this.searchQuery) {
+      params.search = this.searchQuery;
+    }
+    
+    this.adminUserService.getUsers(params)
       .pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
-        this.users = res.data;
-        this.total = res.pagination.total;
+        this.users = res.data?.items || [];
+        this.total = res.data?.meta?.total || 0;
         this.isLoading = false;
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       },
       error: () => {
         this.notification.show('Failed to load users', 'error');
         this.isLoading = false;
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       }
     });
   }
@@ -108,8 +103,6 @@ export class UsersComponent implements OnInit {
 
   resetSearch() {
     this.searchQuery = '';
-    this.filterCause = null;
-    this.filterStatus = 'All';
     this.page = 1;
     this.loadUsers();
   }
@@ -124,17 +117,12 @@ export class UsersComponent implements OnInit {
     this.loadUsers();
   }
 
-  onFilterChange() {
-    this.page = 1;
-    this.loadUsers();
-  }
-
   openAddModal() {
     this.isEditMode = false;
     this.isViewMode = false;
     this.currentUserId = null;
     this.submitted = false;
-    this.userForm.reset({ status: 'Active' });
+    this.userForm.reset({ is_active: true });
     this.userForm.enable();
     this.isModalOpen = true;
   }
@@ -143,6 +131,7 @@ export class UsersComponent implements OnInit {
     this.isEditMode = true;
     this.isViewMode = false;
     this.currentUserId = user.id;
+    this.selectedUser = user;
     this.submitted = false;
     this.userForm.patchValue(user);
     this.userForm.enable();
@@ -153,6 +142,7 @@ export class UsersComponent implements OnInit {
     this.isEditMode = false;
     this.isViewMode = true;
     this.currentUserId = user.id;
+    this.selectedUser = user;
     this.submitted = false;
     this.userForm.patchValue(user);
     this.userForm.disable();
@@ -161,6 +151,7 @@ export class UsersComponent implements OnInit {
 
   closeModal() {
     this.isModalOpen = false;
+    this.selectedUser = null;
   }
 
   onSubmit() {
@@ -171,17 +162,17 @@ export class UsersComponent implements OnInit {
 
     const userData = this.userForm.getRawValue();
     if (this.isEditMode && this.currentUserId) {
-      this.mockApi.updateUser(this.currentUserId, userData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      this.adminUserService.updateUser(this.currentUserId, userData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: (res) => {
-          this.notification.show(res.message, 'success');
+          this.notification.show(res.message || 'User updated successfully', 'success');
           this.loadUsers();
           this.closeModal();
         }
       });
     } else {
-      this.mockApi.addUser(userData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      this.adminUserService.addUser(userData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: (res) => {
-          this.notification.show(res.message, 'success');
+          this.notification.show(res.message || 'User added successfully', 'success');
           this.loadUsers();
           this.closeModal();
         }
@@ -190,12 +181,15 @@ export class UsersComponent implements OnInit {
   }
 
   toggleStatus(user: any) {
-    const newStatus = user.status === 'Active' ? 'Inactive' : 'Active';
-    const updatedUser = { ...user, status: newStatus };
-    this.mockApi.updateUser(user.id, updatedUser).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    const newStatus = !user.is_active;
+    const updatedUser = { ...user, is_active: newStatus };
+    this.adminUserService.toggleUserStatus(user.id, { is_active: newStatus ? 1 : 0 }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
-        this.notification.show(`User status changed to ${newStatus}`, 'success');
+        this.notification.show(res.message || `User status changed`, 'success');
         this.loadUsers();
+      },
+      error: () => {
+        // this.notification.show('Failed to change status', 'error');
       }
     });
   }

@@ -41,7 +41,7 @@ export class SidenavComponent implements OnInit {
     console.log('Roles:', this.roles);
     this.menuItems = [];
 
-    if (this.roles == 'Super Admin') {
+    if (this.roles == 'admin') {
       this.menuItems = [
         {
           index: 1,

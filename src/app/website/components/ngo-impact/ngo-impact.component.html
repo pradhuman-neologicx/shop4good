@@ -34,16 +34,17 @@
         </p>
       </div>
 
-      <!-- NGO Partner Logos -->
-      <div class="ngo-impact__partners">
-        <p class="ngo-impact__partners-label">Our NGO Partners</p>
-        <div class="ngo-impact__partners-grid">
-          @for (ngo of ngos; track ngo.name) {
-            <div class="ngo-impact__ngo-card">
-              <div class="ngo-impact__ngo-icon">
-                <i [class]="ngo.icon"></i>
+      <!-- Impact Points Listing -->
+      <div class="ngo-impact__points">
+        <p class="ngo-impact__points-label">The Shop4Good Impact</p>
+        <div class="ngo-impact__points-list">
+          @for (point of impactPoints; track point.title) {
+            <div class="ngo-impact__point-item">
+              <div class="ngo-impact__point-icon">{{ point.icon }}</div>
+              <div class="ngo-impact__point-content">
+                <h4 class="ngo-impact__point-title">{{ point.title }}</h4>
+                <p class="ngo-impact__point-desc">{{ point.desc }}</p>
               </div>
-              <span>{{ ngo.name }}</span>
             </div>
           }
         </div>

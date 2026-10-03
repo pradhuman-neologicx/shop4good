@@ -186,8 +186,13 @@ export class ApiService {
         errs?.name?.[0] ||
         errs?.email?.[0] ||
         errs?.mobile?.[0] ||
+        errs?.mobile_no?.[0] ||
+        errs?.password?.[0] ||
+        errs?.current_password?.[0] ||
         errs?.input_fields?.[0] ||
         errs?.material_id?.[0] || 
+        errs?.images?.[0] ||
+        errs?.cover_image?.[0] ||
         errorMessage;
     }
 

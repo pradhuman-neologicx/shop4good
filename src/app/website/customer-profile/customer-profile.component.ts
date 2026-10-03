@@ -5,11 +5,19 @@ import { NavbarComponent } from '../components/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import { RouterLink, Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
+import { CustomerProfileService } from 'src/app/core/services/customer-profile.service';
+import { NotificationService } from 'src/app/core/services/notificationnew.service';
+import { JwtService } from 'src/app/core/services/jwt.service';
+import { LoginService } from 'src/app/core/services/login.service';
+import { PublicApiService } from 'src/app/core/services/public-api.service';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-customer-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, NavbarComponent, FooterComponent, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, NavbarComponent, FooterComponent, RouterLink, NgSelectModule],
   styleUrl: './customer-profile.component.scss',
   templateUrl: './customer-profile.component.html',
 })
@@ -26,48 +34,26 @@ export class CustomerProfileComponent implements OnInit {
   // Modals state
   showOtpModal = false;
   showPasswordModal = false;
+  
+  // Password visibility
+  showCurrentPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
 
   pendingEmailUpdate = '';
+  selectedAvatar: File | null = null;
+  avatarPreview: string | null = null;
 
   // Messages
   successMessage = '';
   errorMessage = '';
 
-  // Location Mock Data
-  allCountries = [
-    { code: '+91', name: 'India' },
-    { code: '+1', name: 'USA' },
-    { code: '+44', name: 'UK' },
-    { code: '+61', name: 'Australia' }
-  ];
-  allStates = [
-    { name: 'Maharashtra', countryCode: '+91' },
-    { name: 'Delhi', countryCode: '+91' },
-    { name: 'Karnataka', countryCode: '+91' },
-    { name: 'California', countryCode: '+1' },
-    { name: 'New York', countryCode: '+1' },
-    { name: 'London', countryCode: '+44' }
-  ];
-  allCities = [
-    { name: 'Mumbai', stateName: 'Maharashtra' },
-    { name: 'Pune', stateName: 'Maharashtra' },
-    { name: 'New Delhi', stateName: 'Delhi' },
-    { name: 'Bengaluru', stateName: 'Karnataka' },
-    { name: 'Los Angeles', stateName: 'California' },
-    { name: 'New York City', stateName: 'New York' },
-    { name: 'Westminster', stateName: 'London' }
-  ];
-  countries = this.allCountries;
+  // Location Real Data
+  allStates: any[] = [];
   states: any[] = [];
   cities: any[] = [];
 
-  // Mock activity
-  recentActivity = [
-    { icon: 'fa-bag-shopping', text: 'Purchased Eco-Friendly Water Bottle', time: '2 hours ago', color: 'emerald' },
-    { icon: 'fa-hand-holding-heart', text: 'Donated ₹500 to Clean Water Initiative', time: '1 day ago', color: 'blue' },
-    { icon: 'fa-star', text: 'Left a review on Organic Tote Bag', time: '3 days ago', color: 'amber' },
-    { icon: 'fa-bag-shopping', text: 'Purchased Bamboo Cutlery Set', time: '1 week ago', color: 'emerald' },
-  ];
+
 
   // Transactions Mock Data
   Math = Math;
@@ -145,19 +131,63 @@ export class CustomerProfileComponent implements OnInit {
     if (this.currentPage > 1) this.currentPage--;
   }
 
-  constructor(private fb: FormBuilder, private router: Router, private cdr: ChangeDetectorRef) {}
+  private destroyRef = inject(DestroyRef);
+
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router, 
+    private cdr: ChangeDetectorRef,
+    private customerProfileService: CustomerProfileService,
+    private notification: NotificationService,
+    private jwtService: JwtService,
+    private loginService: LoginService,
+    private publicApiService: PublicApiService
+  ) {}
 
   ngOnInit() {
     this.initForms();
     this.setupLocationListeners();
+    this.loadStates();
     this.fetchUserProfile();
+  }
+
+  loadStates() {
+    this.publicApiService.getStates().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (res) => {
+        this.states = res.data || [];
+        // After loading states, if user is already fetched and has a state ID, load cities.
+        if (this.user && this.user.state_id) {
+          this.loadCities(this.user.state_id);
+        }
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  private lastLoadedStateId: number | null = null;
+
+  loadCities(stateId: number) {
+    if (this.lastLoadedStateId === stateId && this.cities.length > 0) {
+      return; // Prevent duplicate API calls for the same state
+    }
+    this.lastLoadedStateId = stateId;
+    this.publicApiService.getCitiesByState(stateId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (res) => {
+        this.cities = res.data || [];
+      },
+      error: (err) => {
+        console.error(err);
+        this.lastLoadedStateId = null; // Reset on error so it can be retried
+      }
+    });
   }
 
   initForms() {
     this.profileForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      countryCode: ['+91', [Validators.required]],
+      gender: ['', Validators.required],
+      // countryCode: ['+91', [Validators.required]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       state: ['', Validators.required],
       city: ['', Validators.required],
@@ -175,29 +205,26 @@ export class CustomerProfileComponent implements OnInit {
     });
   }
 
-  setupLocationListeners() {
-    this.profileForm.get('countryCode')?.valueChanges.subscribe(countryCode => {
-      if (countryCode) {
-        this.states = this.allStates.filter(s => s.countryCode === countryCode);
-      } else {
-        this.states = [];
-      }
-      if (this.isEditing) {
-        this.profileForm.get('state')?.setValue('');
-        this.profileForm.get('city')?.setValue('');
-        this.cities = [];
-      }
-    });
+  private previousStateId: number | null = null;
 
-    this.profileForm.get('state')?.valueChanges.subscribe(stateName => {
-      if (stateName) {
-        this.cities = this.allCities.filter(c => c.stateName === stateName);
+  setupLocationListeners() {
+    this.profileForm.get('state')?.valueChanges.subscribe(stateId => {
+      if (!this.isEditing) return; // Do not fetch cities during initial load/view mode
+
+      const currentId = stateId ? Number(stateId) : null;
+      
+      if (currentId) {
+        this.loadCities(currentId);
       } else {
         this.cities = [];
       }
-      if (this.isEditing) {
+      
+      // Only clear city selection if the state ACTUALLY changed by the user.
+      // This prevents the city from wiping out when toggleEdit calls .enable()
+      if (this.previousStateId !== null && this.previousStateId !== currentId) {
         this.profileForm.get('city')?.setValue('');
       }
+      this.previousStateId = currentId;
     });
   }
 
@@ -208,53 +235,94 @@ export class CustomerProfileComponent implements OnInit {
 
   fetchUserProfile() {
     this.isLoading = true;
-    setTimeout(() => {
-      let stored = null;
-      try {
-        if (typeof window !== 'undefined') {
-          stored = localStorage.getItem('currentUser');
+    this.customerProfileService.getProfile().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (res) => {
+        if (res && (res.status === 200 || res.status === 'success' || res.status === 201 || res.code === 200)) {
+          this.user = res.data;
+          this.user.countryCode = '+91'; // default as per mock logic
+          
+          this.jwtService.saveCustomerData(this.user); // Sync local storage with fresh API data
+          
+          let formState = this.user.state;
+          let formCity = this.user.city;
+          
+          if (this.user.state && typeof this.user.state === 'object') {
+            formState = this.user.state.id;
+          } else if (this.user.state_id) {
+            formState = this.user.state_id;
+          }
+          if (this.user.city && typeof this.user.city === 'object') {
+            formCity = this.user.city.id;
+          } else if (this.user.city_id) {
+            formCity = this.user.city_id;
+          }
+          
+          // Cities are deferred until Edit is clicked, so we don't call this.loadCities(formState) here anymore.
+
+          this.profileForm.patchValue({
+            ...this.user,
+            phone: this.user.mobile || '', // Map backend mobile to frontend phone
+            address: this.user.address || '',
+            state: formState,
+            city: formCity
+          });
+          this.profileForm.disable();
+        } else {
+          this.notification.show(res.message || 'Failed to fetch profile', 'error');
         }
-      } catch (e) {}
-      
-      if (stored) {
-        this.user = JSON.parse(stored);
-        this.user.countryCode = this.user.countryCode || '+91';
-        this.user.phone = this.user.phone || '9876543210';
-        this.user.state = this.user.state || 'Delhi';
-        this.user.city = this.user.city || 'New Delhi';
-        this.user.address = this.user.address || '123 Goodness Lane, Appt 4B';
-      } else {
-        this.user = {
-          name: 'John Doe',
-          email: 'customer@shop4good.com',
-          countryCode: '+91',
-          phone: '9876543210',
-          state: 'Delhi',
-          city: 'New Delhi',
-          address: '123 Goodness Lane, Appt 4B',
-          role: 'customer'
-        };
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.isLoading = false;
+        // this.notification.show(err.message || 'Failed to fetch profile', 'error');
+        this.cdr.detectChanges();
       }
-
-      this.states = this.allStates.filter(s => s.countryCode === this.user.countryCode);
-      this.cities = this.allCities.filter(c => c.stateName === this.user.state);
-
-      this.profileForm.patchValue(this.user);
-      this.profileForm.disable();
-      this.isLoading = false;
-      this.cdr.detectChanges();
-    }, 800);
+    });
   }
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
     if (this.isEditing) {
       this.profileForm.enable();
+      
+      // Explicitly load cities for the current state to populate the dropdown 
+      // without wiping the prefilled city ID
+      const currentState = this.profileForm.get('state')?.value;
+      if (currentState) {
+        this.previousStateId = Number(currentState);
+        this.loadCities(Number(currentState));
+      }
     } else {
+      this.selectedAvatar = null;
+      this.avatarPreview = null;
+      
       this.profileForm.disable();
-      this.states = this.allStates.filter(s => s.countryCode === this.user.countryCode);
-      this.cities = this.allCities.filter(c => c.stateName === this.user.state);
-      this.profileForm.patchValue(this.user);
+      let formState = this.user.state;
+      let formCity = this.user.city;
+      
+      if (this.user.state && typeof this.user.state === 'object') {
+        formState = this.user.state.id;
+      } else if (this.user.state_id) {
+        formState = this.user.state_id;
+      }
+      if (this.user.city && typeof this.user.city === 'object') {
+        formCity = this.user.city.id;
+      } else if (this.user.city_id) {
+        formCity = this.user.city_id;
+      }
+      
+      if (formState) {
+        this.loadCities(formState);
+      }
+      
+      this.profileForm.patchValue({
+        ...this.user,
+        phone: this.user.mobile || '', // Map backend mobile to frontend phone
+        address: this.user.address || '',
+        state: formState,
+        city: formCity
+      });
     }
     this.clearMessages();
   }
@@ -269,7 +337,7 @@ export class CustomerProfileComponent implements OnInit {
 
     if (formValues.email !== this.user.email) {
       this.pendingEmailUpdate = formValues.email;
-      this.showOtpModal = true;
+      this.triggerEmailVerification();
       return;
     }
 
@@ -280,38 +348,68 @@ export class CustomerProfileComponent implements OnInit {
     if (this.otpForm.invalid) return;
 
     const otp = this.otpForm.get('otp')?.value;
-
-    this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-      if (otp === '123456') {
-        this.showOtpModal = false;
-        this.otpForm.reset();
-        const updatedData = { ...this.profileForm.value, email: this.pendingEmailUpdate };
-        this.updateUser(updatedData);
-      } else {
-        this.otpForm.get('otp')?.setErrors({ invalid: true });
-      }
-    }, 1000);
+    
+    // Instead of verifying here, the backend consumes it in the updateProfile API as verification_token.
+    this.showOtpModal = false;
+    this.otpForm.reset();
+    
+    const updatedData = { ...this.profileForm.value, email: this.pendingEmailUpdate, verification_token: otp };
+    this.updateUser(updatedData);
   }
 
   updateUser(data: any) {
     this.isLoading = true;
-    setTimeout(() => {
-      this.user = { ...this.user, ...data };
-      localStorage.setItem('currentUser', JSON.stringify(this.user));
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('email', data.email);
+    formData.append('mobile', data.phone || data.mobile || '');
+    if (data.verification_token) {
+      formData.append('verification_token', data.verification_token);
+    }
+    // We send state and city names just as text
+    if (data.state) formData.append('state', data.state);
+    if (data.city) formData.append('city', data.city);
+    if (data.address) formData.append('address', data.address);
+    if (data.gender) formData.append('gender', data.gender);
+    
+    if (this.selectedAvatar) {
+      formData.append('avatar', this.selectedAvatar);
+    }
 
-      this.isEditing = false;
-      this.profileForm.disable();
-      this.isLoading = false;
-      this.showMessage('Profile updated successfully!');
-    }, 800);
+    this.customerProfileService.updateProfile(formData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (res) => {
+        if (res && (res.status === 200 || res.status === 'success' || res.status === 201 || res.code === 200)) {
+          this.isEditing = false;
+          this.profileForm.disable();
+          this.selectedAvatar = null;
+          this.avatarPreview = null;
+          this.pendingEmailUpdate = '';
+          
+          this.notification.show('Profile updated successfully!', 'success');
+          
+          // Fetch fresh data from API to ensure everything (like avatar URL) is perfectly synced
+          this.fetchUserProfile();
+        } else {
+          this.notification.show(res.message || 'Failed to update profile', 'error');
+          this.isLoading = false;
+        }
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.isLoading = false;
+        // this.notification.show(err.message || 'Error updating profile', 'error');
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   openPasswordModal() {
     this.showPasswordModal = true;
     this.passwordForm.reset();
     this.clearMessages();
+    this.showCurrentPassword = false;
+    this.showNewPassword = false;
+    this.showConfirmPassword = false;
   }
 
   closePasswordModal() {
@@ -324,18 +422,36 @@ export class CustomerProfileComponent implements OnInit {
       return;
     }
 
-    const { currentPassword } = this.passwordForm.value;
+    const { currentPassword, newPassword, confirmPassword } = this.passwordForm.value;
 
     this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-      if (currentPassword !== 'customer123') {
-        this.passwordForm.get('currentPassword')?.setErrors({ incorrect: true });
-        return;
+    const payload = {
+      current_password: currentPassword,
+      password: newPassword,
+      password_confirmation: confirmPassword
+    };
+
+    this.customerProfileService.changePassword(payload).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        if (res && (res.status === 200 || res.status === 'success' || res.status === 201 || res.code === 200)) {
+          this.showPasswordModal = false;
+          this.notification.show(res.message || 'Password changed successfully!', 'success');
+          
+          // Clear storage and redirect to login
+          this.jwtService.clearCustomerStorage();
+          this.router.navigate(['/auth/login']); 
+        } else {
+          this.notification.show(res.message || 'Failed to change password', 'error');
+        }
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.isLoading = false;
+        // this.notification.show(err.message || 'Failed to change password', 'error');
+        this.cdr.detectChanges();
       }
-      this.showPasswordModal = false;
-      this.showMessage('Password changed successfully!');
-    }, 1000);
+    });
   }
 
   closeOtpModal() {
@@ -358,16 +474,53 @@ export class CustomerProfileComponent implements OnInit {
     const newEmail = this.profileForm.get('email')?.value;
     if (newEmail && newEmail !== this.user.email) {
       this.pendingEmailUpdate = newEmail;
-      this.showOtpModal = true;
+      this.isLoading = true;
+      
+      this.loginService.AdminForgetPasswordApi({ email: newEmail, purpose: 'update' }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+        next: (res: any) => {
+          this.isLoading = false;
+          if (res && res.status === 200) {
+            this.showOtpModal = true;
+            this.notification.show('OTP sent to your new email', 'success');
+          } else {
+            this.notification.show(res.message || 'Failed to send OTP', 'error');
+          }
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => {
+          this.isLoading = false;
+          // this.notification.show(err.message || 'Failed to send OTP', 'error');
+          this.cdr.detectChanges();
+        }
+      });
     }
   }
 
   logout() {
-    try {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('currentUser');
+    this.customerProfileService.logout().subscribe({
+      next: () => {
+        this.jwtService.clearCustomerStorage();
+        this.router.navigate(['/auth/login']);
+      },
+      error: () => {
+        this.jwtService.clearCustomerStorage();
+        this.router.navigate(['/auth/login']);
       }
-    } catch (e) {}
-    this.router.navigate(['/auth/login']);
+    });
+  }
+
+  onAvatarSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedAvatar = file;
+      
+      // Generate a preview URL for the selected image
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.avatarPreview = e.target?.result as string;
+        this.cdr.detectChanges();
+      };
+      reader.readAsDataURL(file);
+    }
   }
 }

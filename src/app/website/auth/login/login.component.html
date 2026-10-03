@@ -18,17 +18,18 @@
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
         <div>
-          <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
+          <label for="mobile" class="block text-sm font-semibold text-slate-700 mb-2">Mobile Number</label>
           <div class="relative">
-            <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-            <input type="email" id="email" formControlName="email" placeholder="you@example.com" 
+            <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input type="tel" id="mobile" formControlName="mobile" placeholder="Enter 10-digit mobile number" 
+              maxlength="10" minlength="10"
               class="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
-              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['email'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['email'].errors)}" />
+              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': (submitted || f['mobile'].touched || f['mobile'].dirty) && f['mobile'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !((submitted || f['mobile'].touched || f['mobile'].dirty) && f['mobile'].errors)}" />
           </div>
-          @if (submitted && f['email'].errors) {
+          @if ((submitted || f['mobile'].touched || f['mobile'].dirty) && f['mobile'].errors) {
             <div class="text-red-500 text-xs mt-1">
-              @if (f['email'].errors?.['required']) { <div>Email is required</div> }
-              @if (f['email'].errors?.['email']) { <div>Please enter a valid email address</div> }
+              @if (f['mobile'].errors?.['required']) { <div>Mobile number is required</div> }
+              @if (f['mobile'].errors?.['pattern']) { <div>Please enter a valid 10-digit mobile number</div> }
             </div>
           }
         </div>
@@ -42,12 +43,12 @@
             <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
             <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" placeholder="••••••••" 
               class="w-full pl-10 pr-12 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
-              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['password'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['password'].errors)}" />
+              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': (submitted || f['password'].touched || f['password'].dirty) && f['password'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !((submitted || f['password'].touched || f['password'].dirty) && f['password'].errors)}" />
             <button type="button" (click)="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-600 transition-colors focus:outline-none">
               <i class="fa-solid" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
             </button>
           </div>
-          @if (submitted && f['password'].errors) {
+          @if ((submitted || f['password'].touched || f['password'].dirty) && f['password'].errors) {
             <div class="text-red-500 text-xs mt-1">
               @if (f['password'].errors?.['required']) { <div>Password is required</div> }
             </div>
@@ -68,8 +69,12 @@
         </div> -->
 
         <div>
-          <button type="submit" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all">
-            Sign In
+          <button type="submit" [disabled]="isLoading" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all disabled:opacity-70">
+            @if (isLoading) {
+              <i class="fa-solid fa-spinner fa-spin mr-2"></i> Signing in...
+            } @else {
+              Sign In
+            }
           </button>
         </div>
       </form>

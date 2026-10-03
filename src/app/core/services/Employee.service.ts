@@ -88,4 +88,28 @@ export class EmployeeService {
       // alert(errorMessage);
     }
   }
+
+  getUsers(params: any): Observable<any> {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    let queryParams = [];
+    for (let key in params) {
+        if (params.hasOwnProperty(key) && params[key] !== null && params[key] !== undefined) {
+            queryParams.push(`${key}=${params[key]}`);
+        }
+    }
+    const queryString = queryParams.length > 0 ? '?' + queryParams.join('&') : '';
+
+    return this.apiservice.get('admin/users' + queryString, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      }),
+    );
+  }
+
 }

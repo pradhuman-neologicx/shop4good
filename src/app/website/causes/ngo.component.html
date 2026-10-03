@@ -59,7 +59,27 @@
           <div class="space-y-6">
             <div>
               <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">By Cause</h3>
-              <div class="space-y-3 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+              <div class="block lg:hidden mb-4">
+                <ng-select
+                  [items]="availableCauses"
+                  [multiple]="true"
+                  [closeOnSelect]="false"
+                  placeholder="Select causes..."
+                  [(ngModel)]="selectedCauses"
+                  (change)="applyFilters()">
+                  
+                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <div style="display: flex; align-items: center; width: 100%;">
+                      <input type="checkbox" [checked]="item$.selected" style="display: block; width: 16px; height: 16px; margin-right: 8px; flex-shrink: 0;" />
+                      <span class="text-gray-700" style="flex-grow: 1;">{{item}}</span>
+                    </div>
+                  </ng-template>
+
+                </ng-select>
+              </div>
+
+              <!-- Desktop view (checkboxes) -->
+              <div class="hidden lg:block space-y-3 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
                 @for (cause of availableCauses; track cause) {
                 <label class="flex items-center group cursor-pointer">
                   <div class="relative flex items-center justify-center">
@@ -95,7 +115,7 @@
         @if (filteredNgos.length > 0) {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           @for (ngo of filteredNgos; track ngo.id) {
-          <div class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1">
+          <div class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full ">
             
             <!-- Cover Image -->
             <div class="h-52 overflow-hidden relative">
@@ -116,20 +136,13 @@
                  }
               </div>
               
-              <!-- Location tag -->
-              <div class="absolute bottom-4 left-4 flex items-center text-white/90 text-sm font-medium">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                {{ ngo.location }}
-              </div>
+
             </div>
             
             <div class="p-6 relative flex flex-col flex-grow">
               <!-- Logo overlay -->
-              <div class="absolute -top-12 right-6 w-20 h-20 rounded-2xl border-4 border-white overflow-hidden bg-white shadow-lg transform group-hover:rotate-6 transition-transform duration-300">
-                 <img [ngSrc]="ngo.logo" fill [alt]="ngo.name + ' logo'" class="w-full h-full object-cover">
+              <div class="absolute -top-12 right-6 w-20 h-20 rounded-2xl border-4 border-white overflow-hidden bg-white shadow-lg ">
+                 <img [ngSrc]="ngo.coverImage" fill [alt]="ngo.name + ' logo'" class="w-full h-full object-cover">
               </div>
               
               <h2 class="text-2xl font-bold text-gray-900 mb-3 pr-16 group-hover:text-emerald-700 transition-colors line-clamp-1">{{ ngo.name }}</h2>

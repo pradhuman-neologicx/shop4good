@@ -25,11 +25,11 @@
             <span>{{ item.question }}</span>
             <i class="fa-solid" [class.fa-plus]="openIndex !== i" [class.fa-minus]="openIndex === i"></i>
           </button>
-          @if (openIndex === i) {
+          <div class="faq-section__answer-wrapper">
             <div class="faq-section__answer">
               <p>{{ item.answer }}</p>
             </div>
-          }
+          </div>
         </div>
       }
     </div>

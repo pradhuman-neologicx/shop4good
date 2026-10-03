@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  api_url: 'https://rotaryroyal.softlogicx.inn/api/v2/',
-  image_url: 'https://rotaryroyal.softlogicx.inn/',
+  api_url: 'https://shop4good.mobilogicx.com/api/',
 };
 
 /*

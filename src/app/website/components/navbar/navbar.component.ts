@@ -1,7 +1,9 @@
 import { NgOptimizedImage, CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd, RouterLink } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
+import { JwtService } from 'src/app/core/services/jwt.service';
+import { CustomerProfileService } from 'src/app/core/services/customer-profile.service';
 
 @Component({
     selector: 'app-navbar',
@@ -17,7 +19,12 @@ export class NavbarComponent implements OnInit {
   currentUser: any = null;
   isProfileMenuOpen = false;
 
-  constructor(private router: Router, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private router: Router, 
+    private cdr: ChangeDetectorRef, 
+    private jwtService: JwtService,
+    private customerProfileService: CustomerProfileService
+  ) { }
 
   ngOnInit() {
     this.checkAuth();
@@ -32,20 +39,27 @@ export class NavbarComponent implements OnInit {
   }
 
   private checkAuth() {
-    const userStr = localStorage.getItem('currentUser');
-    if (userStr) {
-      try {
-        this.currentUser = JSON.parse(userStr);
-      } catch (e) {
-        this.currentUser = null;
-      }
+    if (this.jwtService.getCustomerIsLoggedIn()) {
+      this.currentUser = this.jwtService.getCustomerData();
     } else {
       this.currentUser = null;
     }
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
+    this.customerProfileService.logout().pipe(take(1)).subscribe({
+      next: () => {
+        this.clearAndRedirect();
+      },
+      error: () => {
+        // Still clear and redirect even if API fails, ensuring user gets logged out locally
+        this.clearAndRedirect();
+      }
+    });
+  }
+
+  private clearAndRedirect() {
+    this.jwtService.clearCustomerStorage();
     this.currentUser = null;
     this.isMenuOpen = false;
     this.router.navigate(['/auth/login']);

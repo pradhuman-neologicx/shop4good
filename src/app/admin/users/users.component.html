@@ -25,25 +25,14 @@
     <!-- Right: Filters & Search -->
     <div class="d-flex gap-3 align-items-center flex-wrap">
 
-      <div style="width: 200px; font-size: 14px; font-weight: 400;">
-        <ng-select [items]="causesList" bindLabel="name" bindValue="name" [(ngModel)]="filterCause"
-          (change)="onFilterChange()" placeholder="All Causes" class="custom-ng-select-sm">
-        </ng-select>
-      </div>
 
-      <select class="form-select form-select-sm" style="width: 150px;" [(ngModel)]="filterStatus"
-        (change)="onFilterChange()">
-        <option value="All">All Statuses</option>
-        <option value="Active">Active</option>
-        <option value="Inactive">Inactive</option>
-      </select>
 
       <div class="input-group input-group-sm" style="width: 250px;">
         <input type="text" class="form-control" placeholder="Search by name or email" [(ngModel)]="searchQuery"
           (keyup.enter)="onSearch()">
         <button class="btn btn-primary-custom" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
-        @if (searchQuery || filterCause || filterStatus !== 'All') {
-        <button class="btn btn-outline-secondary" type="button" (click)="resetSearch()" title="Reset Filters"><i
+        @if (searchQuery) {
+        <button class="btn btn-outline-secondary" type="button" (click)="resetSearch()" title="Reset Search"><i
             class="fa fa-times"></i></button>
         }
       </div>
@@ -60,7 +49,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Mobile</th>
-            <th>Selected Cause</th>
+
             <th>Status</th>
             <th class="text-end">Actions</th>
           </tr>
@@ -73,27 +62,33 @@
             <td class="fw-bold">{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.mobile }}</td>
+
             <td>
-              @if (user.cause) {
-              <span class="badge-cause">{{ user.cause }}</span>
-              } @else {
-              <span class="text-muted">Not selected</span>
-              }
-            </td>
-            <td>
-              <span class="status-badge" [ngClass]="user.status === 'Active' ? 'active' : 'inactive'">
-                {{ user.status }}
+              <span class="status-badge" [ngClass]="user.is_active ? 'active' : 'inactive'">
+                {{ user.is_active ? 'Active' : 'Inactive' }}
               </span>
             </td>
             <td class="text-end">
               <button class="btn-action" title="View" (click)="viewUser(user)">
-                <i class="fa fa-eye"></i>
+                <i class="fa fa-eye text-info"></i>
+              </button>
+              <!-- <button class="btn-action" title="Edit" (click)="openEditModal(user)">
+                <i class="fa fa-edit text-primary"></i>
+              </button> -->
+              <button class="btn-action" [title]="user.is_active ? 'Deactivate' : 'Activate'" (click)="toggleStatus(user)">
+                <i class="fa" [ngClass]="user.is_active ? 'fa-toggle-on text-success' : 'fa-toggle-off text-danger'"></i>
               </button>
             </td>
           </tr>
           } @empty {
           <tr>
-            <td colspan="7" class="text-center py-4 text-muted">No users found.</td>
+            <td colspan="6" class="text-center py-5">
+              <div class="d-flex flex-column align-items-center justify-content-center opacity-75">
+                <i class="fa fa-user-slash mb-3" style="font-size: 48px; color: #ced4da;"></i>
+                <h5 class="fw-bold text-secondary mb-1">No Users Found</h5>
+               
+              </div>
+            </td>
           </tr>
           }
         </tbody>
@@ -151,10 +146,7 @@
           <input type="text" class="form-control" formControlName="mobile" placeholder="Enter mobile number">
         </div>
 
-        <div class="form-group mb-3">
-          <label>Supported Cause (Optional)</label>
-          <input type="text" class="form-control" formControlName="cause" placeholder="Enter primary cause">
-        </div>
+
 
 
 
@@ -167,34 +159,90 @@
       </form>
       } @else {
       <!-- View Details Mode -->
-      <div class="view-details">
-        <div class="detail-group">
-          <label><i class="fa fa-user"></i> Full Name</label>
-          <p>{{ userForm.get('name')?.value || 'N/A' }}</p>
-        </div>
-        <div class="detail-group">
-          <label><i class="fa fa-envelope"></i> Email Address</label>
-          <p>{{ userForm.get('email')?.value || 'N/A' }}</p>
-        </div>
-        <div class="detail-group">
-          <label><i class="fa fa-phone"></i> Mobile Number</label>
-          <p>{{ userForm.get('mobile')?.value || 'N/A' }}</p>
-        </div>
-        <div class="detail-group">
-          <label><i class="fa fa-hand-holding-heart"></i> Supported Cause</label>
-          <p>{{ userForm.get('cause')?.value || 'None specified' }}</p>
-        </div>
-        <div class="detail-group full-width">
-          <label><i class="fa fa-toggle-on"></i> Status</label>
+      <div class="view-details px-2 py-3">
+        <!-- Profile Header with Avatar -->
+        <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+          <div class="bg-light text-primary rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 65px; height: 65px; font-size: 26px; font-weight: bold;">
+            {{ (selectedUser?.name || 'U').charAt(0).toUpperCase() }}
+          </div>
           <div>
-            <span class="status-badge" [ngClass]="userForm.get('status')?.value === 'Active' ? 'active' : 'inactive'">
-              {{ userForm.get('status')?.value || 'Unknown' }}
-            </span>
+            <h5 class="mb-1 fw-bold text-dark">{{ selectedUser?.name || 'N/A' }}</h5>
+            <div>
+              <span class="badge" [ngClass]="selectedUser?.is_active ? 'bg-success' : 'bg-secondary'">
+                {{ selectedUser?.is_active ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
           </div>
         </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary-custom" (click)="closeModal()">Close Details</button>
+        <!-- User Details Card -->
+        <div class="card border-0 bg-light rounded-3 mb-4">
+          <div class="card-body p-4">
+            <div class="row gy-4">
+              <!-- Email Address -->
+              <div class="col-sm-12 d-flex align-items-center">
+                <div class="text-muted me-3" style="width: 24px; text-align: center;">
+                  <i class="fa fa-envelope fs-5"></i>
+                </div>
+                <div>
+                  <small class="text-muted d-block mb-1" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Email Address</small>
+                  <div class="fw-semibold text-dark">{{ selectedUser?.email || 'N/A' }}</div>
+                </div>
+              </div>
+              
+              <!-- Mobile Number -->
+              <div class="col-sm-6 d-flex align-items-center">
+                <div class="text-muted me-3" style="width: 24px; text-align: center;">
+                  <i class="fa fa-phone fs-5"></i>
+                </div>
+                <div>
+                  <small class="text-muted d-block mb-1" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Mobile Number</small>
+                  <div class="fw-semibold text-dark">{{ selectedUser?.mobile || 'N/A' }}</div>
+                </div>
+              </div>
+
+              <!-- Role -->
+              <div class="col-sm-6 d-flex align-items-center">
+                <div class="text-muted me-3" style="width: 24px; text-align: center;">
+                  <i class="fa fa-id-badge fs-5"></i>
+                </div>
+                <div>
+                  <small class="text-muted d-block mb-1" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Role</small>
+                  <div class="fw-semibold text-dark text-capitalize">{{ selectedUser?.role || 'N/A' }}</div>
+                </div>
+              </div>
+
+              <!-- Gender -->
+              <div class="col-sm-6 d-flex align-items-center">
+                <div class="text-muted me-3" style="width: 24px; text-align: center;">
+                  <i class="fa fa-venus-mars fs-5"></i>
+                </div>
+                <div>
+                  <small class="text-muted d-block mb-1" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Gender</small>
+                  <div class="fw-semibold text-dark text-capitalize">{{ selectedUser?.gender || 'N/A' }}</div>
+                </div>
+              </div>
+
+              <!-- Location -->
+              <div class="col-sm-6 d-flex align-items-center">
+                <div class="text-muted me-3" style="width: 24px; text-align: center;">
+                  <i class="fa fa-map-marker-alt fs-5"></i>
+                </div>
+                <div>
+                  <small class="text-muted d-block mb-1" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Location</small>
+                  <div class="fw-semibold text-dark">
+                    {{ selectedUser?.city?.name ? selectedUser?.city?.name + ', ' : '' }}{{ selectedUser?.state?.name || 'N/A' }}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-primary-custom px-4" (click)="closeModal()">Close</button>
         </div>
       </div>
       }

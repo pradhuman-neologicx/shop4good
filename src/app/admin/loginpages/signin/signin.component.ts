@@ -86,7 +86,7 @@ export class SigninComponent implements OnInit {
 
   ngOnInit(): void {
     this.signIn = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
@@ -100,48 +100,25 @@ export class SigninComponent implements OnInit {
       this.isLoading = true;
       const { email, password } = this.signIn.value;
 
-      // The API code is already there, keep it commented because it will be useful later
-      // this.apiservice.post('auth/login', { email, password }).subscribe({
-      //   next: (res: any) => {
-      //     this.isLoading = false;
-      //     if (res.status === 200) {
-      //       this.handleLoginSuccess(res);
-      //     } else {
-      //       this.notificationService.show(res.message || 'Login failed', 'error');
-      //       this.errorMessage = res.message || 'Login failed';
-      //     }
-      //   },
-      //   error: (err: any) => {
-      //     this.isLoading = false;
-      //     this.errorMessage = err.message || 'Server error occurred';
-      //   }
-      // });
-
-      // Dummy Data for Authentication
-      setTimeout(() => {
-        this.isLoading = false;
-        
-        // Mock authentication check
-        if (email === 'admin@admin.com' && password === 'admin123') {
-          const dummyResponse = {
-            status: 200,
-            data: {
-              user: {
-                id: 1,
-                name: 'Super Admin',
-                role: 'Super Admin'
-              },
-              token: 'dummy-jwt-token-for-local-dev-12345'
-            }
-          };
-          this.handleLoginSuccess(dummyResponse);
-        } else {
-          this.notificationService.show('Invalid email or password', 'error');
-          this.errorMessage = 'Invalid email or password';
+      this.loginService.AdminLoginapi({ email, password }).subscribe({
+        next: (res: any) => {
+          this.isLoading = false;
+          if (res.status === 200 || res.status === true || res.success || res.token || res.data?.token) {
+            this.handleLoginSuccess(res);
+          } else {
+            this.notificationService.show(res.message || 'Login failed', 'error');
+            this.errorMessage = res.message || 'Login failed';
+          }
+        },
+        error: (err: any) => {
+          this.isLoading = false;
+          const errorMsg = err.error?.message || err.message || 'Server error occurred';
+          this.notificationService.show(errorMsg, 'error');
+          this.errorMessage = errorMsg;
         }
-      }, 1000);
+      });
     } else {
-      if (this.signIn.get('email')?.hasError('email')) {
+      if (this.signIn.get('email')?.hasError('pattern') || this.signIn.get('email')?.hasError('email')) {
         this.notificationService.show('Please enter a valid email format', 'error');
         this.errorMessage = 'Please enter a valid email format';
       } else {
@@ -155,16 +132,17 @@ export class SigninComponent implements OnInit {
   handleLoginSuccess(response: any) {
     this.submitted = true;
     this.successName = 'Login';
-    const loginData = response.data;
+    const loginData = response.data || response;
 
     setTimeout(() => {
       this.openSecondsuccess = true;
       setTimeout(() => {
         this.openSecondsuccess = false;
-        this.jwtService.savepanelUserId(loginData.user.id);
-        this.jwtService.saveadminame(loginData.user.name);
+        const user = loginData.user || loginData;
+        this.jwtService.savepanelUserId(user.id);
+        this.jwtService.saveadminame(user.name);
         this.jwtService.saveAdminToken(loginData.token);
-        this.jwtService.saveAdminRole(loginData.user.role);
+        this.jwtService.saveAdminRole(user.role);
         this.jwtService.isLoggedIn(true);
         this.router.navigate(['/admin/dashboard']);
       }, 1800);

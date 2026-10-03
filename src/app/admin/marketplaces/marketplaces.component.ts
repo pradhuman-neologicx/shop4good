@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { AdminMockApiService } from 'src/app/core/services/admin-mock-api.service';
+import { MarketplaceService } from 'src/app/core/services/marketplace.service';
 import { NotificationService } from 'src/app/core/services/notificationnew.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -33,6 +33,7 @@ export class MarketplacesComponent implements OnInit {
   
   marketForm!: FormGroup;
   submitted = false;
+  logoFile: File | null = null;
 
   // Regex for URL validation
   urlRegex = /^(https?:\/\/)?([\w\d\-_]+\.+[A-Za-z]{2,})+\/?/;
@@ -40,7 +41,7 @@ export class MarketplacesComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
 
   constructor(
-    private mockApi: AdminMockApiService,
+    private marketplaceService: MarketplaceService,
     private fb: FormBuilder,
     private notification: NotificationService,
     private cdr: ChangeDetectorRef
@@ -54,9 +55,13 @@ export class MarketplacesComponent implements OnInit {
   initForm() {
     this.marketForm = this.fb.group({
       name: ['', Validators.required],
-      associateUrl: ['', [Validators.required, Validators.pattern(this.urlRegex)]],
+      website_url: ['', [Validators.required, Validators.pattern(this.urlRegex)]],
+      short_description: [''],
+      description: [''],
+      is_featured: [false],
+      sort_order: [1],
       imageUrl: [''],
-      trackingParam: ['', Validators.required],
+      trackingParam: [''],
       status: ['Active', Validators.required]
     });
   }
@@ -64,11 +69,12 @@ export class MarketplacesComponent implements OnInit {
   loadMarketplaces() {
     this.isLoading = true;
     this.cdr.markForCheck();
-    this.mockApi.getMarketplaces(this.page, this.limit, this.searchQuery, this.filterStatus)
+    const params = { page: this.page, per_page: this.limit, search: this.searchQuery, filter: this.filterStatus };
+    this.marketplaceService.getAdminMarketplaces(params)
       .pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
-        this.marketplaces = res.data;
-        this.total = res.pagination.total;
+        this.marketplaces = res.data.items;
+        this.total = res.data.meta.total;
         this.isLoading = false;
         this.cdr.markForCheck();
       },
@@ -119,9 +125,11 @@ export class MarketplacesComponent implements OnInit {
     this.isViewMode = false;
     this.currentId = null;
     this.submitted = false;
+    this.logoFile = null;
     this.marketForm.reset({ status: 'Active' });
     this.marketForm.enable();
     this.isModalOpen = true;
+    this.cdr.markForCheck();
   }
 
   openEditModal(item: any) {
@@ -129,9 +137,28 @@ export class MarketplacesComponent implements OnInit {
     this.isViewMode = false;
     this.currentId = item.id;
     this.submitted = false;
-    this.marketForm.patchValue(item);
+    this.logoFile = null;
+    this.marketForm.reset({ status: 'Active' });
     this.marketForm.enable();
-    this.isModalOpen = true;
+    
+    this.marketplaceService.getAdminMarketplaceById(item.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (res) => {
+        const data = res.data;
+        const patchData = {
+          ...data,
+          status: data.is_active ? 'Active' : 'Inactive',
+          imageUrl: data.logo_url || '',
+          trackingParam: data.affiliate_config?.tracking_param || ''
+        };
+        this.marketForm.patchValue(patchData);
+        this.marketForm.enable();
+        this.isModalOpen = true;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.notification.show('Failed to load marketplace details', 'error');
+      }
+    });
   }
 
   viewMarketplace(item: any) {
@@ -139,13 +166,34 @@ export class MarketplacesComponent implements OnInit {
     this.isViewMode = true;
     this.currentId = item.id;
     this.submitted = false;
-    this.marketForm.patchValue(item);
-    this.marketForm.disable(); // Disable the form for view mode
-    this.isModalOpen = true;
+    this.logoFile = null;
+    this.marketForm.reset({ status: 'Active' });
+    this.marketForm.disable(); // Disable immediately while loading
+    
+    this.marketplaceService.getAdminMarketplaceById(item.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (res) => {
+        const data = res.data;
+        const patchData = {
+          ...data,
+          status: data.is_active ? 'Active' : 'Inactive',
+          imageUrl: data.logo_url || '',
+          trackingParam: data.affiliate_config?.tracking_param || ''
+        };
+        this.marketForm.patchValue(patchData);
+        this.marketForm.disable(); // Disable the form for view mode
+        this.isModalOpen = true;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.notification.show('Failed to load marketplace details', 'error');
+      }
+    });
   }
 
   closeModal() {
     this.isModalOpen = false;
+    this.marketForm.reset({ status: 'Active' });
+    this.cdr.markForCheck();
   }
 
   onSubmit() {
@@ -155,32 +203,55 @@ export class MarketplacesComponent implements OnInit {
     }
 
     const data = this.marketForm.getRawValue();
+    // Prepare API payload via FormData
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('website_url', data.website_url);
+    formData.append('short_description', data.short_description || '');
+    formData.append('description', data.description || '');
+    formData.append('is_featured', data.is_featured ? '1' : '0');
+    formData.append('sort_order', data.sort_order?.toString() || '1');
+    formData.append('tracking_param', data.trackingParam || '');
+    
+    if (this.logoFile) { 
+      formData.append('logo', this.logoFile); 
+    }
+
     if (this.isEditMode && this.currentId) {
-      this.mockApi.updateMarketplace(this.currentId, data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      formData.append('_method', 'PUT');
+      this.marketplaceService.updateAdminMarketplace(this.currentId, formData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: (res) => {
-          this.notification.show(res.message, 'success');
+          this.notification.show(res.message || 'Updated successfully', 'success');
           this.loadMarketplaces();
           this.closeModal();
+        },
+        error: (err) => {
+          // this.notification.show('Update failed', 'error');
         }
       });
     } else {
-      this.mockApi.addMarketplace(data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      this.marketplaceService.addAdminMarketplace(formData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: (res) => {
-          this.notification.show(res.message, 'success');
+          this.notification.show(res.message || 'Added successfully', 'success');
           this.loadMarketplaces();
           this.closeModal();
+        },
+        error: (err) => {
+          // this.notification.show('Add failed', 'error');
         }
       });
     }
   }
 
   toggleStatus(item: any) {
-    const newStatus = item.status === 'Active' ? 'Inactive' : 'Active';
-    const updatedData = { ...item, status: newStatus };
-    this.mockApi.updateMarketplace(item.id, updatedData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    const newStatus = item.is_active ? 0 : 1;
+    this.marketplaceService.toggleAdminMarketplaceStatus(item.id, { is_active: newStatus }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
-        this.notification.show(`Marketplace status changed to ${newStatus}`, 'success');
+        this.notification.show(res.message || 'Status updated', 'success');
         this.loadMarketplaces();
+      },
+      error: () => {
+        this.notification.show('Failed to update status', 'error');
       }
     });
   }
@@ -188,12 +259,15 @@ export class MarketplacesComponent implements OnInit {
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
+      this.logoFile = file;
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.marketForm.patchValue({ imageUrl: e.target.result });
         this.cdr.detectChanges();
       };
       reader.readAsDataURL(file);
+      // Reset input value to allow selecting same file again if needed
+      event.target.value = '';
     }
   }
 }

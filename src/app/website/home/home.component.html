@@ -68,14 +68,24 @@
 
       <!-- Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-8">
-        @for (brand of brandLogos; track brand.name) {
-          <div class="bg-white rounded-3xl p-4 flex flex-col items-center justify-between h-[250px]  group cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-emerald-900/20">
-            <div class="flex-1 flex items-center justify-center w-full relative">
-              <img [ngSrc]="brand.src" width="160" height="60" [alt]="brand.name" class="w-full max-w-[110px] sm:max-w-[140px] h-auto object-contain transition-transform duration-500 group-hover:scale-110" />
-            </div>
-            <button class="w-full mt-auto bg-[#1a2335] text-white rounded-2xl py-3.5 px-4 font-semibold text-sm flex items-center justify-center gap-2 group-hover:bg-emerald-600 transition-colors duration-300 shadow-sm shadow-[#1a2335]/50">
-              Start Shopping <i class="fa-solid fa-arrow-right -rotate-45 text-sm ml-1"></i>
-            </button>
+        @if (isLoadingBrands) {
+          <div class="col-span-1 sm:col-span-2 md:col-span-3 flex justify-center items-center py-12">
+            <div class="spinner-border text-emerald-500" role="status" style="width: 3rem; height: 3rem; border-width: 0.3em;"></div>
+          </div>
+        } @else if (brandLogos.length > 0) {
+          @for (brand of brandLogos; track brand.name) {
+            <a [href]="brand.url" target="_blank" class="bg-white rounded-3xl p-4 flex flex-col items-center justify-between h-[250px] group cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-emerald-900/20">
+              <div class="flex-1 flex items-center justify-center w-full relative">
+                <img [src]="brand.src" [alt]="brand.name" class="w-full max-w-[110px] sm:max-w-[140px] h-auto object-contain transition-transform duration-500 group-hover:scale-110" />
+              </div>
+              <button class="w-full mt-auto bg-[#1a2335] text-white rounded-2xl py-3.5 px-4 font-semibold text-sm flex items-center justify-center gap-2 group-hover:bg-emerald-600 transition-colors duration-300 shadow-sm shadow-[#1a2335]/50 pointer-events-none">
+                Start Shopping <i class="fa-solid fa-arrow-right -rotate-45 text-sm ml-1"></i>
+              </button>
+            </a>
+          }
+        } @else {
+          <div class="col-span-1 sm:col-span-2 md:col-span-3 text-center text-slate-400 py-12">
+            No partner brands available right now.
           </div>
         }
       </div>

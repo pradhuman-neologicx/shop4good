@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
-import { AdminMockApiService } from 'src/app/core/services/admin-mock-api.service';
+import { CausesService } from 'src/app/core/services/causes.service';
 import { NotificationService } from 'src/app/core/services/notificationnew.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -36,10 +36,16 @@ export class CharitiesComponent implements OnInit {
   submitted = false;
   todayDate = new Date().toISOString().split('T')[0];
 
+  coverImageFile: File | null = null;
+  coverImagePreview: string | null = null;
+
+  galleryImageFiles: File[] = [];
+  galleryImagePreviews: string[] = [];
+
   private destroyRef = inject(DestroyRef);
 
   constructor(
-    private mockApi: AdminMockApiService,
+    private causesService: CausesService,
     private fb: FormBuilder,
     private notification: NotificationService,
     private cdr: ChangeDetectorRef
@@ -53,21 +59,18 @@ export class CharitiesComponent implements OnInit {
   initForm() {
     this.charityForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-      shortDescription: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(300)]],
-      tags: ['', Validators.required],
-      longDescription: ['', Validators.required],
-      logo: [''],
-      coverImage: ['', Validators.required],
-      status: ['Active', Validators.required],
-      startsAt: ['', Validators.required],
-      endsAt: ['', Validators.required],
-      galleryImages: [[], Validators.required]
+      short_description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(300)]],
+      description: ['', Validators.required],
+      tags: [''],
+      is_featured: [false],
+      starts_at: ['', Validators.required],
+      ends_at: ['', Validators.required]
     }, { validators: this.dateRangeValidator });
   }
 
   dateRangeValidator(group: AbstractControl): ValidationErrors | null {
-    const startsAt = group.get('startsAt')?.value;
-    const endsAt = group.get('endsAt')?.value;
+    const startsAt = group.get('starts_at')?.value;
+    const endsAt = group.get('ends_at')?.value;
     const errors: any = {};
 
     if (startsAt) {
@@ -88,11 +91,23 @@ export class CharitiesComponent implements OnInit {
   loadCharities() {
     this.isLoading = true;
     this.cdr.markForCheck();
-    this.mockApi.getCharities(this.page, this.limit, this.searchQuery, this.filterStatus)
+    
+    let params: any = {
+      page: this.page,
+      per_page: this.limit
+    };
+    if (this.searchQuery) {
+      params.search = this.searchQuery;
+    }
+    if (this.filterStatus !== 'All') {
+      params.is_active = this.filterStatus === 'Active' ? 1 : 0;
+    }
+
+    this.causesService.getAdminCauses(params)
       .pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
-        this.charities = res.data;
-        this.total = res.pagination.total;
+        this.charities = res.data?.items || [];
+        this.total = res.data?.meta?.total || 0;
         this.isLoading = false;
         this.cdr.markForCheck();
       },
@@ -129,7 +144,7 @@ export class CharitiesComponent implements OnInit {
   }
 
   onLimitChange() {
-    this.page = 1; // Reset to first page
+    this.page = 1;
     this.loadCharities();
   }
 
@@ -143,7 +158,13 @@ export class CharitiesComponent implements OnInit {
     this.isViewMode = false;
     this.currentId = null;
     this.submitted = false;
-    this.charityForm.reset({ status: 'Active' });
+    
+    this.coverImageFile = null;
+    this.coverImagePreview = null;
+    this.galleryImageFiles = [];
+    this.galleryImagePreviews = [];
+    
+    this.charityForm.reset({ is_featured: false });
     this.charityForm.enable();
     this.isModalOpen = true;
   }
@@ -153,9 +174,38 @@ export class CharitiesComponent implements OnInit {
     this.isViewMode = false;
     this.currentId = item.id;
     this.submitted = false;
-    this.charityForm.patchValue(item);
+    
+    this.coverImageFile = null;
+    this.coverImagePreview = null;
+    this.galleryImageFiles = [];
+    this.galleryImagePreviews = [];
+    
+    this.charityForm.reset({ is_featured: false });
     this.charityForm.enable();
-    this.isModalOpen = true;
+    
+    this.causesService.getAdminCauseById(item.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (res) => {
+        const data = res.data;
+        this.coverImagePreview = data.cover_image_url || null;
+        this.galleryImagePreviews = data.images ? data.images.map((i:any) => typeof i === 'string' ? i : i.url) : [];
+        
+        this.charityForm.patchValue({
+          name: data.name,
+          short_description: data.short_description,
+          description: data.description,
+          tags: data.tags_string || (Array.isArray(data.tags) ? data.tags.join(', ') : data.tags) || '',
+          is_featured: data.is_featured,
+          starts_at: data.starts_at ? data.starts_at.split('T')[0] : '',
+          ends_at: data.ends_at ? data.ends_at.split('T')[0] : ''
+        });
+        
+        this.isModalOpen = true;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.notification.show('Failed to load charity details', 'error');
+      }
+    });
   }
 
   viewCharity(item: any) {
@@ -163,9 +213,49 @@ export class CharitiesComponent implements OnInit {
     this.isViewMode = true;
     this.currentId = item.id;
     this.submitted = false;
-    this.charityForm.patchValue(item);
-    this.charityForm.disable(); // Disable the form for view mode
-    this.isModalOpen = true;
+    
+    this.coverImageFile = null;
+    this.coverImagePreview = null;
+    this.galleryImageFiles = [];
+    this.galleryImagePreviews = [];
+    
+    this.charityForm.reset({ is_featured: false });
+    this.charityForm.disable(); // Disable immediately
+    
+    this.causesService.getAdminCauseById(item.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (res) => {
+        const data = res.data;
+        this.coverImagePreview = data.cover_image_url || null;
+        this.galleryImagePreviews = data.images ? data.images.map((i:any) => typeof i === 'string' ? i : i.url) : [];
+        
+        this.charityForm.patchValue({
+          name: data.name,
+          short_description: data.short_description,
+          description: data.description,
+          tags: data.tags_string || (Array.isArray(data.tags) ? data.tags.join(', ') : data.tags) || '',
+          is_featured: data.is_featured,
+          starts_at: data.starts_at ? data.starts_at.split('T')[0] : '',
+          ends_at: data.ends_at ? data.ends_at.split('T')[0] : ''
+        });
+        
+        this.isModalOpen = true;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.notification.show('Failed to load charity details', 'error');
+      }
+    });
+  }
+
+  get tagsArray(): string[] {
+    const tagsVal = this.charityForm.get('tags')?.value;
+    if (Array.isArray(tagsVal)) {
+      return tagsVal;
+    }
+    if (typeof tagsVal === 'string' && tagsVal.trim()) {
+      return tagsVal.split(',').map(t => t.trim()).filter(t => t.length > 0);
+    }
+    return [];
   }
 
   closeModal() {
@@ -174,23 +264,49 @@ export class CharitiesComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    
     if (this.charityForm.invalid) {
       return;
     }
+    
+    if (!this.isEditMode && !this.coverImageFile) {
+       this.notification.show('Cover image is required', 'error');
+       return;
+    }
 
-    const data = this.charityForm.getRawValue();
+    const formValues = this.charityForm.getRawValue();
+    const formData = new FormData();
+    
+    formData.append('name', formValues.name);
+    formData.append('short_description', formValues.short_description);
+    formData.append('description', formValues.description);
+    if (formValues.tags) {
+      formData.append('tags', formValues.tags);
+    }
+    formData.append('is_featured', formValues.is_featured ? '1' : '0');
+    formData.append('starts_at', formValues.starts_at);
+    formData.append('ends_at', formValues.ends_at);
+    
+    if (this.coverImageFile) {
+      formData.append('cover_image', this.coverImageFile);
+    }
+    
+    this.galleryImageFiles.forEach((file) => {
+      formData.append('images[]', file);
+    });
     if (this.isEditMode && this.currentId) {
-      this.mockApi.updateCharity(this.currentId, data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      formData.append('_method', 'PUT');
+      this.causesService.updateAdminCause(this.currentId, formData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: (res) => {
-          this.notification.show(res.message, 'success');
+          this.notification.show(res.message || 'Cause updated successfully', 'success');
           this.loadCharities();
           this.closeModal();
         }
       });
     } else {
-      this.mockApi.addCharity(data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      this.causesService.addAdminCause(formData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: (res) => {
-          this.notification.show(res.message, 'success');
+          this.notification.show(res.message || 'Cause added successfully', 'success');
           this.loadCharities();
           this.closeModal();
         }
@@ -199,11 +315,11 @@ export class CharitiesComponent implements OnInit {
   }
 
   toggleStatus(item: any) {
-    const newStatus = item.status === 'Active' ? 'Inactive' : 'Active';
-    const updatedData = { ...item, status: newStatus };
-    this.mockApi.updateCharity(item.id, updatedData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    const newStatus = !item.is_active;
+    const updatedData = { is_active: newStatus };
+    this.causesService.toggleAdminCauseStatus(item.id, updatedData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
-        this.notification.show(`Cause status changed to ${newStatus}`, 'success');
+        this.notification.show(res.message || `Cause status changed to ${newStatus ? 'Active' : 'Inactive'}`, 'success');
         this.loadCharities();
       }
     });
@@ -215,43 +331,48 @@ export class CharitiesComponent implements OnInit {
     if (field === 'galleryImages') {
       const files = event.target.files;
       if (files && files.length > 0) {
-        const currentImages = this.charityForm.get('galleryImages')?.value || [];
-        const remaining = 5 - currentImages.length;
+        const remaining = 5 - this.galleryImageFiles.length;
         if (remaining <= 0) {
           this.notification.show('Maximum 5 gallery images allowed', 'error');
+          event.target.value = null;
           return;
         }
-        const filesToProcess = Array.from(files).slice(0, remaining);
+        const filesToProcess = Array.from(files).slice(0, remaining) as File[];
         if (files.length > remaining) {
           this.notification.show(`Only ${remaining} more image(s) can be added (max 5)`, 'error');
         }
-        filesToProcess.forEach((file: any) => {
+        
+        filesToProcess.forEach((file: File) => {
+          this.galleryImageFiles = [...this.galleryImageFiles, file];
           const reader = new FileReader();
           reader.onload = (e: any) => {
-            currentImages.push(e.target.result);
-            this.charityForm.patchValue({ galleryImages: [...currentImages] });
+            this.galleryImagePreviews = [...this.galleryImagePreviews, e.target.result];
             this.cdr.detectChanges();
           };
           reader.readAsDataURL(file);
         });
       }
-    } else {
+    } else if (field === 'coverImage') {
       const file = event.target.files[0];
       if (file) {
+        this.coverImageFile = file;
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          this.charityForm.patchValue({ [field]: e.target.result });
+          this.coverImagePreview = e.target.result;
           this.cdr.detectChanges();
         };
         reader.readAsDataURL(file);
       }
     }
+    
+    // Clear the input value so the same file can be selected again without issues
+    event.target.value = null;
   }
 
   removeGalleryImage(index: number) {
-    const currentImages = this.charityForm.get('galleryImages')?.value || [];
-    currentImages.splice(index, 1);
-    this.charityForm.patchValue({ galleryImages: [...currentImages] });
+    this.galleryImagePreviews.splice(index, 1);
+    this.galleryImageFiles.splice(index, 1);
+    this.cdr.detectChanges();
   }
 
   onDragStart(index: number) {
@@ -265,10 +386,22 @@ export class CharitiesComponent implements OnInit {
   onDrop(event: DragEvent, dropIndex: number) {
     event.preventDefault();
     if (this.dragIndex === null || this.dragIndex === dropIndex) return;
-    const images = [...(this.charityForm.get('galleryImages')?.value || [])];
-    const [moved] = images.splice(this.dragIndex, 1);
-    images.splice(dropIndex, 0, moved);
-    this.charityForm.patchValue({ galleryImages: images });
+    
+    const previews = [...this.galleryImagePreviews];
+    const files = [...this.galleryImageFiles];
+    
+    const [movedPreview] = previews.splice(this.dragIndex, 1);
+    previews.splice(dropIndex, 0, movedPreview);
+    
+    // Only move files if they exist (handling mixed existing urls and new files could be complex,
+    // assuming they just clear and re-upload if they want to change order of new files for now)
+    if (files.length === previews.length) {
+      const [movedFile] = files.splice(this.dragIndex, 1);
+      files.splice(dropIndex, 0, movedFile);
+      this.galleryImageFiles = files;
+    }
+    
+    this.galleryImagePreviews = previews;
     this.dragIndex = null;
     this.cdr.detectChanges();
   }

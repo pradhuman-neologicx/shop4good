@@ -11,10 +11,10 @@ export class JwtService {
   // admin panel
 
   getisLoggedIn(): boolean {
-    return window.localStorage.getItem('isloggedIn') === 'true';
+    return window.localStorage.getItem('shop4good_admin_isloggedIn') === 'true';
   }
   isLoggedIn(isloggedIn: boolean) {
-    window.localStorage['isloggedIn'] =
+    window.localStorage['shop4good_admin_isloggedIn'] =
       isloggedIn != undefined ? isloggedIn : false;
   }
 
@@ -74,28 +74,28 @@ export class JwtService {
   }
 
   getpanelUserId(): Number {
-    return window.localStorage['panel_user_id'];
+    return window.localStorage['shop4good_admin_panel_user_id'];
   }
 
   savepanelUserId(userid: Number) {
-    window.localStorage['panel_user_id'] = userid;
+    window.localStorage['shop4good_admin_panel_user_id'] = userid;
   }
   getadminame(): String {
-    return window.localStorage['adminname'];
+    return window.localStorage['shop4good_admin_adminname'];
   }
 
   saveadminame(adminname: string) {
-    window.localStorage['adminname'] = adminname;
+    window.localStorage['shop4good_admin_adminname'] = adminname;
   }
 
   saveAdminToken(Token: String) {
-    window.localStorage['Token'] = Token;
+    window.localStorage['shop4good_admin_Token'] = Token;
   }
   saveAdminRole(Role: String) {
-    window.localStorage['Role'] = Role;
+    window.localStorage['shop4good_admin_Role'] = Role;
   }
   getadmiRole(): String {
-    return window.localStorage['Role'];
+    return window.localStorage['shop4good_admin_Role'];
   }
   getpanelPartyId(): Number {
     return window.localStorage['Party_id'];
@@ -114,11 +114,11 @@ export class JwtService {
   }
 
   getToken(): String {
-    return window.localStorage['Token'];
+    return window.localStorage['shop4good_admin_Token'];
   }
 
   saveToken(Token: String) {
-    window.localStorage['Token'] = Token;
+    window.localStorage['shop4good_admin_Token'] = Token;
   }
 
   // Profile Image of
@@ -214,12 +214,12 @@ export class JwtService {
 
   ///call on logout
   clearStorage() {
-    window.localStorage.removeItem('isloggedIn');
-    window.localStorage.removeItem('panel_user_id');
+    window.localStorage.removeItem('shop4good_admin_isloggedIn');
+    window.localStorage.removeItem('shop4good_admin_panel_user_id');
 
-    window.localStorage.removeItem('Token');
-    window.localStorage.removeItem('Role');
-    window.localStorage.removeItem('adminname');
+    window.localStorage.removeItem('shop4good_admin_Token');
+    window.localStorage.removeItem('shop4good_admin_Role');
+    window.localStorage.removeItem('shop4good_admin_adminname');
     window.localStorage.removeItem('isfirstlogin');
 
     // window.localStorage.removeItem("isloggedStudent");
@@ -236,5 +236,46 @@ export class JwtService {
     window.localStorage.removeItem('ImageUrlStudent');
     window.localStorage.removeItem('SessionstartdateStudent');
     window.localStorage.removeItem('SessionEnddateStudent');
+  }
+
+  // Customer Panel
+  getCustomerIsLoggedIn(): boolean {
+    return window.localStorage.getItem('shop4good_customer_isloggedIn') === 'true';
+  }
+
+  setCustomerIsLoggedIn(isloggedIn: boolean) {
+    window.localStorage['shop4good_customer_isloggedIn'] = isloggedIn ? 'true' : 'false';
+  }
+
+  getCustomerToken(): string {
+    return window.localStorage['shop4good_customer_Token'] || '';
+  }
+
+  saveCustomerToken(token: string) {
+    window.localStorage['shop4good_customer_Token'] = token;
+  }
+
+  getCustomerId(): string {
+    return window.localStorage['shop4good_customer_id'] || '';
+  }
+
+  saveCustomerId(id: string | number) {
+    window.localStorage['shop4good_customer_id'] = id.toString();
+  }
+
+  getCustomerData(): any {
+    const data = window.localStorage.getItem('shop4good_customer_data');
+    return data ? JSON.parse(data) : null;
+  }
+
+  saveCustomerData(data: any) {
+    window.localStorage.setItem('shop4good_customer_data', JSON.stringify(data));
+  }
+
+  clearCustomerStorage() {
+    window.localStorage.removeItem('shop4good_customer_isloggedIn');
+    window.localStorage.removeItem('shop4good_customer_Token');
+    window.localStorage.removeItem('shop4good_customer_id');
+    window.localStorage.removeItem('shop4good_customer_data');
   }
 }

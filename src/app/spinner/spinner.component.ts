@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectorRef, DestroyRef, inject } from '@angular/core';
 import { LoaderService } from '../core/services/loader.service';
 import { NgOptimizedImage } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-spinner',
@@ -10,8 +11,14 @@ import { NgOptimizedImage } from '@angular/common';
     imports: [NgOptimizedImage]
 })
 export class SpinnerComponent implements OnInit {
-  constructor(public loader: LoaderService) { }
+  private destroyRef = inject(DestroyRef);
+  
+  constructor(public loader: LoaderService, private cdr: ChangeDetectorRef) {
+  }
 
   ngOnInit(): void {
+    this.loader.loading$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.cdr.detectChanges();
+    });
   }
 }
