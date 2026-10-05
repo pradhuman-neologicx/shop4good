@@ -1,0 +1,35 @@
+<div class="relative w-full h-[calc(100vh-70px)] min-h-[500px] flex overflow-hidden bg-[#08265C]">
+  
+  <!-- Left Side (Static) -->
+  <div class="w-1/2 h-full relative">
+    <img [src]="leftImage" alt="Good Shopping Side" class="absolute inset-0 w-full h-full object-cover object-right" />
+  </div>
+  
+  <!-- Right Side (Dynamic) -->
+  <div class="w-1/2 h-full relative">
+    @for (image of rightImages; track image; let i = $index) {
+      <img 
+        [src]="image" 
+        [alt]="'Impact Side ' + i" 
+        class="absolute inset-0 w-full h-full object-cover object-left transition-opacity duration-1000"
+        [class.opacity-100]="i === currentIndex"
+        [class.opacity-0]="i !== currentIndex"
+      />
+    }
+  </div>
+
+  <!-- Gradient Overlay for Text Readability -->
+  <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-transparent pointer-events-none"></div>
+
+  <!-- Text Content -->
+  <div class="absolute top-0 left-0 w-full pt-[12%] md:pt-[6%] px-4 flex flex-col items-center text-center pointer-events-none">
+    <h1 class="text-white text-[24px] md:text-[44px] lg:text-[54px] font-bold font-heading mb-3 md:mb-5 uppercase tracking-wide leading-[1.4]">
+      THE GOODS ARE FOR YOU <br/>
+      THE GOOD IS FOR THEM
+    </h1>
+    <p class="text-white/90 text-sm md:text-lg lg:text-xl font-medium max-w-2xl">
+      Because when you shop, you buy a better future for someone else
+      </p>
+    </div>
+
+  </div>

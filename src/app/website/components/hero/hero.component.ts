@@ -31,7 +31,7 @@ export class HeroComponent implements OnInit, OnDestroy {
   slides: HeroSlide[] = [
     {
       id: 1,
-      image: 'assets/hero_slide_1.jpg',
+      image: 'assets/hero1.png',
       titleLine1: 'The Goods Are For You,',
       titleAccent: 'The Good Is For Them',
       description:
@@ -39,7 +39,7 @@ export class HeroComponent implements OnInit, OnDestroy {
     },
     {
       id: 2,
-      image: 'assets/hero_slide_2.jpg',
+      image: 'assets/hero2.png',
       titleLine1: 'Shop Your Favorite Brands,',
       titleAccent: 'Support Your Causes',
       description:
@@ -47,7 +47,7 @@ export class HeroComponent implements OnInit, OnDestroy {
     },
     {
       id: 3,
-      image: 'assets/hero_slide_3.jpg',
+      image: 'assets/hero3.png',
       titleLine1: 'Every Purchase Counts,',
       titleAccent: 'Every Cause Matters',
       description:
