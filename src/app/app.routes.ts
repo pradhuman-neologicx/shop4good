@@ -28,6 +28,10 @@ export const routes: Routes = [
     loadComponent: () => import('./website/causes/slug/slug.component').then(c => c.SlugComponent)
   },
   {
+    path: 'causes-new/:id',
+    loadComponent: () => import('./website/causes-new-details/causes-new-details.component').then(c => c.CausesNewDetailsComponent)
+  },
+  {
     path: 'auth/login',
     loadComponent: () => import('./website/auth/login/login.component').then(c => c.LoginComponent)
   },

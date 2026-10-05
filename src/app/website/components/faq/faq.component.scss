@@ -25,17 +25,17 @@
 
 
 .faq-section__eyebrow {
-  font-family: var(--w-font-primary, 'DM Sans', sans-serif);
+  // font-family: var(--w-font-primary, 'DM Sans', sans-serif);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--w-accent, #10B981);
+  color:  #08265C;
   margin-bottom: 16px;
 }
 
 .faq-section__title {
-  font-family: var(--w-font-serif, 'Cormorant Garamond', serif);
+  // font-family: var(--w-font-serif, 'Cormorant Garamond', serif);
   font-size: clamp(30px, 4vw, 42px);
   font-weight: 600;
   color: var(--w-text-primary, #0A0A0A);
@@ -43,7 +43,7 @@
   margin-bottom: 20px;
 
   span {
-    color: var(--w-accent, #10B981);
+    color: #08265C;
     font-style: italic;
   }
 }
@@ -56,14 +56,14 @@
 }
 
 .faq-section__contact-link {
-  color: var(--w-accent, #10B981);
+  color:  #08265C;
   font-weight: 600;
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease;
 
   &:hover {
-    border-bottom-color: var(--w-accent, #10B981);
+    border-bottom-color: #08265C;
   }
 }
 
@@ -102,10 +102,10 @@
 
   &--open {
     .faq-section__question {
-      color: var(--w-accent-dark, #059669);
+      color:  #08265C;
 
       i {
-        color: var(--w-accent, #10B981);
+        color:  #08265C;
         background: var(--w-accent-muted, rgba(16, 185, 129, 0.15));
       }
     }
@@ -130,7 +130,7 @@
   transition: color 0.2s ease;
 
   &:hover {
-    color: var(--w-accent-dark, #059669);
+    color:  #08265C;
   }
 
   i {

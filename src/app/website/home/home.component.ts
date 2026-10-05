@@ -13,9 +13,11 @@ import { FooterComponent } from '../components/footer/footer.component';
 import { HeroComponent } from '../components/hero/hero.component';
 import { NgoImpactComponent } from '../components/ngo-impact/ngo-impact.component';
 import { FaqComponent } from '../components/faq/faq.component';
-import { CausesComponent } from '../components/causes/causes.component';
 import { MarketplaceService } from '../../core/services/marketplace.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CausesNewComponent } from '../components/causes-new/causes-new.component';
+import { HowWorksComponent } from '../components/how-works/how-works.component';
+import { ImpactProofComponent } from '../components/impact-proof/impact-proof.component';
 
 @Component({
   selector: 'app-home',
@@ -26,9 +28,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     RouterLink,
     FooterComponent,
     HeroComponent,
-    NgoImpactComponent,
+    // NgoImpactComponent,
     FaqComponent,
-    CausesComponent],
+    CausesNewComponent,
+    HowWorksComponent,
+    ImpactProofComponent],
 })
 export class HomeComponent implements OnInit {
   brandLogos: any[] = [];

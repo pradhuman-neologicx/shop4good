@@ -4,8 +4,20 @@
   <!-- ═══ HERO SLIDER ═══ -->
   <app-hero></app-hero>
 
+  <!-- ═══ IMPACT SUMMARY ═══ -->
+  <section class="max-w-7xl mx-auto px-4 py-10 md:py-16">
+    <div class="">
+      <h2 class="sm:text-center text-[28px] md:text-4xl lg:text-[42px] font-bold text-[#08265C] mb-4 md:mb-6 leading-[1.2] font-heading">
+        Your Shopping Cart Can Change the World
+      </h2>
+      <p class="text-gray-600 sm:text-center text-base md:text-[18px] leading-relaxed">
+        You shop from brands you already love. We donate 2% of every order value to the cause you choose, turning every purchase into meaningful support for the causes you care about most.
+      </p>
+    </div>
+  </section>
+
   <!-- ═══ INTRO / ABOUT ═══ -->
-  <section class="modern-intro">
+  <!-- <section class="modern-intro">
     <div class="modern-intro__container">
       <div class="modern-intro__content">
         <span class="modern-intro__badge">Welcome to Shop4Good</span>
@@ -21,11 +33,11 @@
         </a>
       </div>
       <div class="modern-intro__visual">
-        <!-- Decorative background elements -->
+      
         <div class="modern-intro__blob modern-intro__blob--1"></div>
         <div class="modern-intro__blob modern-intro__blob--2"></div>
 
-        <!-- Floating Stats Cards -->
+       
         <div class="modern-intro__stat-card modern-intro__stat-card--1">
           <div class="stat-icon">🛍️</div>
           <div class="stat-info">
@@ -49,38 +61,39 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   
   <!-- ═══ CAUSES SECTION ═══ -->
-  <app-causes></app-causes>
+  <app-causes-new></app-causes-new>
 
   <!-- ═══ PARTNER BRANDS ═══ -->
-  <section id="partner-brands" class="bg-[#131b2c] py-24 px-6 md:px-12">
+  <section id="partner-brands" class="bg-[#08265C] py-24 px-6 md:px-12">
     <div class="max-w-5xl mx-auto">
       <!-- Heading -->
       <div class="mb-14 text-center md:text-left">
-        <p class="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mb-4">Shop from your favourite brands</p>
-        <h2 class="text-white font-serif text-4xl md:text-5xl lg:text-[56px] leading-[1.1] tracking-tight max-w-2xl mx-auto md:mx-0">
-          GREAT BRANDS<br/>
-          GREATER GOODS
+        <p class="text-white text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mb-4">WHERE DO YOU WANT TO SHOP TODAY?</p>
+        <h2 class="text-white font-semibold text-4xl md:text-5xl lg:text-[56px] leading-[1.1] tracking-tight max-w-2xl mx-auto md:mx-0">
+          START SHOPPING<br/>
+          FOR GOOD
         </h2>
       </div>
 
       <!-- Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         @if (isLoadingBrands) {
-          <div class="col-span-1 sm:col-span-2 md:col-span-3 flex justify-center items-center py-12">
+          <div class="col-span-2 md:col-span-4 flex justify-center items-center py-12">
             <div class="spinner-border text-emerald-500" role="status" style="width: 3rem; height: 3rem; border-width: 0.3em;"></div>
           </div>
         } @else if (brandLogos.length > 0) {
           @for (brand of brandLogos; track brand.name) {
-            <a [href]="brand.url" target="_blank" class="bg-white rounded-3xl p-4 flex flex-col items-center justify-between h-[250px] group cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-emerald-900/20">
-              <div class="flex-1 flex items-center justify-center w-full relative">
-                <img [src]="brand.src" [alt]="brand.name" class="w-full max-w-[110px] sm:max-w-[140px] h-auto object-contain transition-transform duration-500 group-hover:scale-110" />
+            <a [href]="brand.url" target="_blank" class="bg-white rounded-[24px] flex flex-col items-center justify-between h-[180px] sm:h-[220px] group cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.12)] overflow-hidden shadow-[0_4px_15px_rgba(0,0,0,0.06)] border border-gray-100">
+              <div class="flex-1 flex items-center justify-center w-full relative p-4">
+                <img [src]="brand.src" [alt]="brand.name" class="w-full max-w-[100px] sm:max-w-[140px] h-auto object-contain transition-transform duration-500 group-hover:scale-110" />
               </div>
-              <button class="w-full mt-auto bg-[#1a2335] text-white rounded-2xl py-3.5 px-4 font-semibold text-sm flex items-center justify-center gap-2 group-hover:bg-emerald-600 transition-colors duration-300 shadow-sm shadow-[#1a2335]/50 pointer-events-none">
-                Start Shopping <i class="fa-solid fa-arrow-right -rotate-45 text-sm ml-1"></i>
-              </button>
+              <div class="w-full mt-auto bg-[#087F6A] text-white py-2 sm:py-3.5 px-4 font-medium text-sm sm:text-base flex items-center justify-center gap-2 group-hover:bg-[#066c5a] transition-colors duration-300 pointer-events-none shrink-0">
+                Start Shopping 
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="mb-[1px]"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </div>
             </a>
           }
         } @else {
@@ -93,17 +106,18 @@
   </section>
 
   <!-- ═══ HOW IT WORKS ═══ -->
-  <section class="steps-section">
+ 
+   <app-how-works></app-how-works>
+  <!-- <section class="steps-section">
     <div class="steps-section__header text-center">
       <p class="steps-section__eyebrow">Simple Process</p>
       <h2 class="steps-section__title">How This Works<br/><span>In 5 Steps</span></h2>
     </div>
 
     <div class="steps-section__inner">
-      <!-- Left Side: Stacking Cards -->
+     
       <div class="steps-section__cards">
-        
-        <!-- Step 1 -->
+       
         <div class="steps-section__card" style="top: 120px; z-index: 1;">
           <div class="steps-section__number">1</div>
           <div class="steps-section__card-content">
@@ -115,7 +129,7 @@
           </div>
         </div>
 
-        <!-- Step 2 -->
+       
         <div class="steps-section__card" style="top: 140px; z-index: 2;">
           <div class="steps-section__number">2</div>
           <div class="steps-section__card-content">
@@ -127,7 +141,7 @@
           </div>
         </div>
 
-        <!-- Step 3 -->
+     
         <div class="steps-section__card" style="top: 160px; z-index: 3;">
           <div class="steps-section__number">3</div>
           <div class="steps-section__card-content">
@@ -139,7 +153,7 @@
           </div>
         </div>
 
-        <!-- Step 4 -->
+   
         <div class="steps-section__card" style="top: 180px; z-index: 4;">
           <div class="steps-section__number">4</div>
           <div class="steps-section__card-content">
@@ -151,7 +165,7 @@
           </div>
         </div>
 
-        <!-- Step 5 -->
+       
         <div class="steps-section__card" style="top: 200px; z-index: 5;">
           <div class="steps-section__number">5</div>
           <div class="steps-section__card-content">
@@ -165,18 +179,18 @@
 
       </div>
 
-      <!-- Right Side: Sticky Image -->
+    
       <div class="steps-section__visual">
         <div class="steps-section__image-wrapper">
           <img ngSrc="assets/steps_image.jpg" width="800" height="600" alt="How it works" />
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- ═══ NGO IMPACT ═══ -->
-  <app-ngo-impact></app-ngo-impact>
-
+  <app-impact-proof></app-impact-proof>
+  
   <!-- ═══ FAQ ═══ -->
   <app-faq></app-faq>
 

@@ -112,7 +112,7 @@ body {
   --w-black: #0A0A0A;
   --w-black-soft: #1A1A1A;
   --w-black-mid: #2A2A2A;
-
+  --w-heading-blue:#08265C;
   --w-grey-900: #1C1C1C;
   --w-grey-800: #2E2E2E;
   --w-grey-700: #3D3D3D;
@@ -189,7 +189,7 @@ body {
 
 body {
   margin: 0;
-  font-family: 'Lato', sans-serif !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
   line-height: 1.6 !important;
   font-size: 16px !important;
   box-sizing: border-box !important;
@@ -200,12 +200,15 @@ h2,
 h3,
 h4,
 h5,
-h6,
+h6 {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
 input,
 button,
 select,
 textarea {
-  font-family: 'Lato', sans-serif !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
 
@@ -628,12 +631,12 @@ mat-sidenav-container {
 
 .mat-mdc-menu-panel {
   background-color: #fff !important;
-  font-family: 'Lato', sans-serif !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
 .mat-mdc-menu-content,
 .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
-  font-family: 'Lato', sans-serif !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
 
