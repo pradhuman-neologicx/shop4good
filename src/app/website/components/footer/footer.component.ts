@@ -41,11 +41,10 @@ export class FooterComponent {
   ];
 
   causeLinks = [
-    { label: 'Clean Oceans Initiative', href: '/causes' },
-    { label: 'Save The Trees Foundation', href: '/causes' },
-    { label: 'Girl Child Education', href: '/causes' },
-    { label: 'Rural Electrification', href: '/causes' },
-    { label: 'Wildlife Protection', href: '/causes' },
+    { label: 'Kids Education', href: '/causes-new/kids' },
+    { label: 'Women Empowerment', href: '/causes-new/women' },
+    { label: 'Senior Citizen Care', href: '/causes-new/senior' },
+    { label: 'Pet Care', href: '/causes-new/pets' },
   ];
 
   socials = [
