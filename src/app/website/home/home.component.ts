@@ -18,6 +18,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CausesNewComponent } from '../components/causes-new/causes-new.component';
 import { HowWorksComponent } from '../components/how-works/how-works.component';
 import { ImpactProofComponent } from '../components/impact-proof/impact-proof.component';
+import { JwtService } from '../../core/services/jwt.service';
 
 @Component({
   selector: 'app-home',
@@ -37,7 +38,9 @@ import { ImpactProofComponent } from '../components/impact-proof/impact-proof.co
 export class HomeComponent implements OnInit {
   brandLogos: any[] = [];
   isLoadingBrands = true;
+  isLoggedIn = false;
   private destroyRef = inject(DestroyRef);
+  private jwtService = inject(JwtService);
 
   constructor(
     private marketplaceService: MarketplaceService,
@@ -45,6 +48,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.isLoggedIn = this.jwtService.getCustomerIsLoggedIn();
     this.loadMarketplaces();
   }
 
