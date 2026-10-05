@@ -180,19 +180,30 @@
 }
 
 // ── RESPONSIVE ───────────────────────────────
+@media (max-width: 992px) {
+  .faq-section__inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .faq-section__left {
+    position: static;
+    text-align: center;
+    align-items: center;
+  }
+
+  .faq-section__header {
+    text-align: center;
+  }
+}
+
 @media (max-width: 768px) {
   .faq-section {
     padding: 56px 20px;
   }
 
   .faq-section__inner {
-    grid-template-columns: 1fr;
     gap: 40px;
-  }
-
-  .faq-section__header {
-    position: static;
-    text-align: center;
   }
 
   .faq-section__question {
