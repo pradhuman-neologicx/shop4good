@@ -11,7 +11,7 @@ import { NavbarComponent } from '../components/navbar/navbar.component';
 import { RouterLink } from '@angular/router';
 import { FooterComponent } from '../components/footer/footer.component';
 import { HeroComponent } from '../components/hero/hero.component';
-import { NgoImpactComponent } from '../components/ngo-impact/ngo-impact.component';
+// import { NgoImpactComponent } from '../components/ngo-impact/ngo-impact.component';
 import { FaqComponent } from '../components/faq/faq.component';
 import { MarketplaceService } from '../../core/services/marketplace.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -19,7 +19,7 @@ import { CausesNewComponent } from '../components/causes-new/causes-new.componen
 import { HowWorksComponent } from '../components/how-works/how-works.component';
 import { ImpactProofComponent } from '../components/impact-proof/impact-proof.component';
 import { JwtService } from '../../core/services/jwt.service';
-import { HeroNewComponent } from '../components/hero-new/hero-new.component';
+// import { HeroNewComponent } from '../components/hero-new/hero-new.component';
 
 @Component({
   selector: 'app-home',
@@ -30,7 +30,7 @@ import { HeroNewComponent } from '../components/hero-new/hero-new.component';
     RouterLink,
     FooterComponent,
     HeroComponent,
-    HeroNewComponent,
+    // HeroNewComponent,
     // NgoImpactComponent,
     FaqComponent,
     CausesNewComponent,

@@ -21,7 +21,7 @@ interface HeroSlide {
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss',
   changeDetection: ChangeDetectionStrategy.Default,
-  imports: [RouterLink],
+  // imports: [RouterLink],
 })
 export class HeroComponent implements OnInit, OnDestroy {
   currentSlide = 0;
@@ -31,7 +31,7 @@ export class HeroComponent implements OnInit, OnDestroy {
   slides: HeroSlide[] = [
     {
       id: 1,
-      image: 'assets/hero1.png',
+      image: 'assets/images/hero/hero1.png',
       titleLine1: 'The Goods Are For You,',
       titleAccent: 'The Good Is For Them',
       description:
@@ -39,7 +39,7 @@ export class HeroComponent implements OnInit, OnDestroy {
     },
     {
       id: 2,
-      image: 'assets/hero2.png',
+      image: 'assets/images/hero/hero2.png',
       titleLine1: 'Shop Your Favorite Brands,',
       titleAccent: 'Support Your Causes',
       description:
@@ -47,11 +47,19 @@ export class HeroComponent implements OnInit, OnDestroy {
     },
     {
       id: 3,
-      image: 'assets/hero3.png',
+      image: 'assets/images/hero/hero3.png',
       titleLine1: 'Every Purchase Counts,',
       titleAccent: 'Every Cause Matters',
       description:
         'Join thousands of shoppers who are already making a difference through Shop4Good.',
+    },
+    {
+      id: 4,
+      image: 'assets/images/hero/hero4.png',
+      titleLine1: 'It’s Not Just Shopping.',
+      titleAccent: 'It’s Sharing the Good.',
+      description:
+        'We’re a place where your purchases create change and your values shape the future.',
     },
   ];
 
