@@ -24,6 +24,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-image: var(--bg-image);
   opacity: 0;
   transform: scale(1.08);
   transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1),
@@ -284,6 +285,10 @@
   .hero {
     min-height: 500px;
     max-height: 700px;
+  }
+
+  .hero__slide {
+    background-image: var(--bg-image-mobile);
   }
 
   .hero__content {

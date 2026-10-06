@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 interface HeroSlide {
   id: number;
   image: string;
+  mobileImage?: string;
   titleLine1: string;
   titleAccent: string;
   description: string;
@@ -32,6 +33,7 @@ export class HeroComponent implements OnInit, OnDestroy {
     {
       id: 1,
       image: 'assets/images/hero/hero1.png',
+      mobileImage: 'assets/images/hero/hero1-mobile.png',
       titleLine1: 'The Goods Are For You,',
       titleAccent: 'The Good Is For Them',
       description:
@@ -40,6 +42,7 @@ export class HeroComponent implements OnInit, OnDestroy {
     {
       id: 2,
       image: 'assets/images/hero/hero2.png',
+      mobileImage: 'assets/images/hero/hero2-mobile.png',
       titleLine1: 'Shop Your Favorite Brands,',
       titleAccent: 'Support Your Causes',
       description:
@@ -48,6 +51,7 @@ export class HeroComponent implements OnInit, OnDestroy {
     {
       id: 3,
       image: 'assets/images/hero/hero3.png',
+      mobileImage: 'assets/images/hero/hero3-mobile.png',
       titleLine1: 'Every Purchase Counts,',
       titleAccent: 'Every Cause Matters',
       description:
@@ -56,6 +60,7 @@ export class HeroComponent implements OnInit, OnDestroy {
     {
       id: 4,
       image: 'assets/images/hero/hero4.png',
+      mobileImage: 'assets/images/hero/hero4-mobile.png',
       titleLine1: 'It’s Not Just Shopping.',
       titleAccent: 'It’s Sharing the Good.',
       description:

@@ -6,7 +6,8 @@
       <div
         class="hero__slide"
         [class.hero__slide--active]="i === currentSlide"
-        [style.backgroundImage]="'url(' + slide.image + ')'"
+        [style.--bg-image]="'url(' + slide.image + ')'"
+        [style.--bg-image-mobile]="'url(' + (slide.mobileImage || slide.image) + ')'"
       ></div>
     }
   </div>
