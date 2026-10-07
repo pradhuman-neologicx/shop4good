@@ -1,17 +1,17 @@
-<div class="relative w-full h-[calc(100vh-70px)] min-h-[500px] flex overflow-hidden bg-[#08265C]">
+<div class="relative w-full flex overflow-hidden bg-[#08265C]">
   
   <!-- Left Side (Static) -->
-  <div class="w-1/2 h-full relative">
-    <img [src]="leftImage" alt="Good Shopping Side" class="absolute inset-0 w-full h-full object-cover object-right" />
+  <div class="w-1/2 relative">
+    <img [src]="leftImage" alt="Good Shopping Side" class="w-full h-auto block object-cover" />
   </div>
   
   <!-- Right Side (Dynamic) -->
-  <div class="w-1/2 h-full relative">
+  <div class="w-1/2 relative">
     @for (image of rightImages; track image; let i = $index) {
       <img 
         [src]="image" 
         [alt]="'Impact Side ' + i" 
-        class="absolute inset-0 w-full h-full object-cover object-left transition-opacity duration-1000"
+        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
         [class.opacity-100]="i === currentIndex"
         [class.opacity-0]="i !== currentIndex"
       />

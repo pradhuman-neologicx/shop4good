@@ -19,7 +19,7 @@ import { CausesNewComponent } from '../components/causes-new/causes-new.componen
 import { HowWorksComponent } from '../components/how-works/how-works.component';
 import { ImpactProofComponent } from '../components/impact-proof/impact-proof.component';
 import { JwtService } from '../../core/services/jwt.service';
-// import { HeroNewComponent } from '../components/hero-new/hero-new.component';
+import { HeroNewComponent } from '../components/hero-new/hero-new.component';
 
 @Component({
   selector: 'app-home',
@@ -29,8 +29,8 @@ import { JwtService } from '../../core/services/jwt.service';
   imports: [NavbarComponent,
     RouterLink,
     FooterComponent,
-    HeroComponent,
-    // HeroNewComponent,
+    // HeroComponent,
+    HeroNewComponent,
     // NgoImpactComponent,
     FaqComponent,
     CausesNewComponent,

@@ -10,13 +10,14 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeroNewComponent implements OnInit, OnDestroy {
-  leftImage = 'assets/images/hero/Good Shopping Side.png';
+  leftImage = 'assets/images/hero/0.png';
   
   rightImages = [
-    'assets/images/hero/Dog.png',
-    'assets/images/hero/Kid.png',
-    'assets/images/hero/Old Age.png',
-    'assets/images/hero/Women_.png'
+    'assets/images/hero/1.png',
+   'assets/images/hero/4.png',
+    'assets/images/hero/3.png',
+    
+     'assets/images/hero/2.png',
   ];
   
   currentIndex = 0;
