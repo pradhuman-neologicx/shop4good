@@ -14,10 +14,9 @@ export class HeroNewComponent implements OnInit, OnDestroy {
   
   rightImages = [
     'assets/images/hero/1.png',
-   'assets/images/hero/4.png',
+    'assets/images/hero/5.png',
+    'assets/images/hero/4.png',
     'assets/images/hero/3.png',
-    
-     'assets/images/hero/2.png',
   ];
   
   currentIndex = 0;
