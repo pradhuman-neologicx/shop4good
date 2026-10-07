@@ -1,11 +1,10 @@
 import { NgOptimizedImage, NgClass } from '@angular/common';
-import { Component, DestroyRef, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PublicApiService } from 'src/app/core/services/public-api.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
 import { NotificationService } from 'src/app/core/services/notificationnew.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-login',
@@ -14,73 +13,103 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './login.component.scss',
   templateUrl: './login.component.html',
 })
-export class LoginComponent {
-  showPassword = false;
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  otpForm: FormGroup;
+  
+  activeTab: 'phone' | 'email' = 'phone';
   submitted = false;
-  errorMessage = '';
-  isLoading = false;
-
-  private destroyRef = inject(DestroyRef);
+  showOtpModal = false;
+  isSendingOtp = false;
+  isVerifyingOtp = false;
 
   constructor(
     private fb: FormBuilder, 
     private router: Router,
-    private publicApiService: PublicApiService,
     private jwtService: JwtService,
     private notification: NotificationService,
     private cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
       mobile: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      password: ['', Validators.required]
+      email: ['']
     });
+
+    this.otpForm = this.fb.group({
+      otp: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]]
+    });
+  }
+
+  ngOnInit() {
+    this.switchTab('phone');
   }
 
   get f() { return this.loginForm.controls; }
 
-  togglePassword() {
-    this.showPassword = !this.showPassword;
+  switchTab(tab: 'phone' | 'email') {
+    this.activeTab = tab;
+    this.submitted = false;
+    
+    if (tab === 'phone') {
+      this.loginForm.get('mobile')?.setValidators([Validators.required, Validators.pattern('^[0-9]{10}$')]);
+      this.loginForm.get('email')?.clearValidators();
+    } else {
+      this.loginForm.get('email')?.setValidators([Validators.required, Validators.email]);
+      this.loginForm.get('mobile')?.clearValidators();
+    }
+    this.loginForm.get('mobile')?.updateValueAndValidity();
+    this.loginForm.get('email')?.updateValueAndValidity();
   }
 
   onSubmit() {
     this.submitted = true;
-    this.errorMessage = '';
 
     if (this.loginForm.invalid) {
       return;
     }
 
-    this.isLoading = true;
-    const payload = {
-      mobile_no: this.loginForm.value.mobile,
-      password: this.loginForm.value.password
-    };
+    this.isSendingOtp = true;
+    
+    // Static API mock for sending OTP
+    setTimeout(() => {
+      this.isSendingOtp = false;
+      this.otpForm.reset();
+      this.showOtpModal = true;
+      this.notification.show('OTP sent successfully (Mock)', 'success');
+      this.cdr.detectChanges();
+    }, 800);
+  }
 
-    this.publicApiService.customerLogin(payload).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (res) => {
-        this.isLoading = false;
-        if (res && (res.status === 200 || res.status === 'success' || res.status === 201 || res.code === 200)) {
-          // Save real user data in localStorage
-          this.jwtService.setCustomerIsLoggedIn(true);
-          this.jwtService.saveCustomerToken(res.data.token);
-          this.jwtService.saveCustomerData(res.data.user);
-          this.jwtService.saveCustomerId(res.data.user.id);
-          
-          this.notification.show('Logged in successfully!', 'success');
-          this.router.navigate(['/profile']);
-        } else {
-          this.errorMessage = res.message || 'Invalid mobile number or password.';
-        }
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        this.isLoading = false;
-        
-        // Since ApiService throws a JS Error object, extract the message safely
-        // this.errorMessage = err?.message || 'Invalid mobile number or password.';
-        this.cdr.detectChanges();
-      }
-    });
+  closeOtpModal() {
+    this.showOtpModal = false;
+  }
+
+  verifyOtp() {
+    if (this.otpForm.invalid) return;
+
+    this.isVerifyingOtp = true;
+    
+    // Static API mock for verifying OTP
+    setTimeout(() => {
+      this.isVerifyingOtp = false;
+      
+      const staticUser = { 
+        id: 1, 
+        name: 'Mock User', 
+        email: this.activeTab === 'email' ? this.loginForm.value.email : 'user@example.com', 
+        mobile: this.activeTab === 'phone' ? this.loginForm.value.mobile : '9999999999' 
+      };
+      const staticToken = 'static_mock_token_12345';
+      
+      this.jwtService.setCustomerIsLoggedIn(true);
+      this.jwtService.saveCustomerToken(staticToken);
+      this.jwtService.saveCustomerData(staticUser);
+      this.jwtService.saveCustomerId(staticUser.id);
+      
+      this.showOtpModal = false;
+      this.notification.show('Logged in successfully!', 'success');
+      this.router.navigate(['/profile']);
+      this.cdr.detectChanges();
+    }, 800);
   }
 }

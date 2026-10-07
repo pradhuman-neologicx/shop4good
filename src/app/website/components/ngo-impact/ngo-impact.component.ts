@@ -19,7 +19,7 @@ export class NgoImpactComponent {
   impactPoints = [
     { title: 'Shop as usual', desc: 'Browse and shop from your favorite partner brands with zero markup.', icon: '🛍️' },
     { title: 'Automatic Donations', desc: 'A portion of your purchase is automatically donated at no extra cost.', icon: '💸' },
-    { title: 'Choose your cause', desc: 'Direct your impact to the charities and campaigns you care about most.', icon: '🎯' },
+    { title: 'Choose your cause', desc: 'Direct your impact to the charities and Causes you care about most.', icon: '🎯' },
     { title: 'Track your impact', desc: 'See exactly how much you have raised and the lives you have touched.', icon: '📊' },
     { title: 'Verified NGOs', desc: 'We only partner with trusted, fully vetted organizations to ensure transparency.', icon: '✅' },
     { title: 'Community driven', desc: 'Join thousands of shoppers making a collective difference every day.', icon: '🤝' },

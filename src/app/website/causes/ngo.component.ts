@@ -35,6 +35,7 @@ export class NgoComponent implements OnInit {
 
   isMarketplaceOpen = false;
   marketplaces: Marketplace[] = [];
+  isLoading = true;
 
   openMarketplace() {
     this.isMarketplaceOpen = true;
@@ -45,8 +46,10 @@ export class NgoComponent implements OnInit {
   }
 
   loadCauses() {
+    this.isLoading = true;
     this.causesService.getWebsiteCauses().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
+        this.isLoading = false;
         if (res.status === 200 && res.data && res.data.items) {
           const allTags = new Set<string>();
 
@@ -73,6 +76,7 @@ export class NgoComponent implements OnInit {
         }
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Error fetching causes:', err);
       }
     });

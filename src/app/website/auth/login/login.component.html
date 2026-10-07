@@ -12,79 +12,132 @@
       </div>
 
       <div class="text-center mb-8">
-        <h2 class="text-2xl font-bold text-slate-900 mb-2">Welcome Back</h2>
-        <p class="text-slate-500 text-sm">Sign in to your Shop4Good account to track your donations and choose your causes.</p>
+        <h2 class="text-2xl font-bold text-slate-900 mb-2">Log in to your account</h2>
+        <p class="text-slate-500 text-sm">Start shopping and make a positive impact with every purchase.</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex p-1 bg-slate-100 rounded-lg mb-6 border border-slate-200">
+        <button type="button" (click)="switchTab('phone')" [class.bg-white]="activeTab === 'phone'" [class.shadow-sm]="activeTab === 'phone'" class="flex-1 py-2.5 text-sm font-semibold rounded-md transition-all text-slate-700">Phone</button>
+        <button type="button" (click)="switchTab('email')" [class.bg-white]="activeTab === 'email'" [class.shadow-sm]="activeTab === 'email'" class="flex-1 py-2.5 text-sm font-semibold rounded-md transition-all text-slate-700">Email</button>
       </div>
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
-        <div>
-          <label for="mobile" class="block text-sm font-semibold text-slate-700 mb-2">Mobile Number</label>
-          <div class="relative">
-            <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-            <input type="tel" id="mobile" formControlName="mobile" placeholder="Enter 10-digit mobile number" 
-              maxlength="10" minlength="10"
-              class="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
-              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': (submitted || f['mobile'].touched || f['mobile'].dirty) && f['mobile'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !((submitted || f['mobile'].touched || f['mobile'].dirty) && f['mobile'].errors)}" />
-          </div>
-          @if ((submitted || f['mobile'].touched || f['mobile'].dirty) && f['mobile'].errors) {
-            <div class="text-red-500 text-xs mt-1">
-              @if (f['mobile'].errors?.['required']) { <div>Mobile number is required</div> }
-              @if (f['mobile'].errors?.['pattern']) { <div>Please enter a valid 10-digit mobile number</div> }
+        @if (activeTab === 'phone') {
+          <div>
+            <div class="relative flex">
+              <!-- Country Code Select -->
+              <div class="relative w-[90px] flex-shrink-0 border border-r-0 border-slate-300 rounded-l-lg bg-white overflow-hidden">
+                <div class="flex items-center justify-center h-full w-full pointer-events-none px-2 gap-1 bg-slate-50">
+                  <span class="text-lg">🇮🇳</span>
+                  <span class="text-sm font-medium text-slate-700">+91</span>
+                  <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 ml-1"></i>
+                </div>
+              </div>
+              <input type="tel" id="mobile" formControlName="mobile" placeholder="Enter your phone number" 
+                maxlength="10" minlength="10"
+                class="w-full px-4 py-3 rounded-r-lg border focus:ring-2 outline-none transition-all"
+                [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['mobile'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500 z-10': !(submitted && f['mobile'].errors)}" />
             </div>
-          }
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between mb-2">
-            <label for="password" class="block text-sm font-semibold text-slate-700">Password</label>
-            <a href="#" class="text-sm font-medium text-emerald-600 hover:text-emerald-500">Forgot password?</a>
+            @if (submitted && f['mobile'].errors) {
+              <div class="text-red-500 text-xs mt-1">
+                @if (f['mobile'].errors?.['required']) { <div>Phone number is required</div> }
+                @if (f['mobile'].errors?.['pattern']) { <div>Please enter a valid 10-digit phone number</div> }
+              </div>
+            }
           </div>
-          <div class="relative">
-            <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-            <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" placeholder="••••••••" 
-              class="w-full pl-10 pr-12 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
-              [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': (submitted || f['password'].touched || f['password'].dirty) && f['password'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !((submitted || f['password'].touched || f['password'].dirty) && f['password'].errors)}" />
-            <button type="button" (click)="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-600 transition-colors focus:outline-none">
-              <i class="fa-solid" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
-            </button>
-          </div>
-          @if ((submitted || f['password'].touched || f['password'].dirty) && f['password'].errors) {
-            <div class="text-red-500 text-xs mt-1">
-              @if (f['password'].errors?.['required']) { <div>Password is required</div> }
+        } @else {
+          <div>
+            <div class="relative">
+              <input type="email" id="email" formControlName="email" placeholder="Enter your mail id" 
+                class="w-full px-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
+                [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['email'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['email'].errors)}" />
             </div>
-          }
-        </div>
-
-        @if (errorMessage) {
-          <div class="text-red-500 text-sm font-medium text-center bg-red-50 py-2 rounded-lg border border-red-100">
-            {{ errorMessage }}
+            @if (submitted && f['email'].errors) {
+              <div class="text-red-500 text-xs mt-1">
+                @if (f['email'].errors?.['required']) { <div>Email address is required</div> }
+                @if (f['email'].errors?.['email']) { <div>Please enter a valid email address</div> }
+              </div>
+            }
           </div>
         }
 
-        <!-- <div class="flex items-center">
-          <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded">
-          <label for="remember-me" class="ml-2 block text-sm text-slate-600">
-            Remember me
-          </label>
-        </div> -->
-
         <div>
-          <button type="submit" [disabled]="isLoading" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all disabled:opacity-70">
-            @if (isLoading) {
-              <i class="fa-solid fa-spinner fa-spin mr-2"></i> Signing in...
+          <button type="submit" [disabled]="isSendingOtp" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all disabled:opacity-70">
+            @if (isSendingOtp) {
+              <i class="fa-solid fa-spinner fa-spin mr-2"></i> Sending OTP...
             } @else {
-              Sign In
+              Continue
             }
+          </button>
+        </div>
+
+        <div class="relative my-6">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-slate-200"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-slate-500">or continue with</span>
+          </div>
+        </div>
+
+        <div class="flex justify-center gap-4">
+          <button type="button" class="flex justify-center items-center h-12 w-16 border border-slate-200 rounded-full hover:bg-slate-50 transition-colors">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-6 h-6" />
+          </button>
+          <button type="button" class="flex justify-center items-center h-12 w-16 border border-slate-200 rounded-full hover:bg-slate-50 transition-colors text-black">
+            <i class="fa-brands fa-apple text-xl"></i>
+          </button>
+          <button type="button" class="flex justify-center items-center h-12 w-16 border border-slate-200 rounded-full hover:bg-slate-50 transition-colors text-slate-700">
+            <i class="fa-regular fa-envelope text-xl"></i>
           </button>
         </div>
       </form>
     </div>
     
-    <div class="bg-slate-50 px-8 py-6 border-t border-slate-200 text-center">
+    <div class="bg-white px-8 pb-8 text-center border-t-0">
       <p class="text-sm text-slate-600">
         Don't have an account? 
-        <a routerLink="/auth/register" class="font-bold text-emerald-600 hover:text-emerald-500">Sign up now</a>
+        <a routerLink="/auth/register" class="font-bold text-blue-600 hover:text-blue-700">Sign up</a>
       </p>
     </div>
   </div>
 </div>
+
+<!-- OTP Verification Modal -->
+@if (showOtpModal) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden transform transition-all">
+      <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+        <h3 class="font-bold text-slate-800">Verify OTP</h3>
+        <button type="button" (click)="closeOtpModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-6">
+        <p class="text-sm text-slate-600 mb-5 text-center">
+          We've sent a 6-digit verification code to <br>
+          <span class="font-semibold text-slate-800">
+            {{ activeTab === 'phone' ? '+91 ' + f['mobile'].value : f['email'].value }}
+          </span>
+        </p>
+        <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
+          <div class="mb-5">
+            <input type="text" formControlName="otp" maxlength="6" placeholder="000000" 
+              class="w-full text-center text-2xl tracking-[0.5em] font-mono py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all">
+            @if (otpForm.get('otp')?.errors?.['invalid']) {
+              <p class="text-red-500 text-xs mt-2 text-center font-medium">Invalid OTP code. Please try again.</p>
+            }
+          </div>
+          <button type="submit" [disabled]="otpForm.invalid || isVerifyingOtp" class="w-full py-3 font-bold text-white bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-sm transition-all flex justify-center items-center">
+            @if (isVerifyingOtp) {
+              <i class="fa-solid fa-spinner fa-spin mr-2"></i> Verifying...
+            } @else {
+              Verify Code & Login
+            }
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+}
