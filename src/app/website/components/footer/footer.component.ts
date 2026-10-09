@@ -25,12 +25,12 @@ export class FooterComponent {
       detail: 'support@shop4good.com',
       href: 'mailto:support@shop4good.com',
     },
-    {
-      icon: 'fa-solid fa-location-dot',
-      title: 'Headquarters',
-      detail: `123 Goodness Lane \n London, UK`,
-      href: '#',
-    },
+    // {
+    //   icon: 'fa-solid fa-location-dot',
+    //   title: 'Headquarters',
+    //   detail: `123 Goodness Lane \n London, UK`,
+    //   href: '#',
+    // },
   ];
 
   quickLinks = [
