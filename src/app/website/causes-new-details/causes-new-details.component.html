@@ -37,53 +37,7 @@
       </div>
     </section>
 
-    <!-- ═══════════ STATS BAR ═══════════ -->
-    @if (causeDetail) {
-    <section class="cause-stats">
-      <div class="cause-stats__inner">
-        <div class="cause-stats__item">
-          <div class="cause-stats__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-          </div>
-          <div>
-            <div class="cause-stats__value text-emerald-500">{{ causeDetail.raised_amount | currency:'INR':'symbol':'1.0-0' }}</div>
-            <div class="cause-stats__label">Total Raised</div>
-          </div>
-        </div>
-        <div class="cause-stats__divider"></div>
-        <div class="cause-stats__item">
-          <div class="cause-stats__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-          </div>
-          <div>
-            <div class="cause-stats__value">{{ causeDetail.donors_count | number }}</div>
-            <div class="cause-stats__label">Donors</div>
-          </div>
-        </div>
-        <div class="cause-stats__divider"></div>
-        <div class="cause-stats__item">
-          <div class="cause-stats__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </div>
-          <div>
-            <div class="cause-stats__value">{{ causeDetail.starts_at | date:'mediumDate' }}</div>
-            <div class="cause-stats__label">Cause Starts</div>
-          </div>
-        </div>
-        <!-- <div class="cause-stats__divider"></div>
-        <div class="cause-stats__item">
-          <div class="cause-stats__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <div>
-            <div class="cause-stats__value">{{ causeDetail.ends_at | date:'mediumDate' }}</div>
-            <div class="cause-stats__label">Campaign Ends</div>
-          </div>
-        </div> -->
-      </div>
-    </section>
-    }
-
+  
     <!-- ═══════════ MAIN CONTENT ═══════════ -->
     <section class="cause-body">
       <div class="cause-body__inner">
