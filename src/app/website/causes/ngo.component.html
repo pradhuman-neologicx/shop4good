@@ -33,7 +33,7 @@
           [(ngModel)]="searchQuery" 
           (ngModelChange)="applyFilters()"
           class="block w-full pl-12 pr-4 py-4 rounded-full border-0 text-gray-900 bg-white shadow-xl placeholder-gray-400 focus:ring-4 focus:ring-emerald-500 focus:outline-none sm:text-lg transition-shadow duration-300" 
-          placeholder="Search for NGOs, causes, or locations..."
+          placeholder="Search for causes..."
         >
       </div>
     </div>
@@ -58,7 +58,7 @@
           
           <div class="space-y-6">
             <div>
-              <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">By Cause</h3>
+              <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">By Category</h3>
               <div class="block lg:hidden mb-4">
                 <ng-select
                   [items]="availableCauses"
