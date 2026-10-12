@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { NavbarComponent } from '../components/navbar/navbar.component';
@@ -21,7 +21,10 @@ export class CausesNewDetailsComponent implements OnInit {
   causeDetail: any = null;
   selectedImageIndex = 0;
 
-  constructor(private route: ActivatedRoute) {}
+  copySuccess: boolean = false;
+  private copyTimeout: any = null;
+
+  constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -34,6 +37,82 @@ export class CausesNewDetailsComponent implements OnInit {
 
   openMarketplace() {
     this.isMarketplaceOpen = true;
+  }
+
+  shareWhatsApp() {
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+    const title = this.causeDetail?.name || this.ngo?.name || 'Shop4Good';
+    const text = `Support "${title}" on Shop4Good and help make a difference:\n${url}`;
+    const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    if (typeof window !== 'undefined') {
+      window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  shareTwitter() {
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+    const title = this.causeDetail?.name || this.ngo?.name || 'Shop4Good';
+    const text = `Support "${title}" on Shop4Good! Every contribution counts:`;
+    const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    if (typeof window !== 'undefined') {
+      window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  shareLinkedIn() {
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+    const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+    if (typeof window !== 'undefined') {
+      window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  copyLink() {
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+    if (!url) return;
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(() => {
+        this.triggerCopiedState();
+      }).catch(() => {
+        this.fallbackCopyText(url);
+      });
+    } else {
+      this.fallbackCopyText(url);
+    }
+  }
+
+  private triggerCopiedState() {
+    this.copySuccess = true;
+    this.cdr.detectChanges();
+    if (this.copyTimeout) {
+      clearTimeout(this.copyTimeout);
+    }
+    this.copyTimeout = setTimeout(() => {
+      this.copySuccess = false;
+      this.cdr.detectChanges();
+    }, 2500);
+  }
+
+  private fallbackCopyText(text: string) {
+    if (typeof document === 'undefined') return;
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textArea);
+      if (successful) {
+        this.triggerCopiedState();
+      }
+    } catch (err) {
+      console.error('Failed to copy', err);
+    }
   }
 
   loadMockData(id: string) {

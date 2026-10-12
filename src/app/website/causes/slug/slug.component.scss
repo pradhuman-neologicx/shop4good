@@ -666,6 +666,39 @@
       color: #fff;
       border-color: #10B981;
     }
+
+    &--copied {
+      background: #10B981 !important;
+      color: #fff !important;
+      border-color: #10B981 !important;
+      transform: scale(1.05);
+    }
+  }
+
+  &__toast {
+    margin-top: 14px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #065f46;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: fadeInToast 0.2s ease-in-out;
+  }
+}
+
+@keyframes fadeInToast {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
