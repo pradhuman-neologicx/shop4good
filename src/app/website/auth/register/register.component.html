@@ -55,6 +55,8 @@
             <div class="relative w-full">
               <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
               <input type="tel" id="phone" formControlName="phone" placeholder="Enter phone number" 
+                maxlength="10"
+                (input)="onPhoneInput($event)"
                 class="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
                 [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['phone'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['phone'].errors)}">
             </div>

@@ -10,29 +10,61 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeroNewComponent implements OnInit, OnDestroy {
-  leftImage = 'assets/images/hero/0.png';
+  // ─── Desktop Images ───
+  desktopLeftImage = 'assets/images/hero/0.png';
   
-  rightImages = [
+  desktopRightImages: string[] = [
     'assets/images/hero/1.png',
     'assets/images/hero/5.png',
     'assets/images/hero/4.png',
     'assets/images/hero/3.png',
   ];
+
+ 
+  mobileLeftImage = 'assets/images/hero/Good Shopping Side.png'; 
+  
+  mobileRightImages: string[] = [
+    'assets/images/hero/Kid.png', 
+    'assets/images/hero/Dog.png',
+    'assets/images/hero/Old Age.png',
+    'assets/images/hero/Women_.png',
+  ];
   
   currentIndex = 0;
+  isMobile = false;
   private intervalId: any;
+
+  // Backward compatibility
+  get leftImage(): string {
+    return this.isMobile ? this.mobileLeftImage : this.desktopLeftImage;
+  }
+  
+  get rightImages(): string[] {
+    return this.isMobile ? this.mobileRightImages : this.desktopRightImages;
+  }
+
+  get currentLeftImage(): string {
+    return this.isMobile ? this.mobileLeftImage : this.desktopLeftImage;
+  }
+
+  get currentRightImages(): string[] {
+    return this.isMobile ? this.mobileRightImages : this.desktopRightImages;
+  }
 
   constructor(
     private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 768;
+    }
+  }
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      this.intervalId = setInterval(() => {
-        this.currentIndex = (this.currentIndex + 1) % this.rightImages.length;
-        this.cdr.markForCheck();
-      }, 3000);
+      this.checkScreenSize();
+      window.addEventListener('resize', this.onResize);
+      this.startSlider();
     }
   }
 
@@ -40,6 +72,31 @@ export class HeroNewComponent implements OnInit, OnDestroy {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
+    if (isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('resize', this.onResize);
+    }
+  }
+
+  private onResize = () => {
+    this.checkScreenSize();
+  };
+
+  private checkScreenSize() {
+    const wasMobile = this.isMobile;
+    this.isMobile = window.innerWidth <= 768;
+    if (wasMobile !== this.isMobile) {
+      this.currentIndex = 0;
+    }
+    this.cdr.markForCheck();
+  }
+
+  private startSlider() {
+    this.intervalId = setInterval(() => {
+      const activeList = this.isMobile ? this.mobileRightImages : this.desktopRightImages;
+      const total = activeList.length || 1;
+      this.currentIndex = (this.currentIndex + 1) % total;
+      this.cdr.markForCheck();
+    }, 3000);
   }
 }
 

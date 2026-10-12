@@ -2,12 +2,16 @@
   
   <!-- Left Side (Static) -->
   <div class="w-1/2 relative">
-    <img [src]="leftImage" alt="Good Shopping Side" class="w-full h-auto block object-cover" />
+    <img 
+      [src]="currentLeftImage" 
+      alt="Good Shopping Side" 
+      class="w-full h-auto block object-cover" 
+    />
   </div>
   
   <!-- Right Side (Dynamic) -->
   <div class="w-1/2 relative">
-    @for (image of rightImages; track image; let i = $index) {
+    @for (image of currentRightImages; track $index; let i = $index) {
       <img 
         [src]="image" 
         [alt]="'Impact Side ' + i" 

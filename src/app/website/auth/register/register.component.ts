@@ -63,6 +63,13 @@ export class RegisterComponent implements OnInit {
 
   get f() { return this.registerForm.controls; }
 
+  onPhoneInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const cleanValue = input.value.replace(/\D/g, '').slice(0, 10);
+    this.registerForm.get('phone')?.setValue(cleanValue, { emitEvent: false });
+    input.value = cleanValue;
+  }
+
   goToNextStep() {
     this.submitted = true;
     if (this.registerForm.invalid) {
