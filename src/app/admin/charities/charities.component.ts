@@ -90,7 +90,7 @@ export class CharitiesComponent implements OnInit {
 
   loadCharities() {
     this.isLoading = true;
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
     
     let params: any = {
       page: this.page,
@@ -106,15 +106,15 @@ export class CharitiesComponent implements OnInit {
     this.causesService.getAdminCauses(params)
       .pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
-        this.charities = res.data?.items || [];
+        this.charities = [...(res.data?.items || [])];
         this.total = res.data?.meta?.total || 0;
         this.isLoading = false;
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       },
       error: () => {
         this.notification.show('Failed to load charities', 'error');
         this.isLoading = false;
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       }
     });
   }
@@ -316,13 +316,30 @@ export class CharitiesComponent implements OnInit {
 
   toggleStatus(item: any) {
     const newStatus = !item.is_active;
-    const updatedData = { is_active: newStatus };
-    this.causesService.toggleAdminCauseStatus(item.id, updatedData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (res) => {
-        this.notification.show(res.message || `Cause status changed to ${newStatus ? 'Active' : 'Inactive'}`, 'success');
-        this.loadCharities();
-      }
-    });
+    const previousStatus = item.is_active;
+
+    // 1. Instantly update locally (Optimistic UI update)
+    item.is_active = newStatus;
+    this.charities = [...this.charities];
+    this.cdr.detectChanges();
+
+    const updatedData = { is_active: newStatus ? 1 : 0 };
+    this.causesService.toggleAdminCauseStatus(item.id, updatedData)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => {
+          this.notification.show(res.message || `Cause status changed to ${newStatus ? 'Active' : 'Inactive'}`, 'success');
+          this.charities = [...this.charities];
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          // Revert back if API fails
+          item.is_active = previousStatus;
+          this.charities = [...this.charities];
+          this.notification.show('Failed to update status', 'error');
+          this.cdr.detectChanges();
+        }
+      });
   }
 
   dragIndex: number | null = null;
