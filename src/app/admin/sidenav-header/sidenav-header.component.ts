@@ -14,18 +14,22 @@ import { ApiService } from 'src/app/core/services/api.service';
 import { NotificationService } from 'src/app/core/services/notificationnew.service';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { UpperCasePipe, SlicePipe, DatePipe, NgOptimizedImage } from '@angular/common';
+import { UpperCasePipe, SlicePipe, DatePipe, NgOptimizedImage, NgClass } from '@angular/common';
 import { TooltipTriggerDirective } from '../../core/directives/tooltip-trigger.directive';
 import { PopoverTriggerDirective } from '../../core/directives/popover-trigger.directive';
 
 export interface Notification {
   id: string;
   data: {
-    booking_id: string;
-    member_name: string;
-    asset_name: string;
+    title: string;
     message: string;
-    type: string;
+    type?: string;
+    icon?: string;
+    colorClass?: 'success' | 'info' | 'warning' | 'danger' | string;
+    donation_id?: string;
+    donor_name?: string;
+    cause_name?: string;
+    amount?: string;
   };
   read_at: string | null;
   created_at: string;
@@ -36,7 +40,7 @@ export interface Notification {
   templateUrl: './sidenav-header.component.html',
   styleUrl: './sidenav-header.component.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [MatIconButton, MatIcon, RouterLink, UpperCasePipe, SlicePipe, DatePipe, NgOptimizedImage, TooltipTriggerDirective, PopoverTriggerDirective]
+  imports: [MatIconButton, MatIcon, RouterLink, UpperCasePipe, SlicePipe, DatePipe, NgOptimizedImage, NgClass, TooltipTriggerDirective, PopoverTriggerDirective]
 })
 export class SidenavHeaderComponent implements OnInit, OnDestroy {
   readonly isMobile = input<boolean>(false);
@@ -56,40 +60,60 @@ export class SidenavHeaderComponent implements OnInit, OnDestroy {
     //   error: (err: any) => console.error('Failed to fetch notifications'),
     // });
 
-    // Mock Notifications Data
+    // Mock Notifications Data for Shop4Good
     this.notifications = [
       {
-        id: 'uuid-1',
+        id: 'notif-1',
         data: {
-          booking_id: 'BK-10025',
-          member_name: 'Bhupesh Singh',
-          asset_name: 'Medical Bed',
-          message: 'Requested a new asset booking',
-          type: 'booking',
+          title: 'New Donation Received',
+          message: 'Pooja Mehta generated ₹1,250 donation for Kids Education Support via Amazon.',
+          type: 'donation',
+          icon: 'fa-solid fa-hand-holding-heart',
+          colorClass: 'success',
+          donation_id: 'DON-8492',
+          donor_name: 'Pooja Mehta',
+          cause_name: 'Kids Education Support',
+          amount: '₹1,250',
         },
         read_at: null,
         created_at: new Date(new Date().getTime() - 1000 * 60 * 5).toISOString(), // 5 mins ago
       },
       {
-        id: 'uuid-2',
+        id: 'notif-2',
         data: {
-          booking_id: 'BK-10026',
-          member_name: 'Amit Sharma',
-          asset_name: 'Oxygen Concentrator',
-          message: 'Emergency request for oxygen',
-          type: 'booking',
+          title: 'New Supporter Registered',
+          message: 'Rahul Sharma registered and pledged support for Pet Care.',
+          type: 'user',
+          icon: 'fa-solid fa-user-plus',
+          colorClass: 'info',
+          donor_name: 'Rahul Sharma',
+          cause_name: 'Pet Care',
         },
         read_at: null,
-        created_at: new Date(new Date().getTime() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
+        created_at: new Date(new Date().getTime() - 1000 * 60 * 45).toISOString(), // 45 mins ago
       },
       {
-        id: 'uuid-3',
+        id: 'notif-3',
         data: {
-          booking_id: 'BK-10027',
-          member_name: 'Priya Verma',
-          asset_name: 'Wheelchair',
-          message: 'Asset return requested',
-          type: 'return',
+          title: 'Commission Payout Reconciled',
+          message: '₹34,800 affiliate commission received from Flipkart for Q3 reconciliation.',
+          type: 'reconciliation',
+          icon: 'fa-solid fa-file-invoice-dollar',
+          colorClass: 'warning',
+          amount: '₹34,800',
+        },
+        read_at: null,
+        created_at: new Date(new Date().getTime() - 1000 * 60 * 60 * 3).toISOString(), // 3 hours ago
+      },
+      {
+        id: 'notif-4',
+        data: {
+          title: 'Cause Goal Milestone',
+          message: 'Senior Citizen Care has reached 75% of its ₹5,00,000 donation target.',
+          type: 'cause',
+          icon: 'fa-solid fa-bullseye',
+          colorClass: 'success',
+          cause_name: 'Senior Citizen Care',
         },
         read_at: null,
         created_at: new Date(new Date().getTime() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago

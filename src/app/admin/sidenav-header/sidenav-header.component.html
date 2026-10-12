@@ -63,16 +63,15 @@
                 (click)="markAsRead(notification.id, $event)"
                 style="cursor: pointer"
                 >
-                <div class="notify-icon success">
-                  <i class="fa-solid fa-calendar-check"></i>
+                <div class="notify-icon" [ngClass]="notification.data.colorClass || 'success'">
+                  <i [class]="notification.data.icon || 'fa-solid fa-bell'"></i>
                 </div>
                 <div class="notify-body">
                   <div class="notify-title">
-                    New Booking: {{ notification.data.booking_id }}
+                    {{ notification.data.title }}
                   </div>
                   <div class="notify-message">
-                    <strong>{{ notification.data.member_name }}</strong> requested
-                    <strong>{{ notification.data.asset_name }}</strong>
+                    {{ notification.data.message }}
                   </div>
                   <div class="notify-time">
                     <i class="fa-regular fa-clock me-1"></i>
