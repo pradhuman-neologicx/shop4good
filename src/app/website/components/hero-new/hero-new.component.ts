@@ -25,9 +25,9 @@ export class HeroNewComponent implements OnInit, OnDestroy {
   
   mobileRightImages: string[] = [
     'assets/images/hero/mobil_2.png',
-    'assets/images/hero/mobileheader_4.png',
-    'assets/images/hero/mobileheader_3.png',
-    'assets/images/hero/mobileheader_2.png',
+    'assets/images/hero/mobil_4.png',
+    'assets/images/hero/mobil_5.png',
+    'assets/images/hero/mobil_6.png',
   ];
   
   currentIndex = 0;
