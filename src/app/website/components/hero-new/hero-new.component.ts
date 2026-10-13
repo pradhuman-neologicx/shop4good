@@ -11,13 +11,13 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 })
 export class HeroNewComponent implements OnInit, OnDestroy {
   // ─── Desktop Images ───
-  desktopLeftImage = 'assets/images/hero/0.png';
+  desktopLeftImage = 'assets/images/hero/header_1.png';
   
   desktopRightImages: string[] = [
-    'assets/images/hero/1.png',
-    'assets/images/hero/5.png',
-    'assets/images/hero/4.png',
-    'assets/images/hero/3.png',
+    'assets/images/hero/header_6.png',
+    'assets/images/hero/header_5.png',
+    'assets/images/hero/header_4.png',
+    'assets/images/hero/header_2.png',
   ];
 
  
