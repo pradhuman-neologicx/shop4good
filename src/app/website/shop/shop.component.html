@@ -67,7 +67,7 @@
             <div 
               (click)="selectBrand(brand)"
               (dblclick)="openBrandUrl(brand)"
-              class="bg-white rounded-2xl border p-4 sm:p-6 flex flex-col items-center justify-center text-center transition-all duration-200 hover:shadow-md cursor-pointer min-h-[115px] sm:min-h-[145px] relative group"
+              class="bg-white rounded-2xl border p-3.5 sm:p-5 flex flex-col items-center justify-center text-center transition-all duration-200 hover:shadow-md cursor-pointer min-h-[120px] sm:min-h-[140px] relative group"
               [ngClass]="selectedBrand?.name === brand.name 
                 ? 'border-[#087F6A] ring-2 ring-[#087F6A]/20 bg-emerald-50/15 shadow-xs' 
                 : 'border-slate-200/80 hover:border-emerald-300 shadow-xs'"
@@ -82,17 +82,17 @@
               }
 
               <!-- Brand Logo Container -->
-              <div class="h-12 sm:h-16 w-full flex items-center justify-center mb-2 px-2">
+              <div class="h-14 sm:h-16 w-full flex items-center justify-center mb-2 px-2">
                 <img 
                   [src]="brand.src" 
                   [alt]="brand.name"
-                  class="h-8 sm:h-11 w-auto max-w-[85%] object-contain group-hover:scale-105 transition-transform duration-200"
+                  class="h-10 sm:h-12 w-auto max-w-[90%] object-contain group-hover:scale-105 transition-transform duration-200"
                   (error)="onImageError($event, brand)"
                 />
               </div>
 
               <!-- Brand Name -->
-              <span class="text-sm sm:text-[13.5px] font-semibold text-slate-800 leading-tight">
+              <span class="text-sm font-semibold text-slate-800 leading-tight">
                 {{ brand.name }}
               </span>
             </div>
