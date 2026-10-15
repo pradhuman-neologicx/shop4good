@@ -1,0 +1,176 @@
+<app-navbar></app-navbar>
+
+<main class="min-h-screen bg-[#FAFBFD] py-6 sm:py-12 lg:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- ── Header Section ── -->
+    <div class="mb-5 sm:mb-7">
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#08265C] tracking-tight font-heading leading-tight">
+        Partner With Us
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed mt-1">
+        Join us in creating a better tomorrow.
+      </p>
+    </div>
+
+    <!-- ── Tab Switcher: For Brands / For NGOs ── -->
+    <div class="mb-6 sm:mb-8">
+      <div class="inline-flex bg-slate-100/90 p-1 rounded-xl sm:rounded-2xl border border-slate-200/80 shadow-2xs">
+        <button 
+          (click)="setTab('brands')"
+          type="button"
+          class="py-2 px-5 sm:px-7 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer"
+          [ngClass]="activeTab === 'brands' 
+            ? 'bg-[#0B2545] text-white shadow-xs' 
+            : 'text-slate-600 hover:text-slate-900 bg-transparent'"
+        >
+          For Brands
+        </button>
+
+        <button 
+          (click)="setTab('ngos')"
+          type="button"
+          class="py-2 px-5 sm:px-7 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer"
+          [ngClass]="activeTab === 'ngos' 
+            ? 'bg-[#0B2545] text-white shadow-xs' 
+            : 'text-slate-600 hover:text-slate-900 bg-transparent'"
+        >
+          For NGOs
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Responsive Grid (Desktop 2-column with max-w-7xl, mobile 1-column) ── -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+
+      <!-- ── LEFT COLUMN: Hero Image ── -->
+      <div class="lg:col-span-6 flex flex-col">
+        <!-- Hero Image -->
+        <div class="w-full aspect-[4/3] sm:aspect-[16/10] relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm bg-slate-100 mb-6">
+          @if (activeTab === 'brands') {
+            <img 
+              ngSrc="assets/images/partner_brands.jpg" 
+              alt="Brand Partnership - Shop4Good" 
+              fill
+              priority
+              class="w-full h-full object-cover object-center animate-fadeIn"
+            />
+          } @else {
+            <img 
+              ngSrc="assets/images/partner_ngos.jpg" 
+              alt="NGO Community Impact - Shop4Good" 
+              fill
+              priority
+              class="w-full h-full object-cover object-center animate-fadeIn"
+            />
+          }
+        </div>
+
+        <!-- Desktop Support Quote Card -->
+        <div class="hidden lg:block bg-[#0B2545] rounded-2xl p-6 text-white shadow-sm">
+          @if (activeTab === 'brands') {
+            <h3 class="text-base sm:text-lg font-bold text-white leading-snug font-heading mb-2">
+              Transform customer carts into real-world change.
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+              Connect your marketplace with socially mindful shoppers and demonstrate tangible corporate responsibility.
+            </p>
+          } @else {
+            <h3 class="text-base sm:text-lg font-bold text-white leading-snug font-heading mb-2">
+              Empowering grassroots NGOs with consistent funding.
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+              Zero platform fees for non-profits — 100% of the commission donation reaches your causes directly.
+            </p>
+          }
+        </div>
+      </div>
+
+      <!-- ── RIGHT COLUMN: "Why partner with us" Card & CTA ── -->
+      <div class="lg:col-span-6 flex flex-col">
+        
+        <!-- Benefits Card -->
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs mb-6">
+          <h2 class="text-base sm:text-lg font-bold text-slate-800 font-heading mb-5">
+            Why partner with us
+          </h2>
+
+          <div class="space-y-5">
+            @for (benefit of (activeTab === 'brands' ? brandBenefits : ngoBenefits); track benefit.title) {
+              <div class="flex items-start gap-3.5 group">
+                <!-- Squircle Green Icon Container -->
+                <div class="w-8 h-8 rounded-full bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                  @if (benefit.icon === 'sparkles') {
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
+                    </svg>
+                  } @else if (benefit.icon === 'chart') {
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+                    </svg>
+                  } @else if (benefit.icon === 'users') {
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                    </svg>
+                  } @else if (benefit.icon === 'link') {
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                    </svg>
+                  } @else if (benefit.icon === 'wallet') {
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
+                    </svg>
+                  } @else if (benefit.icon === 'shield') {
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                    </svg>
+                  }
+                </div>
+
+                <!-- Text -->
+                <div>
+                  <h3 class="text-xs sm:text-sm font-bold text-slate-800 leading-tight">
+                    {{ benefit.title }}
+                  </h3>
+                  <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 leading-relaxed font-normal">
+                    {{ benefit.description }}
+                  </p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- CTA Action Button -->
+        <div class="pt-1">
+          <a 
+            routerLink="/contact" 
+            class="w-full bg-[#087F6A] hover:bg-[#066c5a] text-white font-semibold py-3.5 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-700/15 cursor-pointer text-sm sm:text-base group active:scale-[0.99]"
+          >
+            @if (activeTab === 'brands') {
+              <span>Become a Partner</span>
+            } @else {
+              <span>Apply as an NGO Partner</span>
+            }
+            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+
+          <!-- Subtext Note -->
+          <p class="text-xs text-slate-400 text-center mt-3 font-normal">
+            Questions? Reach us at 
+            <a href="mailto:support@shop4good.com" class="text-slate-600 font-semibold hover:underline">
+              support&#64;shop4good.com
+            </a>
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

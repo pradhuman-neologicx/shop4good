@@ -123,6 +123,7 @@ export class CausesNewDetailsComponent implements OnInit {
         if (typeof window !== 'undefined') {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        this.cdr.detectChanges();
       }
     });
   }

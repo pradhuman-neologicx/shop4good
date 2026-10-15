@@ -1,0 +1,85 @@
+<app-navbar></app-navbar>
+
+<main class="min-h-screen bg-[#FAFBFD] py-6 sm:py-12 lg:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- ── Header Section ── -->
+    <div class="mb-6 sm:mb-10 max-w-2xl">
+      <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#087F6A] mb-2 block font-heading">
+        HOW IT WORKS
+      </span>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#08265C] tracking-tight font-heading leading-tight mb-2 sm:mb-3">
+        Three steps to make every rupee count
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed">
+        Making an impact is simple — and costs you nothing extra.
+      </p>
+    </div>
+
+    <!-- ── Content Grid: Responsive 2-column on desktop (max-w-7xl), stacked on mobile ── -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch">
+
+      <!-- ── STEPS COLUMN (Left / Full on mobile) ── -->
+      <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+        
+        @for (step of steps; track step.number) {
+          <div class="bg-[#FAF8F5] hover:bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 flex items-center gap-4 sm:gap-6 shadow-2xs hover:shadow-sm transition-all duration-200 group">
+            <!-- Large Step Number -->
+            <span class="text-2xl sm:text-3xl font-extrabold text-[#23456D] font-heading shrink-0 w-10 sm:w-12 text-center group-hover:scale-105 transition-transform">
+              {{ step.number }}
+            </span>
+
+            <!-- Step Details -->
+            <div class="flex-1 min-w-0">
+              <h3 class="text-sm sm:text-base font-bold text-slate-800 font-heading leading-tight mb-1">
+                {{ step.title }}
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-500 leading-relaxed font-normal">
+                {{ step.description }}
+              </p>
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <!-- ── DEEP NAVY PROMO CARD (Right / Bottom on mobile) ── -->
+      <div class="lg:col-span-5 flex">
+        <div class="w-full bg-[#0B2545] rounded-2xl sm:rounded-3xl p-5 sm:p-7 lg:p-8 text-white shadow-sm flex flex-col justify-between relative overflow-hidden">
+          
+          <!-- Subtle decorative radial background light -->
+          <div class="absolute -top-16 -right-16 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div>
+            <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-sky-300 block mb-2 font-heading">
+              WHERE DO YOU WANT TO SHOP TODAY?
+            </span>
+            <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white leading-tight font-heading mb-2">
+              Shopping today.<br />A better tomorrow.
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed mb-6">
+              Turn everyday purchases into lasting change for the causes you love.
+            </p>
+          </div>
+
+          <div>
+            <a 
+              routerLink="/shop" 
+              class="inline-flex items-center gap-2 bg-[#087F6A] hover:bg-[#076c5a] text-white font-semibold py-2.5 sm:py-3 px-5 sm:px-6 rounded-xl sm:rounded-2xl text-xs sm:text-sm transition-all shadow-sm hover:shadow-md cursor-pointer group active:scale-[0.99]"
+            >
+              <span>Start Shopping</span>
+              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

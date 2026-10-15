@@ -1,0 +1,151 @@
+<app-navbar></app-navbar>
+
+<main class="min-h-screen bg-[#FAFBFD] py-6 sm:py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+
+      <!-- ── LEFT COLUMN (Desktop): Hero Image & Quote ── -->
+      <div class="lg:col-span-5 flex flex-col">
+        <!-- Top Hero Image -->
+        <div class="w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/5] relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm bg-slate-100">
+          <img 
+            ngSrc="assets/images/hero/Golden-Hour Shopping Joy.png" 
+            alt="Our Story - Shop4Good" 
+            fill
+            priority
+            class="w-full h-full object-cover object-[center_18%]"
+          />
+        </div>
+
+        <!-- Desktop-only Navy Quote Box (placed under the image for balanced editorial layout) -->
+        <div class="hidden lg:block bg-[#0B2545] rounded-2xl p-6 text-white mt-6 shadow-sm">
+          <h3 class="text-lg font-semibold text-white leading-snug">
+            Good is a choice we all can make.
+          </h3>
+          <p class="text-xs text-slate-300 mt-3 font-normal">
+            — The Shop4Good team
+          </p>
+        </div>
+      </div>
+
+      <!-- ── RIGHT COLUMN (Desktop): Story, Stats, Beliefs & CTA ── -->
+      <div class="lg:col-span-7 flex flex-col">
+        
+        <!-- Badge & Main Story Content -->
+        <div class="mb-6">
+          <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#087F6A] mb-2 block font-heading">
+            OUR STORY
+          </span>
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#08265C] tracking-tight font-heading leading-tight mb-3">
+            Every purchase can create a better tomorrow.
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed">
+            Shop4Good was born from a simple belief — that everyday shopping can do more. We bring together the brands you love and the causes that matter, making it easy for everyone to contribute to a kinder, fairer and more equal world.
+          </p>
+        </div>
+
+        <!-- 3 Stats Grid Card -->
+        <div class="bg-white rounded-2xl border border-slate-200/90 py-4 px-2 sm:px-4 mb-7 shadow-xs">
+          <div class="grid grid-cols-3 divide-x divide-slate-100 text-center">
+            <div class="px-2">
+              <div class="text-2xl sm:text-3xl font-extrabold text-slate-800 font-heading">4</div>
+              <div class="text-[11px] sm:text-xs text-slate-400 font-medium mt-0.5">Causes</div>
+            </div>
+            <div class="px-2">
+              <div class="text-2xl sm:text-3xl font-extrabold text-slate-800 font-heading">50+</div>
+              <div class="text-[11px] sm:text-xs text-slate-400 font-medium mt-0.5">Brand partners</div>
+            </div>
+            <div class="px-2">
+              <div class="text-2xl sm:text-3xl font-extrabold text-slate-800 font-heading">2%</div>
+              <div class="text-[11px] sm:text-xs text-slate-400 font-medium mt-0.5">Of every order</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- "What we believe" Section -->
+        <div class="mb-6">
+          <h2 class="text-base sm:text-lg font-bold text-slate-800 font-heading mb-3">
+            What we believe
+          </h2>
+          <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs space-y-4">
+            
+            <!-- Value 1: Verified NGOs only -->
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-sm font-semibold text-slate-800">Verified NGOs only</h3>
+                <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                  Every partner is vetted for transparency and impact.
+                </p>
+              </div>
+            </div>
+
+            <!-- Value 2: 2% of every order -->
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 4.5l-15 15M6.75 8.25a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm10.5 10.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-sm font-semibold text-slate-800">2% of every order</h3>
+                <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                  A share of each purchase goes straight to your cause.
+                </p>
+              </div>
+            </div>
+
+            <!-- Value 3: No extra cost to you -->
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-sm font-semibold text-slate-800">No extra cost to you</h3>
+                <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                  You pay the same price — the brand funds the donation.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Mobile-only Navy Quote Box (matches Figma mobile order) -->
+        <div class="block lg:hidden bg-[#0B2545] rounded-2xl p-5 text-white mb-6 shadow-sm">
+          <h3 class="text-[15px] font-semibold text-white leading-snug">
+            Good is a choice we all can make.
+          </h3>
+          <p class="text-xs text-slate-300 mt-3 font-normal">
+            — The Shop4Good team
+          </p>
+        </div>
+
+        <!-- CTA Button: Start Shopping -->
+        <div class="pt-1 mb-6">
+          <a 
+            routerLink="/shop" 
+            class="w-full bg-[#087F6A] hover:bg-[#066c5a] text-white font-semibold py-3.5 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-700/15 cursor-pointer text-sm sm:text-base group"
+          >
+            <span>Start Shopping</span>
+            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

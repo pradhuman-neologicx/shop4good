@@ -21,12 +21,54 @@ export const routes: Routes = [
 
 
   {
+    path: 'causes',
+    redirectTo: 'causes/kids',
+    pathMatch: 'full'
+  },
+  {
+    path: 'causes-new',
+    redirectTo: 'causes/kids',
+    pathMatch: 'full'
+  },
+  {
     path: 'causes/:id',
     loadComponent: () => import('./website/causes-new-details/causes-new-details.component').then(c => c.CausesNewDetailsComponent)
   },
   {
     path: 'causes-new/:id',
     loadComponent: () => import('./website/causes-new-details/causes-new-details.component').then(c => c.CausesNewDetailsComponent)
+  },
+  {
+    path: 'about/our-story',
+    loadComponent: () => import('./website/our-story/our-story.component').then(c => c.OurStoryComponent)
+  },
+  {
+    path: 'our-story',
+    loadComponent: () => import('./website/our-story/our-story.component').then(c => c.OurStoryComponent)
+  },
+  {
+    path: 'about/how-it-works',
+    loadComponent: () => import('./website/how-it-works/how-it-works.component').then(c => c.HowItWorksComponent)
+  },
+  {
+    path: 'how-it-works',
+    loadComponent: () => import('./website/how-it-works/how-it-works.component').then(c => c.HowItWorksComponent)
+  },
+  {
+    path: 'about/our-impact',
+    loadComponent: () => import('./website/our-impact/our-impact.component').then(c => c.OurImpactComponent)
+  },
+  {
+    path: 'our-impact',
+    loadComponent: () => import('./website/our-impact/our-impact.component').then(c => c.OurImpactComponent)
+  },
+  {
+    path: 'about/partner-with-us',
+    loadComponent: () => import('./website/partner-with-us/partner-with-us.component').then(c => c.PartnerWithUsComponent)
+  },
+  {
+    path: 'partner-with-us',
+    loadComponent: () => import('./website/partner-with-us/partner-with-us.component').then(c => c.PartnerWithUsComponent)
   },
   {
     path: 'shop',
