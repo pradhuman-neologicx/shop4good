@@ -7,20 +7,132 @@
     </a>
 
     <!-- ── CENTER: NAV LINKS (Desktop) ── -->
-    <ul class="navbar__links">
+    <ul class="navbar__links flex items-center gap-1 list-none m-0 p-0">
       <li>
         <a routerLink="/" class="navbar__link">Home</a>
       </li>
-      <li>
-        <a routerLink="/causes" class="navbar__link">Causes</a>
+
+      <!-- 1. CAUSES DROPDOWN (Hover) -->
+      <li class="relative group" 
+          (mouseenter)="openDropdown('causes')" 
+          (mouseleave)="closeDropdown('causes')">
+        <button type="button" 
+                class="navbar__link flex items-center gap-1.5 cursor-pointer"
+                (click)="toggleDropdown('causes')">
+          <span>Causes</span>
+          <svg class="w-3.5 h-3.5 transition-transform duration-200 text-slate-400 group-hover:text-[#087F6A] group-hover:rotate-180"
+               [class.rotate-180]="activeDropdown === 'causes'"
+               fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="absolute left-0 top-full pt-2 z-50 transition-all duration-200"
+             [ngClass]="activeDropdown === 'causes' ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto'">
+          <div class="w-64 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 overflow-hidden">
+            <a routerLink="/causes/kids" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
+              <span>Kids Education</span>
+              <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </a>
+            <a routerLink="/causes/women" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
+              <span>Women Empowerment</span>
+              <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </a>
+            <a routerLink="/causes/senior" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
+              <span>Senior Citizen Care</span>
+              <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </a>
+            <a routerLink="/causes/pets" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
+              <span>Pet Care</span>
+              <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </a>
+          </div>
+        </div>
       </li>
+
+      <!-- 2. SHOP OPTION (Direct Click) -->
       <li>
-        <a routerLink="/contact" class="navbar__link">Contact</a>
+        <a routerLink="/shop" class="navbar__link">Shop</a>
+      </li>
+
+      <!-- 3. ABOUT DROPDOWN (Hover) -->
+      <li class="relative group" 
+          (mouseenter)="openDropdown('about')" 
+          (mouseleave)="closeDropdown('about')">
+        <button type="button" 
+                class="navbar__link flex items-center gap-1.5 cursor-pointer"
+                (click)="toggleDropdown('about')">
+          <span>About</span>
+          <svg class="w-3.5 h-3.5 transition-transform duration-200 text-slate-400 group-hover:text-[#087F6A] group-hover:rotate-180"
+               [class.rotate-180]="activeDropdown === 'about'"
+               fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="absolute left-0 top-full pt-2 z-50 transition-all duration-200"
+             [ngClass]="activeDropdown === 'about' ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto'">
+          <div class="w-56 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 overflow-hidden">
+            <a routerLink="/about/our-story" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
+              <span>Our Story</span>
+              <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </a>
+            <a routerLink="/about/how-it-works" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
+              <span>How It Works</span>
+              <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </a>
+            <a routerLink="/about/our-impact" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
+              <span>Our Impact</span>
+              <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </a>
+            <a routerLink="/about/partner-with-us" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
+              <span>Partner With Us</span>
+              <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </a>
+          </div>
+        </div>
+      </li>
+
+      <!-- 4. HELP DROPDOWN (Hover) -->
+      <li class="relative group" 
+          (mouseenter)="openDropdown('help')" 
+          (mouseleave)="closeDropdown('help')">
+        <button type="button" 
+                class="navbar__link flex items-center gap-1.5 cursor-pointer"
+                (click)="toggleDropdown('help')">
+          <span>Help</span>
+          <svg class="w-3.5 h-3.5 transition-transform duration-200 text-slate-400 group-hover:text-[#087F6A] group-hover:rotate-180"
+               [class.rotate-180]="activeDropdown === 'help'"
+               fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="absolute left-0 top-full pt-2 z-50 transition-all duration-200"
+             [ngClass]="activeDropdown === 'help' ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto'">
+          <div class="w-56 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 overflow-hidden">
+            <a routerLink="/help/faqs" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
+              <span>FAQs</span>
+              <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </a>
+            <a routerLink="/contact" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
+              <span>Contact Us</span>
+              <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </a>
+            <a routerLink="/privacy-policy" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
+              <span>Privacy Policy</span>
+              <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </a>
+          </div>
+        </div>
       </li>
     </ul>
 
     <!-- ── RIGHT: CTA + MOBILE TOGGLE ── -->
-    <div class="navbar__actions">
+    <div class="navbar__actions flex items-center gap-3">
       @if (!currentUser) {
         <a routerLink="/auth/login" class="navbar__cta" (click)="closeMenu()">
           <i class="fa-solid fa-user"></i>
@@ -52,12 +164,6 @@
                   <a routerLink="/profile" (click)="isProfileMenuOpen = false" class="px-3 py-2 text-sm text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg transition-colors flex items-center gap-3">
                     <i class="fa-solid fa-user w-4 text-center"></i> Profile
                   </a>
-                  <!-- <a routerLink="/transactions" (click)="isProfileMenuOpen = false" class="px-3 py-2 text-sm text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg transition-colors flex items-center gap-3">
-                    <i class="fa-solid fa-receipt w-4 text-center"></i> Transactions
-                  </a>
-                  <a routerLink="/donations" (click)="isProfileMenuOpen = false" class="px-3 py-2 text-sm text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg transition-colors flex items-center gap-3">
-                    <i class="fa-solid fa-hand-holding-heart w-4 text-center"></i> Donations
-                  </a> -->
                 </div>
                 <div class="p-2 border-t border-slate-100">
                   <button (click)="logout()" class="w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-3 text-left">
@@ -70,6 +176,7 @@
         </div>
       }
 
+      <!-- Hamburger button -->
       <button class="navbar__hamburger" (click)="toggleMenu()" aria-label="Toggle menu">
         <span class="navbar__hamburger-line" [class.open]="isMenuOpen"></span>
         <span class="navbar__hamburger-line" [class.open]="isMenuOpen"></span>
@@ -77,58 +184,174 @@
       </button>
     </div>
   </div>
+</nav>
 
-  <!-- ── MOBILE MENU ── -->
-  <div class="navbar__mobile" [class.open]="isMenuOpen">
-    <div class="navbar__mobile-inner">
-      <a routerLink="/" class="navbar__mobile-link" (click)="closeMenu()">
-        <span><i class="fa-solid fa-house"></i> Home</span>
-      </a>
-      <a routerLink="/causes" class="navbar__mobile-link" (click)="closeMenu()">
-        <span><i class="fa-solid fa-hand-holding-heart"></i> Causes</span>
-      </a>
-      <a routerLink="/marketplaces" class="navbar__mobile-link" (click)="closeMenu()">
-        <span><i class="fa-solid fa-store"></i> Marketplaces</span>
-      </a>
-      <a routerLink="/contact" class="navbar__mobile-link" (click)="closeMenu()">
-        <span><i class="fa-solid fa-envelope"></i> Contact</span>
-      </a>
+<!-- ── MOBILE DRAWER OVERLAY & MENU ── -->
+<!-- Backdrop Overlay -->
+  <div class="fixed inset-0 bg-black/45 backdrop-blur-[2px] z-[9998] transition-opacity duration-300 lg:hidden"
+       [class.opacity-100]="isMenuOpen"
+       [class.pointer-events-auto]="isMenuOpen"
+       [class.opacity-0]="!isMenuOpen"
+       [class.pointer-events-none]="!isMenuOpen"
+       (click)="closeMenu()">
+  </div>
 
-      <!-- Mobile CTA -->
+  <!-- Drawer Slide-in Panel -->
+  <div class="fixed top-0 left-0 bottom-0 w-[84%] max-w-[340px] bg-white z-[9999] shadow-2xl transition-transform duration-300 ease-out flex flex-col lg:hidden"
+       style="background-color: #ffffff !important;"
+       [class.translate-x-0]="isMenuOpen"
+       [class.-translate-x-full]="!isMenuOpen">
+    
+    <!-- Top Header: Logo + Close Button -->
+    <div class="flex items-center justify-between px-3 py-4 border-b border-slate-100 shrink-0">
+      <a routerLink="/" (click)="closeMenu()" class="flex items-center">
+        <img ngSrc="assets/logo.png" width="60" height="42" priority alt="Shop4Good" class="h-9 w-auto object-contain" />
+      </a>
+      <button (click)="closeMenu()" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors" aria-label="Close menu">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Scrollable Drawer Body -->
+    <div class="flex-1 overflow-y-auto px-3 py-4 space-y-4">
+      
+      <!-- Auth Card (Guest / Signed in) -->
       @if (!currentUser) {
-        <a routerLink="/auth/login" class="navbar__mobile-cta" (click)="closeMenu()">
-          <i class="fa-solid fa-user"></i>
-          Login / Sign Up
-        </a>
-      } @else {
-        <div class="mt-4 border-t border-slate-200/20 pt-4 flex flex-col gap-2">
-          <div class="flex items-center gap-3 px-4 py-2 mb-2">
-             <div class="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold overflow-hidden">
-               @if (currentUser.avatar_url) {
-                 <img [src]="currentUser.avatar_url" alt="Avatar" class="h-full w-full object-cover">
-               } @else {
-                 <i class="fa-solid fa-user"></i>
-               }
-             </div>
-             <div>
-               <p class="font-bold text-white">{{ currentUser.name }}</p>
-               <p class="text-xs text-white/70">{{ currentUser.email }}</p>
-             </div>
+        <div class="bg-[#0B2545] rounded-2xl p-4 text-white shadow-sm">
+          <h3 class="text-[15px] font-bold text-white mb-3">Join us to change the world</h3>
+          <div class="grid grid-cols-2 gap-2.5">
+            <a routerLink="/auth/register" (click)="closeMenu()" 
+               class="bg-[#087F6A] hover:bg-[#076c5a] text-white py-2 px-3 rounded-lg text-center font-semibold text-xs transition-colors flex items-center justify-center shadow-xs">
+              Sign up
+            </a>
+            <a routerLink="/auth/login" (click)="closeMenu()" 
+               class="bg-white hover:bg-slate-100 text-[#0B2545] py-2 px-3 rounded-lg text-center font-semibold text-xs transition-colors flex items-center justify-center shadow-xs">
+              Login
+            </a>
           </div>
-          <a routerLink="/profile" class="navbar__mobile-link" (click)="closeMenu()">
-            <span><i class="fa-solid fa-user"></i> Profile</span>
-          </a>
-          <!-- <a routerLink="/transactions" class="navbar__mobile-link" (click)="closeMenu()">
-            <span><i class="fa-solid fa-receipt"></i> Transactions</span>
-          </a>
-          <a routerLink="/donations" class="navbar__mobile-link" (click)="closeMenu()">
-            <span><i class="fa-solid fa-hand-holding-heart"></i> Donations</span>
-          </a> -->
-          <button (click)="logout()" class="navbar__mobile-link !text-red-400 mt-2 text-left w-full">
-            <span><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</span>
+        </div>
+      } @else {
+        <div class="bg-[#0B2545] rounded-2xl p-4 text-white shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-800 font-bold overflow-hidden shrink-0">
+              @if (currentUser.avatar_url) {
+                <img [src]="currentUser.avatar_url" alt="Avatar" class="h-full w-full object-cover">
+              } @else {
+                <i class="fa-solid fa-user"></i>
+              }
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="font-bold text-white text-sm truncate">{{ currentUser.name }}</p>
+              <p class="text-xs text-white/70 truncate">{{ currentUser.email }}</p>
+            </div>
+          </div>
+          <button (click)="logout()" class="w-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-1.5 px-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+            <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
+            Logout
           </button>
         </div>
       }
+
+      <!-- Menu Items List -->
+      <div class="flex flex-col divide-y divide-slate-100 text-slate-700">
+        <!-- Home -->
+        <a routerLink="/" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+          <span>Home</span>
+          <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+        </a>
+
+        <!-- My Profile -->
+        <a routerLink="/profile" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+          <span>My Profile</span>
+          <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+        </a>
+      </div>
+
+      <!-- Section: SHOP -->
+      <div>
+        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pt-2 pb-1 px-1">
+          SHOP
+        </div>
+        <div class="flex flex-col divide-y divide-slate-100">
+          <a routerLink="/shop" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>All Brands</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Section: OUR CAUSES -->
+      <div>
+        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pt-2 pb-1 px-1">
+          OUR CAUSES
+        </div>
+        <div class="flex flex-col divide-y divide-slate-100">
+          <a routerLink="/causes/kids" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>Kids Education</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
+          <a routerLink="/causes/women" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>Women Empowerment</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
+          <a routerLink="/causes/senior" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>Senior Citizen Care</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
+          <a routerLink="/causes/pets" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>Pet Care</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Section: ABOUT -->
+      <div>
+        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pt-2 pb-1 px-1">
+          ABOUT
+        </div>
+        <div class="flex flex-col divide-y divide-slate-100">
+          <a routerLink="/about/our-story" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>Our Story</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
+          <a routerLink="/about/how-it-works" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>How It Works</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
+          <a routerLink="/about/our-impact" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>Our Impact</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
+          <a routerLink="/about/partner-with-us" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>Partner With Us</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Section: HELP -->
+      <div>
+        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pt-2 pb-1 px-1">
+          HELP
+        </div>
+        <div class="flex flex-col divide-y divide-slate-100">
+          <a routerLink="/help/faqs" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>FAQs</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
+          <a routerLink="/contact" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>Contact Us</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
+          <a routerLink="/privacy-policy" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>Privacy Policy</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
-</nav>

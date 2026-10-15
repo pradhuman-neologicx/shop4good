@@ -19,16 +19,9 @@ export const routes: Routes = [
     loadComponent: () => import('./website/contact/contact.component').then(c => c.ContactComponent)
   },
 
+
   {
-    path: 'causes',
-    loadComponent: () => import('./website/causes/ngo.component').then(c => c.NgoComponent)
-  },
-  {
-    path: 'causes/:slug',
-    loadComponent: () => import('./website/causes/slug/slug.component').then(c => c.SlugComponent)
-  },
-  {
-    path: 'causes-new/:id',
+    path: 'causes/:id',
     loadComponent: () => import('./website/causes-new-details/causes-new-details.component').then(c => c.CausesNewDetailsComponent)
   },
   {

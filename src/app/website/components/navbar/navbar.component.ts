@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
   forceScrolled = false;
   currentUser: any = null;
   isProfileMenuOpen = false;
+  activeDropdown: string | null = null;
 
   constructor(
     private router: Router, 
@@ -34,6 +35,7 @@ export class NavbarComponent implements OnInit {
       .subscribe((event: any) => {
         this.checkAuth();
         this.checkRoute(event.urlAfterRedirects);
+        this.closeMenu();
         this.cdr.detectChanges();
       });
   }
@@ -61,7 +63,7 @@ export class NavbarComponent implements OnInit {
   private clearAndRedirect() {
     this.jwtService.clearCustomerStorage();
     this.currentUser = null;
-    this.isMenuOpen = false;
+    this.closeMenu();
     this.router.navigate(['/auth/login']);
   }
 
@@ -75,11 +77,32 @@ export class NavbarComponent implements OnInit {
     this.isScrolled = window.scrollY > 30;
   }
 
+  openDropdown(name: string) {
+    this.activeDropdown = name;
+  }
+
+  closeDropdown(name?: string) {
+    if (!name || this.activeDropdown === name) {
+      this.activeDropdown = null;
+    }
+  }
+
+  toggleDropdown(name: string) {
+    this.activeDropdown = this.activeDropdown === name ? null : name;
+  }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = this.isMenuOpen ? 'hidden' : '';
+    }
   }
 
   closeMenu() {
     this.isMenuOpen = false;
+    this.activeDropdown = null;
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = '';
+    }
   }
 }
