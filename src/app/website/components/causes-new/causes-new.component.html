@@ -1,16 +1,78 @@
 <section class="max-w-7xl mx-auto px-4 py-8 md:py-12 font-sans bg-white">
   <!-- Header Section -->
-  <div class="mb-6 md:mb-10  text-left sm:text-center">
-    <h2 class="text-[26px] md:text-[32px] font-bold text-[#08265C] mb-2 leading-tight font-heading">
-      Choose the Causes & Charity you<br class="hidden md:block"/> want to support
+  <div class="mb-6 md:mb-10 text-left sm:text-center">
+    <h2 class="text-[20px] md:text-[32px] font-bold text-[#08265C] mb-2 leading-tight font-heading">
+      Explore the Causes & Charities you<br class="hidden md:block"/> want to support
     </h2>
     <p class="text-gray-500 text-sm md:text-base mt-2 md:mt-3">
-      Choose the stories you want to help write with every purchase.
+      Discover the stories you can help write with every purchase.
     </p>
   </div>
 
+  <!-- Supporting Line Card (Only shown if user is logged in) -->
+  @if (isLoggedIn) {
+    <div class="mb-6 md:mb-8 bg-[#E8F5F1] rounded-[18px] sm:rounded-[20px] p-4 sm:p-5 flex flex-col gap-2.5 w-full border border-[#CDEAE1]/60">
+      @if (supportedCause) {
+        <!-- Top Row: You're supporting + Change -->
+        <div class="flex items-center justify-between">
+          <span class="text-[#08265C] font-semibold text-sm sm:text-base font-heading">
+            You’re supporting
+          </span>
+          <button 
+            type="button" 
+            (click)="openChooseSheet()" 
+            class="text-[#087F6A] hover:text-[#066c5a] font-semibold text-xs sm:text-sm underline underline-offset-2 transition-colors cursor-pointer bg-transparent border-none p-0"
+          >
+            Change
+          </button>
+        </div>
+
+        <!-- Bottom Row: Cause Pill Badge -->
+        <div class="flex items-center">
+          <div class="inline-flex items-center gap-2 sm:gap-2.5 bg-white rounded-full py-1.5 px-3 sm:px-4 shadow-2xs border border-gray-100 max-w-fit">
+            <img 
+              [src]="supportedCause.image" 
+              [alt]="supportedCause.title" 
+              class="w-6 h-6 sm:w-7 sm:h-7 rounded-full object-cover shrink-0"
+            />
+            <span class="text-xs sm:text-sm font-semibold text-[#08265C] font-heading">
+              {{ supportedCause.title }}
+            </span>
+          </div>
+        </div>
+      } @else {
+        <!-- Top Row: Prompt to choose -->
+        <div class="flex items-center justify-between">
+          <span class="text-[#08265C] font-semibold text-sm sm:text-base font-heading">
+            You haven’t chosen a cause yet
+          </span>
+          <button 
+            type="button" 
+            (click)="openChooseSheet()" 
+            class="text-[#087F6A] hover:text-[#066c5a] font-semibold text-xs sm:text-sm underline underline-offset-2 transition-colors cursor-pointer bg-transparent border-none p-0"
+          >
+            Choose Cause
+          </button>
+        </div>
+
+        <!-- Bottom Row: Action pill -->
+        <div class="flex items-center">
+          <button 
+            type="button" 
+            (click)="openChooseSheet()" 
+            class="inline-flex items-center gap-2 bg-white hover:bg-emerald-50 text-[#087F6A] rounded-full py-1.5 px-3 sm:px-4 shadow-2xs border border-dashed border-[#087F6A]/40 transition-colors text-xs sm:text-sm font-medium cursor-pointer"
+          >
+            <i class="fa-solid fa-hand-holding-heart text-[#087F6A]"></i>
+            <span>Choose a cause to support with your shopping</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+      }
+    </div>
+  }
+
   <!-- Cards Grid -->
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-2 md:gap-y-4">
     @for (cause of causes; track cause.id) {
       <div 
         class="rounded-[16px] text-white flex flex-col relative cursor-pointer transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98] h-full shadow-sm hover:shadow-md overflow-hidden"
@@ -18,20 +80,16 @@
         [routerLink]="['/causes-new', cause.id]"
         (click)="selectCause(cause.id)"
       >
-        <!-- Main Card Body -->
-        <div class="p-3 sm:p-4 flex flex-col flex-grow">
-          <!-- Circle / Checkbox Top Left -->
-          <div class="mb-3">
-            <div class="w-5 h-5 md:w-[22px] md:h-[22px] rounded-full border-2 flex items-center justify-center transition-all duration-300"
-                 [class.border-white]="selectedCauseId !== cause.id"
-                 [class.border-transparent]="selectedCauseId === cause.id"
-                 [class.bg-white]="selectedCauseId === cause.id">
-                 @if(selectedCauseId === cause.id) {
-                   <svg class="w-3 h-3 md:w-3.5 md:h-3.5" [style.color]="cause.bgColor" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                 }
-            </div>
+        <!-- Currently Supporting Badge (if logged in and matched) -->
+        @if (isLoggedIn && supportedCause?.id === cause.id) {
+          <div class="absolute top-2 right-2 bg-white/95 text-[#087F6A] text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm flex items-center gap-1 z-10 backdrop-blur-xs">
+            <i class="fa-solid fa-circle-check text-[10px] text-[#087F6A]"></i>
+            <span>Supporting</span>
           </div>
+        }
 
+        <!-- Main Card Body -->
+        <div class="p-2.5 sm:p-4 flex flex-col flex-grow">
           <!-- Image -->
           <div class="rounded-xl overflow-hidden mb-4 relative aspect-square w-full shrink-0 bg-black/10">
             <img [src]="cause.image" [alt]="cause.title" class="w-full h-full object-cover grayscale brightness-90 hover:grayscale-0 transition-all duration-500">
@@ -43,7 +101,7 @@
         </div>
 
         <!-- Footer Bar -->
-        <div class="bg-[#24272C] px-4 py-3 flex items-center justify-between border-t border-white/60 group mt-auto shrink-0">
+        <div class="bg-black/20 px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between border-t border-white/20 group mt-auto shrink-0">
           <span class="text-[9px] md:text-[11px] font-medium text-white truncate mr-2">{{ cause.foundation }}</span>
           <a href="javascript:void(0)" class="text-white/80 group-hover:text-white transition-colors shrink-0" (click)="$event.stopPropagation()">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -54,4 +112,12 @@
       </div>
     }
   </div>
+
+  <!-- Dedicated Choose Cause Component Modal -->
+  <app-choose-cause 
+    [isOpen]="isChooseSheetOpen" 
+    [currentCauseId]="supportedCause?.id" 
+    (causeSelected)="onCauseSaved($event)" 
+    (close)="closeChooseSheet()"
+  ></app-choose-cause>
 </section>

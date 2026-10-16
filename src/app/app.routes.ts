@@ -18,6 +18,18 @@ export const routes: Routes = [
     path: 'contact',
     loadComponent: () => import('./website/contact/contact.component').then(c => c.ContactComponent)
   },
+  {
+    path: 'help/faqs',
+    loadComponent: () => import('./website/faq/faq.component').then(c => c.FaqComponent)
+  },
+  {
+    path: 'faqs',
+    loadComponent: () => import('./website/faq/faq.component').then(c => c.FaqComponent)
+  },
+  {
+    path: 'faq',
+    loadComponent: () => import('./website/faq/faq.component').then(c => c.FaqComponent)
+  },
 
 
   {

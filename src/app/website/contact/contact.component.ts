@@ -1,94 +1,100 @@
 import {
   Component,
-  ElementRef,
   HostListener,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { NotificationService } from 'src/app/core/services/notificationnew.service';
-import { NavbarComponent } from '../components/navbar/navbar.component';
-// import { HeaderSectionComponent } from '../components/header-section/header-section.component';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { NavbarComponent } from '../components/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
-import { NgOptimizedImage } from '@angular/common';
+import { NotificationService } from 'src/app/core/services/notificationnew.service';
 
+export interface CountryCode {
+  code: string;
+  dial: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-contact',
+  standalone: true,
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [
-    NavbarComponent,
-    // HeaderSectionComponent,
+    CommonModule,
     FormsModule,
+    RouterLink,
+    NavbarComponent,
     FooterComponent,
-    NgOptimizedImage,
   ],
 })
 export class ContactComponent {
   private googleSheetUrl =
     'https://script.google.com/macros/s/AKfycbxhx5hHVtVocMgxabwGet6KFo0HLiD-HKTq0wX-uNj6Lk5Xc8VwENvyJr4XEvr3E3H7oQ/exec';
 
+  // Exactly 4 fields matching the Figma form
   formData = {
     name: '',
     email: '',
     phone: '',
-    subject: '',
     message: '',
   };
 
-  subjectOptions = [
-    'Account Support',
-    'Donation Inquiry',
-    'Marketplace Issue',
-    'Partnership',
-    'Feedback',
-    'Other',
+  selectedCountry: CountryCode = {
+    code: 'IN',
+    dial: '+91',
+    name: 'India',
+  };
+
+  countryList: CountryCode[] = [
+    { code: 'IN', dial: '+91', name: 'India' },
+    { code: 'GB', dial: '+44', name: 'United Kingdom' },
+    { code: 'US', dial: '+1', name: 'United States' },
+    { code: 'AE', dial: '+971', name: 'UAE' },
+    { code: 'CA', dial: '+1', name: 'Canada' },
+    { code: 'AU', dial: '+61', name: 'Australia' },
   ];
 
+  isCountryDropdownOpen = false;
   submitted = false;
   isSubmitting = false;
-
-  isSubjectDropdownOpen = false;
-  isHospitalDropdownOpen = false;
 
   @HostListener('document:click', ['$event'])
   onClick(event: Event) {
     const target = event.target as HTMLElement;
-    if (!target.closest('.custom-select-wrap')) {
-      this.isSubjectDropdownOpen = false;
+    if (!target.closest('.country-dropdown-wrap')) {
+      this.isCountryDropdownOpen = false;
     }
   }
 
   constructor(
-    private http: HttpClient,
     private notificationService: NotificationService,
-    private eRef: ElementRef,
   ) {}
 
-  toggleSubjectDropdown() {
-    this.isSubjectDropdownOpen = !this.isSubjectDropdownOpen;
+  toggleCountryDropdown(): void {
+    this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
   }
 
-  selectSubject(subject: string) {
-    this.formData.subject = subject;
-    this.isSubjectDropdownOpen = false;
+  selectCountry(country: CountryCode): void {
+    this.selectedCountry = country;
+    this.isCountryDropdownOpen = false;
   }
 
-  onSubmit() {
-    // 1. Check for Mandatory Fields
-    if (!this.formData.name || !this.formData.email || !this.formData.message) {
+  onSubmit(): void {
+    // 1. Mandatory Fields Validation (name, email, message)
+    if (!this.formData.name.trim() || !this.formData.email.trim() || !this.formData.message.trim()) {
       this.notificationService.show(
-        'Please fill in all mandatory fields marked with *',
+        'Please fill in your name, email, and message.',
         'error',
       );
       return;
     }
 
-    // 2. Email Validation (Pattern)
+    // 2. Email Validation
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (!emailPattern.test(this.formData.email)) {
+    if (!emailPattern.test(this.formData.email.trim())) {
       this.notificationService.show(
         'Please enter a valid email address.',
         'error',
@@ -96,12 +102,13 @@ export class ContactComponent {
       return;
     }
 
-    // 3. Phone Validation (10 digits, numbers only - if provided)
-    if (this.formData.phone) {
-      const phonePattern = /^\d{10}$/;
-      if (!phonePattern.test(this.formData.phone)) {
+    // 3. Phone Validation (Numbers only - if provided)
+    if (this.formData.phone.trim()) {
+      const cleanPhone = this.formData.phone.replace(/[\s-]/g, '');
+      const phonePattern = /^\d{7,15}$/;
+      if (!phonePattern.test(cleanPhone)) {
         this.notificationService.show(
-          'Phone number must be exactly 10 digits (numbers only).',
+          'Please enter a valid phone number (digits only).',
           'error',
         );
         return;
@@ -110,8 +117,15 @@ export class ContactComponent {
 
     this.isSubmitting = true;
 
+    const fullPhoneNumber = this.formData.phone.trim()
+      ? `${this.selectedCountry.dial} ${this.formData.phone.trim()}`
+      : '';
+
     const payload = {
-      ...this.formData,
+      name: this.formData.name.trim(),
+      email: this.formData.email.trim(),
+      phone: fullPhoneNumber,
+      message: this.formData.message.trim(),
       formType: 'contact',
     };
 
@@ -126,23 +140,26 @@ export class ContactComponent {
       .then(() => {
         this.submitted = true;
         this.isSubmitting = false;
+        this.notificationService.show(
+          'Message sent successfully! We will get back to you soon.',
+          'success',
+        );
       })
       .catch((error) => {
         console.error('Submission error:', error);
         this.isSubmitting = false;
         this.notificationService.show(
           'Something went wrong. Please try again.',
-          'error'
+          'error',
         );
       });
   }
 
-  resetForm() {
+  resetForm(): void {
     this.formData = {
       name: '',
       email: '',
       phone: '',
-      subject: '',
       message: '',
     };
     this.submitted = false;

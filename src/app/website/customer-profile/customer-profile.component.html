@@ -1,662 +1,678 @@
-<div class="profile-page flex flex-col min-h-screen">
+<div class="profile-page min-h-screen bg-slate-50/40 flex flex-col justify-between font-sans">
   <app-navbar></app-navbar>
 
-  <!-- ── HERO BANNER ── -->
-  <div class="pt-32 pb-24 relative overflow-hidden">
-    <!-- Background Image -->
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/assets/charity-illustration.png');"></div>
-    <!-- Dark Overlay -->
-    <div class="absolute inset-0 bg-gradient-to-r from-[#032826]/90 to-[#05413e]/85"></div>
-    <!-- Decorative circles -->
-    <div class="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-emerald-500/10 blur-3xl"></div>
-    <div class="absolute -bottom-16 -left-16 w-56 h-56 rounded-full bg-teal-400/10 blur-3xl"></div>
-
-    <div class="max-w-7xl mx-auto px-4 relative z-10">
-      <div class="flex flex-col md:flex-row items-center gap-6">
-        <!-- Avatar -->
-        <div class="h-28 w-28 rounded-full bg-emerald-500/20 border-4 border-emerald-400/30 flex items-center justify-center text-emerald-300 text-5xl shadow-xl backdrop-blur-sm overflow-hidden">
-          @if (user?.avatar_url) {
-            <img [src]="user.avatar_url" alt="Avatar" class="h-full w-full object-cover">
-          } @else {
-            <i class="fa-solid fa-user"></i>
-          }
-        </div>
-        <div class="text-center md:text-left">
-          <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-1">{{ user?.name || 'Customer' }}</h1>
-          <p class="text-emerald-300/80 text-lg">{{ user?.email }}</p>
-          <div class="flex flex-wrap justify-center md:justify-start gap-3 mt-4">
-            <span class="px-4 py-1.5 bg-emerald-500/20 text-emerald-300 text-xs font-bold rounded-full border border-emerald-500/30 backdrop-blur-sm">
-              <i class="fa-solid fa-shield-check mr-1.5"></i> Verified Account
-            </span>
-            <span class="px-4 py-1.5 bg-white/10 text-white/80 text-xs font-bold rounded-full border border-white/20 backdrop-blur-sm">
-              <i class="fa-solid fa-calendar mr-1.5"></i> Member since {{ user?.created_at ? (user?.created_at | date:'yyyy') : '2024' }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── STATS BAR ── -->
-  <div class="max-w-7xl mx-auto px-4 -mt-8 relative z-20 w-full">
-    <div class="bg-white rounded-2xl shadow-lg border border-slate-100 grid grid-cols-3 divide-x divide-slate-100">
-      <div class="p-5 md:p-6 text-center">
-        <div class="text-2xl md:text-3xl font-extrabold text-emerald-600">12</div>
-        <div class="text-xs md:text-sm text-slate-500 mt-1 font-medium">Total Orders</div>
-      </div>
-      <div class="p-5 md:p-6 text-center">
-        <div class="text-2xl md:text-3xl font-extrabold text-blue-600">₹2,450</div>
-        <div class="text-xs md:text-sm text-slate-500 mt-1 font-medium">Total Donated</div>
-      </div>
-      <div class="p-5 md:p-6 text-center">
-        <div class="text-2xl md:text-3xl font-extrabold text-amber-600">5</div>
-        <div class="text-xs md:text-sm text-slate-500 mt-1 font-medium">Causes Supported</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── MAIN CONTENT ── -->
-  <div class="flex-1 bg-slate-50 py-10">
-    <div class="max-w-7xl mx-auto px-4">
-
-      <!-- Loader -->
-      @if (isLoading) {
-        <div class="fixed inset-0 bg-white/80 backdrop-blur-sm z-[100] flex items-center justify-center">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
-        </div>
-      }
-
-      <!-- Messages -->
-      @if (successMessage) {
-        <div class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-700 px-5 py-3.5 rounded-xl flex items-center gap-3 shadow-sm animate-fade-in">
-          <i class="fa-solid fa-circle-check text-lg"></i>
-          <span class="font-medium">{{ successMessage }}</span>
-        </div>
-      }
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-        <!-- ── LEFT SIDEBAR ── -->
-        <div class="lg:col-span-3 flex flex-col gap-4">
-          <!-- Navigation Tabs -->
-          <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-            <div class="p-4">
-              <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-3">Account</p>
-              <button (click)="activeTab = 'personal'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all" [ngClass]="activeTab === 'personal' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50'">
-                <i class="fa-solid fa-user w-5 text-center"></i> Personal Info
-              </button>
-              <button (click)="activeTab = 'security'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all" [ngClass]="activeTab === 'security' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50'">
-                <i class="fa-solid fa-lock w-5 text-center"></i> Change Password
-              </button>
-              <button (click)="activeTab = 'transactions'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all" [ngClass]="activeTab === 'transactions' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50'">
-                <i class="fa-solid fa-receipt w-5 text-center"></i> Transactions
-              </button>
-            </div>
-          </div>
-
-          <!-- Quick Actions -->
-          <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-3">Quick Actions</p>
-            <a routerLink="/causes" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 transition-all">
-              <i class="fa-solid fa-hand-holding-heart w-5 text-center"></i> Browse Causes
-            </a>
-           
-            <div class="w-full h-px bg-slate-100 my-2"></div>
-            <button (click)="logout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition-all">
-              <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout
-            </button>
-          </div>
-        </div>
-
-        <!-- ── RIGHT CONTENT ── -->
-        <div class="lg:col-span-9">
-
-          <!-- ======== PERSONAL INFO TAB ======== -->
-          @if (activeTab === 'personal') {
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-              <div class="px-6 md:px-8 py-5 border-b border-slate-100 flex items-center justify-between">
-                <div>
-                  <h3 class="text-lg font-bold text-slate-800">Personal Information</h3>
-                  <p class="text-sm text-slate-500 mt-0.5">Your account details</p>
-                </div>
-                @if (!isEditing) {
-                  <button (click)="toggleEdit()" class="px-5 py-2 text-sm font-bold text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors flex items-center gap-2 border border-emerald-200">
-                    <i class="fa-solid fa-pen-to-square"></i> Edit
-                  </button>
-                }
-              </div>
-
-              <!-- ── VIEW MODE ── -->
-              @if (!isEditing) {
-                <div class="p-6 md:p-8">
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="flex items-start gap-4">
-                      <div class="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-user"></i>
-                      </div>
-                      <div>
-                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Full Name</p>
-                        <p class="text-sm font-semibold text-slate-800 mt-1">{{ user?.name }}</p>
-                      </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                      <div class="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-envelope"></i>
-                      </div>
-                      <div>
-                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Email Address</p>
-                        <p class="text-sm font-semibold text-slate-800 mt-1">{{ user?.email }}</p>
-                      </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                      <div class="h-10 w-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-venus-mars"></i>
-                      </div>
-                      <div>
-                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Gender</p>
-                        <p class="text-sm font-semibold text-slate-800 mt-1 capitalize">{{ user?.gender || 'Not specified' }}</p>
-                      </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                      <div class="h-10 w-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-phone"></i>
-                      </div>
-                      <div>
-                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Phone Number</p>
-                        <p class="text-sm font-semibold text-slate-800 mt-1">{{ user?.countryCode }} {{ user?.mobile }}</p>
-                      </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                      <div class="h-10 w-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-map"></i>
-                      </div>
-                      <div>
-                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">State</p>
-                        <p class="text-sm font-semibold text-slate-800 mt-1">{{ user?.state?.name || user?.state }}</p>
-                      </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                      <div class="h-10 w-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-city"></i>
-                      </div>
-                      <div>
-                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">City</p>
-                        <p class="text-sm font-semibold text-slate-800 mt-1">{{ user?.city?.name || user?.city }}</p>
-                      </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                      <div class="h-10 w-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-location-dot"></i>
-                      </div>
-                      <div>
-                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Address</p>
-                        <p class="text-sm font-semibold text-slate-800 mt-1">{{ user?.address }}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              }
-
-              <!-- ── EDIT MODE ── -->
-              @if (isEditing) {
-                <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()" class="p-6 md:p-8">
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
-
-                    <!-- Avatar Upload -->
-                    <div class="md:col-span-2">
-                      <label class="block text-sm font-semibold text-slate-700 mb-2">Profile Picture</label>
-                      <div class="relative flex items-center gap-4">
-                        @if (avatarPreview || user?.avatar_url) {
-                          <div class="h-24 w-24 rounded-2xl overflow-hidden border-2 border-emerald-200 shrink-0 shadow-sm">
-                            <img [src]="avatarPreview || user?.avatar_url" class="h-full w-full object-cover" />
-                          </div>
-                        }
-                        <label class="flex-1 flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-emerald-300 rounded-xl bg-emerald-50/50 hover:bg-emerald-50 cursor-pointer transition-colors group">
-                          <div class="flex flex-col items-center justify-center pt-2 pb-2">
-                            <div class="h-8 w-8 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
-                              <i class="fa-solid fa-cloud-arrow-up text-sm"></i>
-                            </div>
-                            <p class="mb-0.5 text-xs font-semibold text-slate-700">Click to upload new avatar</p>
-                            <p class="text-[10px] text-slate-500">MAX. 5MB</p>
-                          </div>
-                          <input type="file" class="hidden" accept="image/*" (change)="onAvatarSelected($event)" />
-                        </label>
-                      </div>
-                    </div>
-
-                    <!-- Name -->
-                    <div>
-                      <label class="block text-sm font-semibold text-slate-700 mb-2">Full Name</label>
-                      <div class="relative">
-                        <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <input type="text" formControlName="name"
-                          class="w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                          [ngClass]="{'border-red-400': profileForm.get('name')?.invalid && profileForm.get('name')?.touched, 'border-slate-200': !(profileForm.get('name')?.invalid && profileForm.get('name')?.touched)}">
-                      </div>
-                      @if (profileForm.get('name')?.invalid && profileForm.get('name')?.touched) {
-                        <p class="text-red-500 text-xs mt-1.5">Name must be at least 3 characters.</p>
-                      }
-                    </div>
-
-                    <!-- Email -->
-                    <div>
-                      <label class="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
-                      <div class="flex gap-2">
-                        <div class="relative flex-1">
-                          <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                          <input type="email" formControlName="email"
-                            class="w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                            [ngClass]="{'border-red-400': profileForm.get('email')?.invalid && profileForm.get('email')?.touched, 'border-slate-200': !(profileForm.get('email')?.invalid && profileForm.get('email')?.touched)}">
-                        </div>
-                        @if (profileForm.get('email')?.value !== user?.email && profileForm.get('email')?.valid) {
-                          <button type="button" (click)="triggerEmailVerification()" class="px-4 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-all whitespace-nowrap">
-                            <i class="fa-solid fa-paper-plane mr-1"></i> Verify
-                          </button>
-                        }
-                      </div>
-                      @if (profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
-                        <p class="text-red-500 text-xs mt-1.5">Enter a valid email address.</p>
-                      }
-                      <p class="text-xs text-slate-400 mt-1.5"><i class="fa-solid fa-circle-info mr-1"></i> Changing email requires OTP verification</p>
-                    </div>
-
-                    <!-- Country Code + Phone -->
-                    <div>
-                      <label class="block text-sm font-semibold text-slate-700 mb-2">Phone Number</label>
-                      <div class="flex gap-2">
-                        <!-- <select formControlName="countryCode"
-                          class="w-24 px-2 py-2.5 rounded-lg border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 border-slate-200 appearance-none bg-no-repeat bg-[right_8px_center] bg-[length:12px] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDEyIDEyIj48cGF0aCBkPSJNNiA4TDEgM2gxMEw2IDh6IiBmaWxsPSIjNjQ3NDhCIi8+PC9zdmc+')]">
-                          @for (c of countries; track c.code) {
-                            <option [value]="c.code">{{ c.code }}</option>
-                          }
-                        </select> -->
-                        <div class="relative flex-1">
-                          <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                          <input type="tel" formControlName="phone"
-                            class="w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                            [ngClass]="{'border-red-400': profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched, 'border-slate-200': !(profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched)}">
-                        </div>
-                      </div>
-                      @if (profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched) {
-                        <p class="text-red-500 text-xs mt-1.5">Enter a valid 10-digit number.</p>
-                      }
-                    </div>
-
-                    <!-- Gender -->
-                    <div>
-                      <label class="block text-sm font-semibold text-slate-700 mb-2">Gender</label>
-                      <div class="relative">
-                        <i class="fa-solid fa-venus-mars absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <select formControlName="gender"
-                          class="w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 border-slate-200 appearance-none bg-no-repeat bg-[right_12px_center] bg-[length:12px] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDEyIDEyIj48cGF0aCBkPSJNNiA4TDEgM2gxMEw2IDh6IiBmaWxsPSIjNjQ3NDhCIi8+PC9zdmc+')]">
-                          <option value="">Select Gender</option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                          <option value="other">Other</option>
-                        </select>
-                      </div>
-                      @if (profileForm.get('gender')?.invalid && profileForm.get('gender')?.touched) {
-                        <p class="text-red-500 text-xs mt-1.5">Please select your gender.</p>
-                      }
-                    </div>
-
-                    <!-- State -->
-                    <div>
-                      <label class="block text-sm font-semibold text-slate-700 mb-2">State</label>
-                      <div class="relative flex items-center">
-                        <i class="fa-solid fa-map absolute left-4 text-slate-400 text-sm z-10"></i>
-                        <ng-select formControlName="state"
-                          [items]="states"
-                          bindLabel="name"
-                          bindValue="id"
-                          placeholder="Select State"
-                          [searchable]="true"
-                          class="w-full pl-8 py-0.5 text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 border-slate-200">
-                        </ng-select>
-                      </div>
-                    </div>
-
-                    <!-- City -->
-                    <div>
-                      <label class="block text-sm font-semibold text-slate-700 mb-2">City</label>
-                      <div class="relative flex items-center">
-                        <i class="fa-solid fa-city absolute left-4 text-slate-400 text-sm z-10"></i>
-                        <ng-select formControlName="city"
-                          [items]="cities"
-                          bindLabel="name"
-                          bindValue="id"
-                          placeholder="Select City"
-                          [searchable]="true"
-                          class="w-full pl-8 py-0.5 text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 border-slate-200">
-                        </ng-select>
-                      </div>
-                    </div>
-
-                    <!-- Address -->
-                    <div>
-                      <label class="block text-sm font-semibold text-slate-700 mb-2">Address</label>
-                      <div class="relative">
-                        <i class="fa-solid fa-location-dot absolute left-4 top-3.5 text-slate-400 text-sm"></i>
-                        <textarea formControlName="address" rows="3"
-                          class="w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all resize-none text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                          [ngClass]="{'border-red-400': profileForm.get('address')?.invalid && profileForm.get('address')?.touched, 'border-slate-200': !(profileForm.get('address')?.invalid && profileForm.get('address')?.touched)}"></textarea>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Form Actions -->
-                  <div class="mt-8 flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
-                    <button type="button" (click)="toggleEdit()" class="px-6 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
-                      Cancel
-                    </button>
-                    <button type="submit" class="px-8 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-lg shadow-sm transition-all">
-                      Save Changes
-                    </button>
-                  </div>
-                </form>
-              }
-            </div>
-          }
-
-          <!-- ======== CHANGE PASSWORD TAB ======== -->
-          @if (activeTab === 'security') {
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-              <div class="px-6 md:px-8 py-5 border-b border-slate-100">
-                <h3 class="text-lg font-bold text-slate-800">Change Password</h3>
-                <p class="text-sm text-slate-500 mt-0.5">Update your account password</p>
-              </div>
-              <div class="p-6 md:p-8">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-slate-50 rounded-xl p-5 border border-slate-100 gap-4">
-                  <div class="flex items-center gap-4">
-                    <div class="h-12 w-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg">
-                      <i class="fa-solid fa-lock"></i>
-                    </div>
-                    <div>
-                      <p class="font-semibold text-slate-800">Password</p>
-                      <p class="text-sm text-slate-500">Last changed 30 days ago</p>
-                    </div>
-                  </div>
-                  <button (click)="openPasswordModal()" class="px-5 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-lg shadow-sm transition-all">
-                    Change Password
-                  </button>
-                </div>
-              </div>
-            </div>
-          }
-
-          <!-- ======== TRANSACTIONS TAB ======== -->
-          @if (activeTab === 'transactions') {
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-              <div class="px-6 md:px-8 py-5 border-b border-slate-100 flex items-center justify-between">
-                <div>
-                  <h3 class="text-lg font-bold text-slate-800">Order History</h3>
-                  <p class="text-sm text-slate-500 mt-0.5">Details of your orders and the amount donated to causes.</p>
-                </div>
-                <button (click)="showFilters = !showFilters" 
-                  class="h-9 px-4 flex items-center gap-2 rounded-lg transition-all text-sm font-semibold"
-                  [ngClass]="showFilters ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'text-slate-600 hover:bg-slate-50 border border-slate-200'">
-                  <i class="fa-solid fa-filter text-xs"></i> 
-                  Filters
-                  <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200" [class.rotate-180]="showFilters"></i>
-                </button>
-              </div>
-
-              <!-- Filter Row -->
-              @if (showFilters) {
-                <div class="px-6 md:px-8 py-5 border-b border-slate-100 bg-slate-50/50 flex flex-wrap items-end gap-4">
-                  
-                  <!-- Search -->
-                  <div class="flex-1 min-w-[200px]">
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Search</label>
-                    <div class="flex gap-2">
-                      <div class="relative flex-1">
-                        <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-sm"></i>
-                        <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="triggerSearch()" placeholder="Search items or ID..." 
-                          class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all">
-                      </div>
-                      <button (click)="triggerSearch()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors">
-                        Search
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Status -->
-                  <div class="w-full sm:w-auto">
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Status</label>
-                    <select [(ngModel)]="statusFilter" (ngModelChange)="onFilterChange()" class="w-full sm:w-40 px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all cursor-pointer">
-                      <option value="All">All Statuses</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Cancelled">Cancelled</option>
-                    </select>
-                  </div>
-
-                  <!-- Date Range -->
-                  <div class="w-full sm:w-auto">
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Date</label>
-                    <select [(ngModel)]="dateFilter" (ngModelChange)="onFilterChange()" class="w-full sm:w-40 px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all cursor-pointer">
-                      <option value="All">Any Time</option>
-                      <option value="Last 30 Days">Last 30 Days</option>
-                      <option value="Last 6 Months">Last 6 Months</option>
-                      <option value="Last Year">Last Year</option>
-                    </select>
-                  </div>
-
-                  <!-- Cause -->
-                  <div class="w-full sm:w-auto">
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Cause</label>
-                    <select [(ngModel)]="causeFilter" (ngModelChange)="onFilterChange()" class="w-full sm:w-48 px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all cursor-pointer">
-                      <option value="All">All Causes</option>
-                      @for (cause of uniqueCauses; track cause) {
-                        <option [value]="cause">{{ cause }}</option>
-                      }
-                    </select>
-                  </div>
-
-                  <!-- Clear -->
-                  <div class="w-full sm:w-auto">
-                    <button (click)="clearFilters()" class="w-full sm:w-auto px-4 py-2 text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-200 rounded-lg transition-colors">
-                      Reset
-                    </button>
-                  </div>
-
-                </div>
-              }
-
-              <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse min-w-[800px]">
-                  <thead>
-                    <tr class="bg-slate-50/50 border-b border-slate-100">
-                      <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Transaction ID</th>
-                      <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Date</th>
-                      <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Item Purchased</th>
-                      <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Total</th>
-                      <th class="px-6 py-4 text-xs font-bold text-emerald-600 uppercase tracking-wider bg-emerald-50/30">Impact (Donated)</th>
-                      <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-slate-100">
-                    @for (trx of paginatedTransactions; track trx.id) {
-                      <tr class="hover:bg-slate-50/50 transition-colors">
-                        <td class="px-6 py-4">
-                          <span class="text-sm font-semibold text-slate-700 font-mono">{{ trx.id }}</span>
-                        </td>
-                        <td class="px-6 py-4">
-                          <span class="text-sm text-slate-500">{{ trx.date }}</span>
-                        </td>
-                        <td class="px-6 py-4">
-                          <p class="text-sm font-bold text-slate-800">{{ trx.productName }}</p>
-                        </td>
-                        <td class="px-6 py-4">
-                          <span class="text-sm font-bold text-slate-800">₹{{ trx.totalAmount }}</span>
-                        </td>
-                        <td class="px-6 py-4 bg-emerald-50/10">
-                          <p class="text-sm font-extrabold text-emerald-600">₹{{ trx.donatedAmount }}</p>
-                          <p class="text-xs font-semibold text-emerald-600/70 mt-0.5"><i class="fa-solid fa-heart mr-1"></i>{{ trx.cause }}</p>
-                        </td>
-                        <td class="px-6 py-4">
-                          <span class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full"
-                            [ngClass]="{
-                              'bg-emerald-100 text-emerald-700': trx.status === 'Completed',
-                              'bg-amber-100 text-amber-700': trx.status === 'Pending',
-                              'bg-red-100 text-red-700': trx.status === 'Cancelled'
-                            }">
-                            <i class="fa-solid" [ngClass]="{
-                              'fa-circle-check': trx.status === 'Completed',
-                              'fa-clock': trx.status === 'Pending',
-                              'fa-circle-xmark': trx.status === 'Cancelled'
-                            }"></i> {{ trx.status }}
-                          </span>
-                        </td>
-                      </tr>
-                    }
-                  </tbody>
-                </table>
-                
-                <!-- Empty State -->
-                @if (filteredTransactions.length === 0) {
-                  <div class="p-12 text-center border-t border-slate-100">
-                    <div class="w-16 h-16 mx-auto bg-slate-100 text-slate-400 rounded-full flex items-center justify-center text-2xl mb-4">
-                      <i class="fa-solid fa-receipt"></i>
-                    </div>
-                    <h4 class="text-lg font-bold text-slate-800 mb-1">No transactions found</h4>
-                    <p class="text-sm text-slate-500">Try adjusting your filters.</p>
-                  </div>
-                }
-              </div>
-
-              <!-- Pagination -->
-              @if (totalPages > 1) {
-                <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-between bg-slate-50">
-                  <p class="text-sm text-slate-500 font-medium">
-                    Showing <span class="font-bold text-slate-700">{{ (currentPage - 1) * itemsPerPage + 1 }}</span> to 
-                    <span class="font-bold text-slate-700">{{ Math.min(currentPage * itemsPerPage, filteredTransactions.length) }}</span> of 
-                    <span class="font-bold text-slate-700">{{ filteredTransactions.length }}</span>
-                  </p>
-                  <div class="flex items-center gap-2">
-                    <button (click)="prevPage()" [disabled]="currentPage === 1" class="px-4 py-2 text-sm font-semibold rounded-lg border border-slate-200 hover:bg-white hover:text-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-slate-600">
-                      Previous
-                    </button>
-                    <div class="flex items-center gap-1">
-                      @for (page of [].constructor(totalPages); track $index) {
-                        <button (click)="currentPage = $index + 1" 
-                          class="h-9 w-9 rounded-lg text-sm font-bold flex items-center justify-center transition-colors"
-                          [ngClass]="currentPage === ($index + 1) ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-200'">
-                          {{ $index + 1 }}
-                        </button>
-                      }
-                    </div>
-                    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="px-4 py-2 text-sm font-semibold rounded-lg border border-slate-200 hover:bg-white hover:text-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-slate-600">
-                      Next
-                    </button>
-                  </div>
-                </div>
-              }
-            </div>
-          }
-
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ OTP MODAL ══ -->
-  @if (showOtpModal) {
-    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" (click)="closeOtpModal()">
-      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden" (click)="$event.stopPropagation()">
-        <div class="p-6 text-center border-b border-slate-100">
-          <div class="mx-auto w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-4">
-            <i class="fa-solid fa-envelope-open-text text-2xl"></i>
-          </div>
-          <h3 class="text-xl font-bold text-slate-800">Verify New Email</h3>
-          <p class="text-sm text-slate-500 mt-2">We sent a 6-digit code to <span class="font-semibold text-slate-700">{{ pendingEmailUpdate }}</span></p>
-          <p class="text-xs text-emerald-600 mt-2 font-bold bg-emerald-50 inline-block px-3 py-1 rounded-full">Mock OTP: 123456</p>
-        </div>
-        <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()" class="p-6">
-          <div class="mb-6">
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Verification Code</label>
-            <input type="text" formControlName="otp" maxlength="6" placeholder="000000"
-              class="w-full text-center text-3xl tracking-[0.5em] font-mono py-3.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all">
-            @if (otpForm.get('otp')?.errors?.['invalid']) {
-              <p class="text-red-500 text-sm text-center mt-2.5 font-medium">Invalid code. Please try again.</p>
-            }
-          </div>
-          <div class="flex gap-3">
-            <button type="button" (click)="closeOtpModal()" class="flex-1 py-2.5 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">Cancel</button>
-            <button type="submit" [disabled]="otpForm.invalid" class="flex-1 py-2.5 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-sm transition-all">Verify</button>
-          </div>
-        </form>
-      </div>
+  <!-- Loader Overlay -->
+  @if (isLoading) {
+    <div class="fixed inset-0 bg-white/70 backdrop-blur-xs z-[100] flex items-center justify-center">
+      <div class="animate-spin rounded-full h-10 w-10 border-3 border-[#087F6A] border-t-transparent"></div>
     </div>
   }
 
-  <!-- ══ PASSWORD MODAL ══ -->
-  @if (showPasswordModal) {
-    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" (click)="closePasswordModal()">
-      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden" (click)="$event.stopPropagation()">
-        <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
-          <div>
-            <h3 class="text-lg font-bold text-slate-800">Change Password</h3>
-            <p class="text-xs text-slate-500 mt-0.5">Enter your current and new password</p>
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- VIEW 1: MY PROFILE (Default)                                   -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  @if (!isEditing) {
+    <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      
+      <!-- Responsive Layout: Ordered Single Column on Mobile, 2 Columns on Desktop (5 cols / 7 cols) -->
+      <div class="profile-layout-container flex flex-col lg:grid lg:grid-cols-12 gap-6 lg:gap-8 items-stretch lg:items-start">
+        
+        <!-- ── LEFT COLUMN (Desktop: 5 Cols) ── -->
+        <div class="profile-col-left contents lg:flex lg:flex-col lg:col-span-5 lg:gap-5">
+          
+          <!-- 1. User Header Card (Mobile: 1st / Desktop: Left Col 1st) -->
+          <div class="profile-section-user w-full bg-[#FAF7F2] rounded-[22px] p-4 sm:p-5 flex items-center gap-4 border border-[#F2EDE4]/80 shadow-2xs">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-xs bg-gray-200">
+              <img 
+                [src]="avatarPreview || user?.avatar_url || 'assets/images/umeed_singh.jpg'" 
+                alt="User Photo" 
+                class="w-full h-full object-cover" 
+              />
+            </div>
+            <div class="flex-1 min-w-0">
+              <h2 class="text-lg sm:text-xl font-bold text-[#08265C] font-heading leading-tight truncate">
+                {{ user?.name || 'Umeed Singh' }}
+              </h2>
+              <p class="text-xs sm:text-sm text-gray-500 truncate mt-0.5">
+                {{ user?.email || 'ummeds@gmail.com' }}
+              </p>
+              <p class="text-xs sm:text-sm text-gray-500 truncate mt-0.5">
+                {{ user?.mobile || user?.phone || '+91 98XXXXXX32' }}
+              </p>
+              <button 
+                type="button" 
+                (click)="toggleEdit()"
+                class="text-xs sm:text-sm font-semibold text-[#087F6A] hover:text-[#066c5a] inline-flex items-center gap-1 mt-1 cursor-pointer transition-colors"
+              >
+                <span>Edit profile</span>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+              </button>
+            </div>
           </div>
-          <button (click)="closePasswordModal()" class="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all">
-            <i class="fa-solid fa-xmark"></i>
+
+          <!-- 2. Your Cause Section (Mobile: 2nd / Desktop: Left Col 2nd) -->
+          <div class="profile-section-cause w-full">
+            <div class="flex items-center justify-between mb-2.5">
+              <h3 class="text-lg sm:text-xl font-bold text-[#08265C] font-heading">
+                Your Cause
+              </h3>
+              <button 
+                type="button" 
+                (click)="openChooseCause()"
+                class="text-xs sm:text-sm font-semibold text-[#087F6A] hover:text-[#066c5a] inline-flex items-center gap-1 cursor-pointer transition-colors"
+              >
+                <span>Change cause</span>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+              </button>
+            </div>
+
+            <div class="bg-white rounded-[20px] p-3.5 sm:p-4 border border-gray-100 shadow-2xs flex items-center gap-3.5">
+              <div class="w-[76px] h-[76px] sm:w-[88px] sm:h-[88px] rounded-[14px] overflow-hidden shrink-0 bg-gray-100">
+                <img 
+                  [src]="supportedCause?.image || 'assets/images/Kids card photo.jpg'" 
+                  [alt]="supportedCause?.title" 
+                  class="w-full h-full object-cover grayscale brightness-95" 
+                />
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="w-5 h-5 rounded-full bg-[#087F6A] text-white flex items-center justify-center text-[10px] mb-1">
+                  <i class="fa-solid fa-check font-black"></i>
+                </div>
+                <h4 class="text-sm sm:text-base font-bold text-[#08265C] font-heading leading-tight truncate">
+                  {{ supportedCause?.title || 'Kids Education' }}
+                </h4>
+                <p class="text-xs text-gray-500 truncate mt-0.5 mb-1.5">
+                  {{ supportedCause?.subtitle || 'Brighter minds for a brighter tomorrow' }}
+                </p>
+                <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 text-gray-600 text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-full font-medium">
+                  <span class="truncate">{{ supportedCause?.foundation || 'The Earth Saviours Foundation' }}</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-gray-400"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Your Giving Section (Mobile: 5th / Desktop: Left Col 3rd) -->
+          <div class="profile-section-giving w-full bg-[#E8F5F1] rounded-[24px] p-4 sm:p-5 text-left border border-[#CDEAE1]/60 shadow-2xs">
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-[#08265C] font-heading leading-none mb-1">
+              ₹2,450
+            </h3>
+            <p class="text-xs text-gray-500 font-normal mb-3">donated so far</p>
+
+            <p class="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5 font-heading">
+              SUPPORTING
+            </p>
+
+            <!-- Pill -->
+            <div class="inline-flex items-center gap-2 bg-white rounded-full py-1 px-3 shadow-2xs border border-gray-100 max-w-fit mb-2.5">
+              <img 
+                [src]="supportedCause?.image || 'assets/images/Kids card photo.jpg'" 
+                [alt]="supportedCause?.title" 
+                class="w-6 h-6 rounded-full object-cover shrink-0" 
+              />
+              <span class="text-xs font-semibold text-[#08265C] font-heading">
+                {{ supportedCause?.title || 'Kids Education' }}
+              </span>
+            </div>
+
+            <p class="text-xs text-gray-500 mb-2.5">Your 2% goes to the cause you support.</p>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-white rounded-full h-2 overflow-hidden mb-1.5 border border-gray-100">
+              <div class="bg-[#087F6A] h-full rounded-full" style="width: 62%;"></div>
+            </div>
+            <div class="text-[11px] text-gray-500 font-medium text-right mb-3">
+              62% to next milestone
+            </div>
+
+            <!-- Footer Note -->
+            <div class="flex items-center gap-2 text-xs text-[#08265C] font-medium pt-2 border-t border-[#087F6A]/10">
+              <i class="fa-solid fa-seedling text-[#087F6A] text-sm shrink-0"></i>
+              <span>Thanks to your purchases, 24 lives have been positively impacted.</span>
+            </div>
+          </div>
+
+          <!-- 4. Sign Out Button (Mobile: 6th / Desktop: Left Col 4th) -->
+          <button 
+            type="button" 
+            (click)="logout()"
+            class="profile-section-signout w-full bg-white hover:bg-gray-50 text-[#08265C] font-bold text-sm py-3.5 rounded-[16px] border border-gray-200 transition-colors shadow-2xs cursor-pointer mb-2 lg:mb-0"
+          >
+            Sign Out
+          </button>
+
+        </div>
+
+        <!-- ── RIGHT COLUMN (Desktop: 7 Cols) ── -->
+        <div class="profile-col-right contents lg:flex lg:flex-col lg:col-span-7 lg:gap-6">
+          
+          <!-- 1. Your Impact Card (Mobile: 3rd / Desktop: Right Col 1st) -->
+          <div class="profile-section-impact w-full bg-[#08265C] rounded-[24px] p-4 sm:p-5 text-white shadow-md">
+            <h3 class="text-lg sm:text-xl font-bold font-heading mb-0.5">
+              Your Impact
+            </h3>
+            <p class="text-xs text-white/70 mb-4 font-normal">
+              Every purchase is helping create a better future.
+            </p>
+            <div class="border-t border-white/10 mb-5"></div>
+
+            <!-- 4 Stats in 2x2 on mobile / 4-cols on larger screens -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-5">
+              <!-- Stat 1: Total donated -->
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 bg-white/5 sm:bg-transparent p-3 sm:p-0 rounded-2xl">
+                <div class="w-10 h-10 rounded-full bg-white text-[#087F6A] flex items-center justify-center shrink-0 shadow-2xs">
+                  <i class="fa-regular fa-heart text-base font-bold"></i>
+                </div>
+                <div>
+                  <div class="text-base sm:text-lg lg:text-xl font-bold font-heading leading-tight">₹2,450</div>
+                  <div class="text-[11px] text-white/70 leading-snug">Total donated</div>
+                </div>
+              </div>
+
+              <!-- Stat 2: Lives impacted -->
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 bg-white/5 sm:bg-transparent p-3 sm:p-0 rounded-2xl">
+                <div class="w-10 h-10 rounded-full bg-white text-[#087F6A] flex items-center justify-center shrink-0 shadow-2xs">
+                  <i class="fa-solid fa-user-group text-sm font-bold"></i>
+                </div>
+                <div>
+                  <div class="text-base sm:text-lg lg:text-xl font-bold font-heading leading-tight">24</div>
+                  <div class="text-[11px] text-white/70 leading-snug">Lives impacted</div>
+                </div>
+              </div>
+
+              <!-- Stat 3: Total shopping -->
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 bg-white/5 sm:bg-transparent p-3 sm:p-0 rounded-2xl">
+                <div class="w-10 h-10 rounded-full bg-white text-[#087F6A] flex items-center justify-center shrink-0 shadow-2xs">
+                  <i class="fa-solid fa-bag-shopping text-sm font-bold"></i>
+                </div>
+                <div>
+                  <div class="text-base sm:text-lg lg:text-xl font-bold font-heading leading-tight">₹1.22L</div>
+                  <div class="text-[11px] text-white/70 leading-snug">Total shopping</div>
+                </div>
+              </div>
+
+              <!-- Stat 4: Orders -->
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 bg-white/5 sm:bg-transparent p-3 sm:p-0 rounded-2xl">
+                <div class="w-10 h-10 rounded-full bg-white text-[#087F6A] flex items-center justify-center shrink-0 shadow-2xs">
+                  <i class="fa-solid fa-tag text-sm font-bold"></i>
+                </div>
+                <div>
+                  <div class="text-base sm:text-lg lg:text-xl font-bold font-heading leading-tight">18</div>
+                  <div class="text-[11px] text-white/70 leading-snug">Orders</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Where You Shop Section (Mobile: 4th / Desktop: Right Col 2nd) -->
+          <div class="profile-section-shop w-full">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-lg sm:text-xl font-bold text-[#08265C] font-heading">
+                Where You Shop
+              </h3>
+              <button 
+                type="button" 
+                (click)="toggleOrdersTable()"
+                class="text-xs sm:text-sm font-semibold text-[#087F6A] hover:text-[#066c5a] inline-flex items-center gap-1.5 transition-colors cursor-pointer bg-transparent border-none p-0"
+              >
+                <span>View all orders</span>
+                <i class="fa-solid fa-arrow-down text-[10px]"></i>
+              </button>
+            </div>
+
+            <div class="bg-white rounded-[22px] border border-gray-100 shadow-2xs overflow-hidden divide-y divide-gray-100">
+              @for (store of stores; track store.name) {
+                <div 
+                  (click)="toggleOrdersTable(store.name)"
+                  class="p-4 sm:p-4.5 flex items-center justify-between hover:bg-gray-50/70 transition-colors cursor-pointer"
+                  title="Click to view {{ store.name }} orders"
+                >
+                  <div class="flex items-center gap-4">
+                    <div class="w-14 h-8 sm:w-16 sm:h-9 flex items-center justify-center shrink-0 p-1 bg-gray-50/50 rounded-lg border border-gray-100/60">
+                      <img [src]="store.logo" [alt]="store.name" class="max-h-full max-w-full object-contain" />
+                    </div>
+                    <div>
+                      <h4 class="text-sm sm:text-base font-bold text-[#08265C] font-heading leading-tight">{{ store.name }}</h4>
+                      <p class="text-xs text-gray-500 mt-0.5 leading-snug">{{ store.orders }}</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-sm sm:text-base font-bold text-[#08265C] font-heading">{{ store.amount }}</span>
+                    <i class="fa-solid fa-chevron-right text-[11px] text-gray-400"></i>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <!-- ORDERS & TRANSACTIONS TABLE SECTION                             -->
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      @if (showOrdersTable) {
+        <div id="orders-table-section" class="mt-10 sm:mt-12 pt-8 border-t border-gray-200/80 animate-in fade-in slide-in-from-bottom duration-300">
+          
+          <!-- Table Header -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+            <div>
+              <div class="flex items-center gap-2.5 mb-1">
+                <h3 class="text-xl sm:text-2xl font-bold text-[#08265C] font-heading">
+                  Order & Transaction History
+                </h3>
+                <span class="bg-emerald-50 text-[#087F6A] text-xs font-bold px-2.5 py-0.5 rounded-full border border-emerald-100">
+                  {{ filteredOrders.length }} Orders
+                </span>
+              </div>
+              <p class="text-xs sm:text-sm text-gray-500">
+                Track all your purchases and the donations contributed to causes.
+              </p>
+            </div>
+
+            <!-- Filters & Search -->
+            <div class="flex flex-wrap items-center gap-3">
+              <!-- Search Box -->
+              <div class="relative min-w-[200px] sm:min-w-[240px]">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 text-xs absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input 
+                  type="text" 
+                  [(ngModel)]="searchOrderQuery" 
+                  placeholder="Search store, item, or ID..."
+                  class="w-full pl-8 pr-7 py-2 bg-white border border-gray-200 rounded-full text-xs text-[#08265C] focus:border-[#087F6A] focus:outline-none transition-colors shadow-2xs"
+                />
+                @if (searchOrderQuery) {
+                  <button 
+                    type="button" 
+                    (click)="clearOrderFilters()"
+                    class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs cursor-pointer"
+                  >
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                }
+              </div>
+
+              <!-- Status Filters -->
+              <div class="inline-flex bg-gray-100/80 p-1 rounded-full text-xs font-medium">
+                <button 
+                  type="button" 
+                  (click)="setOrderStatus('All')"
+                  class="px-3 py-1 rounded-full transition-all cursor-pointer"
+                  [ngClass]="orderStatusFilter === 'All' ? 'bg-white text-[#08265C] shadow-2xs font-bold' : 'text-gray-500 hover:text-gray-800'"
+                >
+                  All
+                </button>
+                <button 
+                  type="button" 
+                  (click)="setOrderStatus('Completed')"
+                  class="px-3 py-1 rounded-full transition-all cursor-pointer"
+                  [ngClass]="orderStatusFilter === 'Completed' ? 'bg-white text-[#087F6A] shadow-2xs font-bold' : 'text-gray-500 hover:text-gray-800'"
+                >
+                  Completed
+                </button>
+                <button 
+                  type="button" 
+                  (click)="setOrderStatus('Pending')"
+                  class="px-3 py-1 rounded-full transition-all cursor-pointer"
+                  [ngClass]="orderStatusFilter === 'Pending' ? 'bg-white text-amber-700 shadow-2xs font-bold' : 'text-gray-500 hover:text-gray-800'"
+                >
+                  Pending
+                </button>
+                <button 
+                  type="button" 
+                  (click)="setOrderStatus('Cancelled')"
+                  class="px-3 py-1 rounded-full transition-all cursor-pointer"
+                  [ngClass]="orderStatusFilter === 'Cancelled' ? 'bg-white text-red-600 shadow-2xs font-bold' : 'text-gray-500 hover:text-gray-800'"
+                >
+                  Cancelled
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table Card -->
+          <div class="bg-white rounded-[22px] border border-gray-100 shadow-2xs overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse min-w-[760px]">
+                <thead>
+                  <tr class="bg-gray-50/80 border-b border-gray-100">
+                    <th class="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider font-heading">Order ID</th>
+                    <th class="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider font-heading">Store</th>
+                    <th class="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider font-heading">Date</th>
+                    <th class="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider font-heading">Item Purchased</th>
+                    <th class="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider font-heading">Order Total</th>
+                    <th class="px-5 py-3.5 text-[11px] font-bold text-[#087F6A] uppercase tracking-wider font-heading bg-emerald-50/30">Donation (2%)</th>
+                    <th class="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider font-heading text-right">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-sm">
+                  @for (trx of paginatedOrders; track trx.id) {
+                    <tr class="hover:bg-gray-50/60 transition-colors">
+                      <!-- Order ID -->
+                      <td class="px-5 py-4 font-mono font-bold text-[#08265C] text-xs">
+                        {{ trx.id }}
+                      </td>
+
+                      <!-- Store with Logo -->
+                      <td class="px-5 py-4">
+                        <div class="flex items-center gap-2.5">
+                          <div class="w-8 h-5 flex items-center justify-center p-0.5 bg-gray-50 rounded border border-gray-100">
+                            <img [src]="trx.storeLogo" [alt]="trx.store" class="max-h-full max-w-full object-contain" />
+                          </div>
+                          <span class="font-semibold text-[#08265C] text-xs">{{ trx.store }}</span>
+                        </div>
+                      </td>
+
+                      <!-- Date -->
+                      <td class="px-5 py-4 text-xs text-gray-500 whitespace-nowrap">
+                        {{ trx.date }}
+                      </td>
+
+                      <!-- Item Purchased -->
+                      <td class="px-5 py-4">
+                        <p class="font-medium text-[#08265C] text-xs leading-snug">{{ trx.productName }}</p>
+                      </td>
+
+                      <!-- Order Total -->
+                      <td class="px-5 py-4 font-bold text-[#08265C] text-xs whitespace-nowrap">
+                        ₹{{ trx.totalAmount }}
+                      </td>
+
+                      <!-- Donated Amount & Cause -->
+                      <td class="px-5 py-4 bg-emerald-50/20 whitespace-nowrap">
+                        <span class="font-extrabold text-[#087F6A] text-xs">₹{{ trx.donatedAmount }}</span>
+                        <span class="block text-[10px] text-gray-500 font-medium mt-0.5">
+                          <i class="fa-solid fa-heart text-rose-500 text-[9px] mr-1"></i>{{ trx.cause }}
+                        </span>
+                      </td>
+
+                      <!-- Status -->
+                      <td class="px-5 py-4 text-right whitespace-nowrap">
+                        @if (trx.status === 'Completed') {
+                          <span class="inline-flex items-center gap-1 bg-emerald-50 text-[#087F6A] text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-emerald-100">
+                            <i class="fa-solid fa-circle-check text-[10px]"></i> Completed
+                          </span>
+                        } @else if (trx.status === 'Pending') {
+                          <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-amber-100">
+                            <i class="fa-solid fa-clock text-[10px]"></i> Pending
+                          </span>
+                        } @else {
+                          <span class="inline-flex items-center gap-1 bg-red-50 text-red-600 text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-red-100">
+                            <i class="fa-solid fa-circle-xmark text-[10px]"></i> Cancelled
+                          </span>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+
+              <!-- Empty State -->
+              @if (filteredOrders.length === 0) {
+                <div class="py-12 px-4 text-center">
+                  <div class="w-12 h-12 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center mx-auto mb-3 text-lg">
+                    <i class="fa-solid fa-receipt"></i>
+                  </div>
+                  <h4 class="text-sm font-bold text-[#08265C] mb-1">No orders found</h4>
+                  <p class="text-xs text-gray-500">Try adjusting your search query or status filter.</p>
+                </div>
+              }
+            </div>
+
+            <!-- Pagination Footer -->
+            @if (filteredOrders.length > orderPageSize) {
+              <div class="px-5 py-3.5 bg-gray-50/60 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                <span>
+                  Showing <strong class="text-[#08265C]">{{ (orderPage - 1) * orderPageSize + 1 }}</strong> to 
+                  <strong class="text-[#08265C]">{{ Math.min(orderPage * orderPageSize, filteredOrders.length) }}</strong> of 
+                  <strong class="text-[#08265C]">{{ filteredOrders.length }}</strong> orders
+                </span>
+
+                <div class="flex items-center gap-2">
+                  <button 
+                    type="button" 
+                    (click)="prevOrderPage()"
+                    [disabled]="orderPage === 1"
+                    class="px-3 py-1 rounded-lg border border-gray-200 bg-white font-medium hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                  >
+                    Previous
+                  </button>
+                  <span class="font-bold text-[#08265C] px-2">Page {{ orderPage }} of {{ totalOrderPages }}</span>
+                  <button 
+                    type="button" 
+                    (click)="nextOrderPage()"
+                    [disabled]="orderPage === totalOrderPages"
+                    class="px-3 py-1 rounded-lg border border-gray-200 bg-white font-medium hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+
+        </div>
+      }
+
+    </main>
+  }
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- VIEW 2: EDIT PROFILE                                           -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  @if (isEditing) {
+    <main class="flex-1 w-full max-w-xl mx-auto px-4 sm:px-6 py-4 sm:py-8 font-sans">
+      
+      <!-- Back Button -->
+      <button 
+        type="button" 
+        (click)="toggleEdit()"
+        class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#08265C] hover:text-[#087F6A] transition-colors cursor-pointer mb-2.5 -ml-1 self-start"
+      >
+        <i class="fa-solid fa-arrow-left text-xs"></i>
+        <span>My Profile</span>
+      </button>
+
+      <!-- Title & Subtitle -->
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-[#08265C] font-heading mb-1.5 leading-tight">
+        Edit profile
+      </h1>
+      <p class="text-xs sm:text-sm text-gray-500 mb-5 sm:mb-6 leading-relaxed">
+        Update your details. A new email or mobile number needs a quick code check.
+      </p>
+
+      <!-- Profile Photo Card -->
+      <div class="bg-[#FAF7F2] rounded-[20px] p-4 sm:p-5 flex items-center gap-4 border border-[#F2EDE4]/80 shadow-2xs mb-5 sm:mb-6">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-xs bg-gray-200">
+          <img 
+            [src]="avatarPreview || user?.avatar_url || 'assets/images/umeed_singh.jpg'" 
+            alt="Profile Photo" 
+            class="w-full h-full object-cover" 
+          />
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 class="text-sm sm:text-base font-bold text-[#08265C] font-heading leading-tight">
+            Profile photo
+          </h4>
+          <button 
+            type="button" 
+            (click)="fileInput.click()"
+            class="text-xs sm:text-sm font-semibold text-[#087F6A] hover:text-[#066c5a] inline-flex items-center gap-1.5 cursor-pointer mt-1.5 transition-colors"
+          >
+            <i class="fa-regular fa-image text-xs"></i>
+            <span>Change photo</span>
+          </button>
+          <input #fileInput type="file" (change)="onAvatarSelected($event)" accept="image/*" class="hidden" />
+        </div>
+      </div>
+
+      <!-- Edit Form -->
+      <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()" class="flex flex-col gap-4 sm:gap-5" novalidate>
+        
+        <!-- Full name -->
+        <div>
+          <label class="block text-xs sm:text-sm font-bold text-[#08265C] mb-1.5 font-heading">
+            Full name
+          </label>
+          <input 
+            formControlName="name" 
+            type="text" 
+            class="w-full bg-white border rounded-[14px] px-3.5 sm:px-4 py-3 text-sm text-[#08265C] font-medium focus:outline-none transition-colors"
+            [ngClass]="profileForm.get('name')?.invalid && profileForm.get('name')?.touched ? 'border-red-400 focus:border-red-500 bg-red-50/20' : 'border-gray-200 focus:border-[#087F6A]'"
+            placeholder="Enter your full name"
+          />
+          @if (profileForm.get('name')?.invalid && profileForm.get('name')?.touched) {
+            <p class="text-xs text-red-500 font-medium mt-1 pl-1 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+              <span>Full name is required (min 2 characters).</span>
+            </p>
+          }
+        </div>
+
+        <!-- Email address -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-xs sm:text-sm font-bold text-[#08265C] font-heading">
+              Email address
+            </label>
+            <span class="bg-emerald-50 text-[#087F6A] text-[11px] font-semibold px-2 py-0.5 rounded-full border border-emerald-100 flex items-center gap-1">
+              <i class="fa-solid fa-check text-[10px]"></i> Verified
+            </span>
+          </div>
+          <div 
+            class="w-full bg-white border rounded-[14px] px-3.5 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between transition-colors min-h-[48px]"
+            [ngClass]="profileForm.get('email')?.invalid && profileForm.get('email')?.touched ? 'border-red-400 bg-red-50/20' : 'border-gray-200 focus-within:border-[#087F6A]'"
+          >
+            <input 
+              formControlName="email" 
+              type="email" 
+              class="bg-transparent text-sm text-[#08265C] font-medium focus:outline-none flex-1 min-w-0 pr-2 truncate"
+              placeholder="name@example.com"
+            />
+            <button 
+              type="button" 
+              (click)="onChangeEmail()"
+              class="text-[#087F6A] hover:text-[#066c5a] font-semibold text-xs sm:text-sm cursor-pointer shrink-0 transition-colors ml-2 hover:underline"
+            >
+              Change
+            </button>
+          </div>
+          @if (profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
+            <p class="text-xs text-red-500 font-medium mt-1 pl-1 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+              <span>Please enter a valid email address.</span>
+            </p>
+          }
+        </div>
+
+        <!-- Mobile number -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-xs sm:text-sm font-bold text-[#08265C] font-heading">
+              Mobile number
+            </label>
+            <span class="bg-emerald-50 text-[#087F6A] text-[11px] font-semibold px-2 py-0.5 rounded-full border border-emerald-100 flex items-center gap-1">
+              <i class="fa-solid fa-check text-[10px]"></i> Verified
+            </span>
+          </div>
+          <div 
+            class="w-full bg-white border rounded-[14px] px-3.5 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between transition-colors min-h-[48px]"
+            [ngClass]="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched ? 'border-red-400 bg-red-50/20' : 'border-gray-200 focus-within:border-[#087F6A]'"
+          >
+            <div class="flex items-center flex-1 min-w-0 pr-2">
+              <span class="text-gray-500 font-semibold text-sm select-none border-r border-gray-200 pr-2.5 mr-2.5 shrink-0">+91</span>
+              <input 
+                formControlName="phone" 
+                type="tel" 
+                maxlength="10"
+                class="bg-transparent text-sm text-[#08265C] font-medium focus:outline-none w-full min-w-0"
+                placeholder="98XXXXXX32"
+              />
+            </div>
+            <button 
+              type="button" 
+              (click)="onChangePhone()"
+              class="text-[#087F6A] hover:text-[#066c5a] font-semibold text-xs sm:text-sm cursor-pointer shrink-0 transition-colors ml-2 hover:underline"
+            >
+              Change
+            </button>
+          </div>
+          @if (profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched) {
+            <p class="text-xs text-red-500 font-medium mt-1 pl-1 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+              <span>Please enter a valid 10-digit mobile number.</span>
+            </p>
+          }
+        </div>
+
+        <!-- Action buttons -->
+        <div class="flex flex-col gap-3 pt-3 mt-1">
+          <button 
+            type="submit" 
+            class="w-full bg-[#087F6A] hover:bg-[#066c5a] active:scale-[0.99] text-white font-bold text-sm sm:text-base py-3.5 sm:py-4 rounded-[16px] shadow-xs font-heading cursor-pointer transition-all text-center"
+          >
+            Save changes
+          </button>
+          <button 
+            type="button" 
+            (click)="toggleEdit()"
+            class="w-full bg-white hover:bg-gray-50 text-[#08265C] font-semibold text-sm sm:text-base py-3.5 sm:py-4 rounded-[16px] border border-gray-200 shadow-2xs font-heading cursor-pointer transition-all text-center"
+          >
+            Cancel
           </button>
         </div>
-        <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" class="p-6">
-          <!-- Current Password -->
-          <div class="mb-4">
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Current Password</label>
-            <div class="relative">
-              <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-              <input [type]="showCurrentPassword ? 'text' : 'password'" formControlName="currentPassword" placeholder="••••••••"
-                class="w-full pl-10 pr-10 py-2.5 rounded-xl border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                [ngClass]="{'border-red-400': passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched, 'border-slate-200': !(passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched)}">
-              <button type="button" (click)="showCurrentPassword = !showCurrentPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors focus:outline-none">
-                <i class="fa-solid" [ngClass]="showCurrentPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-              </button>
-            </div>
-            @if (passwordForm.get('currentPassword')?.errors?.['incorrect']) {
-              <p class="text-red-500 text-xs mt-1.5 font-medium">Incorrect password. <span class="text-slate-400">(Hint: customer123)</span></p>
-            }
-          </div>
-          <!-- New Password -->
-          <div class="mb-4">
-            <label class="block text-sm font-semibold text-slate-700 mb-2">New Password</label>
-            <div class="relative">
-              <i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-              <input [type]="showNewPassword ? 'text' : 'password'" formControlName="newPassword" placeholder="••••••••"
-                class="w-full pl-10 pr-10 py-2.5 rounded-xl border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                [ngClass]="{'border-red-400': passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched, 'border-slate-200': !(passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched)}">
-              <button type="button" (click)="showNewPassword = !showNewPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors focus:outline-none">
-                <i class="fa-solid" [ngClass]="showNewPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-              </button>
-            </div>
-            @if (passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched) {
-              <p class="text-red-500 text-xs mt-1.5">Must be at least 8 characters.</p>
-            }
-          </div>
-          <!-- Confirm Password -->
-          <div class="mb-6">
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Confirm New Password</label>
-            <div class="relative">
-              <i class="fa-solid fa-shield-halved absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-              <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword" placeholder="••••••••"
-                class="w-full pl-10 pr-10 py-2.5 rounded-xl border outline-none transition-all text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                [ngClass]="{'border-red-400': passwordForm.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched, 'border-slate-200': !(passwordForm.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched)}">
-              <button type="button" (click)="showConfirmPassword = !showConfirmPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors focus:outline-none">
-                <i class="fa-solid" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-              </button>
-            </div>
-            @if (passwordForm.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched) {
-              <p class="text-red-500 text-xs mt-1.5">Passwords do not match.</p>
-            }
-          </div>
-          <div class="flex gap-3">
-            <button type="button" (click)="closePasswordModal()" class="flex-1 py-2.5 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">Cancel</button>
-            <button type="submit" class="flex-1 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-xl shadow-sm transition-all">Update Password</button>
-          </div>
+      </form>
+
+    </main>
+  }
+
+  <!-- Choose Cause Component Modal (Connected to Change cause) -->
+  <app-choose-cause 
+    [isOpen]="isChooseCauseOpen" 
+    [currentCauseId]="supportedCause?.id" 
+    (causeSelected)="onCauseSelected($event)" 
+    (close)="closeChooseCause()"
+  ></app-choose-cause>
+
+  <!-- OTP Modal for Email / Phone Change Verification -->
+  @if (showOtpModal) {
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-xs z-[100] flex items-center justify-center p-4">
+      <div class="bg-white rounded-[24px] max-w-sm w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+        <button (click)="closeOtpModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+        <div class="w-12 h-12 rounded-full bg-emerald-50 text-[#087F6A] flex items-center justify-center text-xl mb-3 mx-auto">
+          <i class="fa-solid" [ngClass]="otpChangeType === 'phone' ? 'fa-mobile-screen-button' : 'fa-envelope-circle-check'"></i>
+        </div>
+        <h3 class="text-lg font-bold text-[#08265C] text-center font-heading mb-1">
+          Verify {{ otpChangeType === 'phone' ? 'Mobile Number' : 'Email' }}
+        </h3>
+        <p class="text-xs text-gray-500 text-center mb-4">
+          Enter 6-digit code sent to <span class="font-medium text-[#08265C]">{{ otpChangeType === 'phone' ? '+91 ' + pendingPhoneUpdate : pendingEmailUpdate }}</span>
+          <span class="block text-[11px] text-emerald-600 mt-1 font-semibold">(For testing, use code: 123456)</span>
+        </p>
+        <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
+          <input 
+            formControlName="otp" 
+            type="text" 
+            maxlength="6" 
+            placeholder="000000"
+            class="w-full text-center tracking-[0.5em] text-xl font-bold py-3 border rounded-[14px] focus:outline-none mb-1 transition-colors"
+            [ngClass]="otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched ? 'border-red-400 bg-red-50/20' : 'border-gray-200 focus:border-[#087F6A]'"
+          />
+          @if (otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched) {
+            <p class="text-xs text-red-500 text-center mb-3">Please enter a valid 6-digit code</p>
+          } @else {
+            <div class="mb-3"></div>
+          }
+          <button 
+            type="submit" 
+            class="w-full bg-[#087F6A] hover:bg-[#066c5a] text-white font-bold py-3.5 rounded-[14px] font-heading cursor-pointer transition-colors text-center"
+          >
+            Verify & Save
+          </button>
         </form>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+// import { RouterLink } from '@angular/router';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
 
@@ -28,7 +28,7 @@ export interface CauseBreakdown {
 @Component({
   selector: 'app-our-impact',
   standalone: true,
-  imports: [CommonModule, RouterLink, NavbarComponent, FooterComponent],
+  imports: [CommonModule,  NavbarComponent, FooterComponent],
   templateUrl: './our-impact.component.html',
   styleUrl: './our-impact.component.scss'
 })

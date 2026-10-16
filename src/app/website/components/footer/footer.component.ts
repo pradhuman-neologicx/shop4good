@@ -1,43 +1,20 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { NgOptimizedImage } from '@angular/common';
 
 @Component({
-    selector: 'app-footer',
-    templateUrl: './footer.component.html',
-    styleUrl: './footer.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [RouterLink, NgOptimizedImage],
+  selector: 'app-footer',
+  standalone: true,
+  templateUrl: './footer.component.html',
+  styleUrl: './footer.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, RouterLink, NgOptimizedImage],
 })
 export class FooterComponent {
-  currentYear = new Date().getFullYear();
+  currentYear: number = new Date().getFullYear();
 
-  contactInfo = [
-    {
-      icon: 'fa-solid fa-phone',
-      title: 'Support Desk',
-      detail: '0800 123 4567',
-      href: 'tel:+4408001234567',
-    },
-    {
-      icon: 'fa-solid fa-envelope',
-      title: 'Email Us',
-      detail: 'support@shop4good.com',
-      href: 'mailto:support@shop4good.com',
-    },
-    // {
-    //   icon: 'fa-solid fa-location-dot',
-    //   title: 'Headquarters',
-    //   detail: `123 Goodness Lane \n London, UK`,
-    //   href: '#',
-    // },
-  ];
-
-  quickLinks = [
-    { label: 'Home', href: '/' },
-    { label: 'Our Causes', href: '/causes' },
-    { label: 'Contact Us', href: '/contact' },
-    { label: 'Admin Login', href: '/admin/login' },
+  shopLinks = [
+    { label: 'All Brands', href: '/shop' },
   ];
 
   causeLinks = [
@@ -47,10 +24,23 @@ export class FooterComponent {
     { label: 'Pet Care', href: '/causes-new/pets' },
   ];
 
-  socials = [
-    { icon: 'fab fa-facebook-f', href: '#' },
-    { icon: 'fab fa-instagram', href: '#' },
-    { icon: 'fab fa-twitter', href: '#' },
-    { icon: 'fab fa-linkedin-in', href: '#' },
+  aboutLinks = [
+    { label: 'Our Story', href: '/about/our-story' },
+    { label: 'How It Works', href: '/about/how-it-works' },
+    { label: 'Our Impact', href: '/about/our-impact' },
+    { label: 'Partner With Us', href: '/about/partner-with-us' },
+  ];
+
+  helpLinks = [
+    { label: 'FAQs', href: '/help/faqs' },
+    { label: 'Contact Us', href: '/contact' },
+    { label: 'Privacy Policy', href: '/privacy-policy' },
+  ];
+
+  socialLinks = [
+    { label: 'Instagram', href: 'https://instagram.com' },
+    { label: 'Facebook', href: 'https://facebook.com' },
+    { label: 'LinkedIn', href: 'https://linkedin.com' },
+    { label: 'YouTube', href: 'https://youtube.com' },
   ];
 }

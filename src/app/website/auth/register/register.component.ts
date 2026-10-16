@@ -1,152 +1,294 @@
-import { NgOptimizedImage } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { PublicApiService } from 'src/app/core/services/public-api.service';
-import { LoginService } from 'src/app/core/services/login.service';
-import { NotificationService } from 'src/app/core/services/notificationnew.service';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { JwtService } from 'src/app/core/services/jwt.service';
-import { DestroyRef, inject, ChangeDetectorRef } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NotificationService } from 'src/app/core/services/notificationnew.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, CommonModule, NgOptimizedImage],
+  imports: [RouterLink, NgOptimizedImage, ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
-  submitted = false;
-  step = 1;
 
-  isEmailVerified = false;
-  isPhoneVerified = false;
-  verificationToken = '';
-  otpForm!: FormGroup;
+  // Step state: 'input' -> 'otp' -> 'name' -> 'success'
+  step: 'input' | 'otp' | 'name' | 'success' = 'input';
+  activeTab: 'phone' | 'email' = 'phone';
 
-  isSendingEmailOtp = false;
-  isSendingPhoneOtp = false;
-  emailOtpSent = false;
-  phoneOtpSent = false;
-  
-  private destroyRef = inject(DestroyRef);
-  
+  // 6 separate OTP digits
+  otpDigits: string[] = ['', '', '', '', '', ''];
+  otpError: string = '';
+
+  // Resend Timer
+  resendCountdown = 30;
+  canResend = false;
+  private timerInterval: any = null;
+
   isSendingOtp = false;
   isVerifyingOtp = false;
+  isSubmittingName = false;
 
   constructor(
-    private fb: FormBuilder, 
-    private publicApiService: PublicApiService, 
-    private loginService: LoginService,
-    private notification: NotificationService,
-    private cdr: ChangeDetectorRef,
+    private fb: FormBuilder,
+    private router: Router,
     private jwtService: JwtService,
-    private router: Router
+    private notification: NotificationService,
+    private cdr: ChangeDetectorRef
   ) {
     this.registerForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
-      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]]
-    });
-
-    this.otpForm = this.fb.group({
-      emailOtp: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
-      phoneOtp: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]]
+      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      email: ['', [Validators.required, Validators.email]],
+      name: ['', [Validators.required, Validators.minLength(2)]]
     });
   }
 
   ngOnInit() {
+    this.switchTab('phone');
   }
 
-  get f() { return this.registerForm.controls; }
+  ngOnDestroy() {
+    this.clearTimer();
+  }
+
+  get f() {
+    return this.registerForm.controls;
+  }
+
+  switchTab(tab: 'phone' | 'email') {
+    this.activeTab = tab;
+    this.registerForm.get('phone')?.markAsUntouched();
+    this.registerForm.get('email')?.markAsUntouched();
+
+    if (tab === 'phone') {
+      this.registerForm.get('phone')?.setValidators([Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
+      this.registerForm.get('email')?.clearValidators();
+    } else {
+      this.registerForm.get('email')?.setValidators([Validators.required, Validators.email]);
+      this.registerForm.get('phone')?.clearValidators();
+    }
+    this.registerForm.get('phone')?.updateValueAndValidity();
+    this.registerForm.get('email')?.updateValueAndValidity();
+    this.cdr.detectChanges();
+  }
 
   onPhoneInput(event: Event) {
     const input = event.target as HTMLInputElement;
-    const cleanValue = input.value.replace(/\D/g, '').slice(0, 10);
-    this.registerForm.get('phone')?.setValue(cleanValue, { emitEvent: false });
-    input.value = cleanValue;
+    const clean = input.value.replace(/\D/g, '').slice(0, 10);
+    this.registerForm.get('phone')?.setValue(clean, { emitEvent: false });
+    input.value = clean;
   }
 
-  goToNextStep() {
-    this.submitted = true;
-    if (this.registerForm.invalid) {
+  // STEP 1: Submit Phone or Email
+  onSubmitInput() {
+    const control = this.activeTab === 'phone' ? this.registerForm.get('phone') : this.registerForm.get('email');
+    if (!control || control.invalid) {
+      control?.markAsTouched();
+      const msg = this.activeTab === 'phone' 
+        ? 'Please enter a valid 10-digit phone number' 
+        : 'Please enter a valid email address';
+      this.notification.show(msg, 'error');
       return;
     }
 
     this.isSendingOtp = true;
-    
-    // TODO: Call your check-user API here when you have it.
-    // For now, simulating API call success to unblock the UI.
     setTimeout(() => {
       this.isSendingOtp = false;
-      this.step = 2; // Move to verification step
+      this.step = 'otp';
+      this.otpDigits = ['', '', '', '', '', ''];
+      this.otpError = '';
+      this.startCountdown();
+
+      const destination = this.activeTab === 'phone' 
+        ? '+91 ' + this.registerForm.value.phone 
+        : this.registerForm.value.email;
+      this.notification.show(`Verification code sent to ${destination} (Use code: 123456)`, 'info');
       this.cdr.detectChanges();
-    }, 300);
+
+      setTimeout(() => {
+        const firstInput = document.getElementById('reg-otp-0');
+        firstInput?.focus();
+      }, 100);
+    }, 400);
   }
 
-  backToStep1() {
-    this.step = 1;
-  }
-
-  sendEmailOtp() {
-    this.isSendingEmailOtp = true;
-    
-    // Mocking API call for UI testing
-    setTimeout(() => {
-      this.isSendingEmailOtp = false;
-      this.emailOtpSent = true;
-      this.notification.show('OTP sent to email', 'success');
-      this.cdr.detectChanges();
+  // Timer controls
+  startCountdown() {
+    this.clearTimer();
+    this.resendCountdown = 30;
+    this.canResend = false;
+    this.timerInterval = setInterval(() => {
+      if (this.resendCountdown > 1) {
+        this.resendCountdown--;
+        this.cdr.detectChanges();
+      } else {
+        this.resendCountdown = 0;
+        this.canResend = true;
+        this.clearTimer();
+        this.cdr.detectChanges();
+      }
     }, 1000);
   }
 
-  sendPhoneOtp() {
-    this.isSendingPhoneOtp = true;
-    
-    // Mocking API call for UI testing
-    setTimeout(() => {
-      this.isSendingPhoneOtp = false;
-      this.phoneOtpSent = true;
-      this.notification.show('OTP sent to phone', 'success');
-      this.cdr.detectChanges();
-    }, 1000);
+  clearTimer() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
   }
 
-  verifyBothOtps() {
-    // Basic frontend validation for OTP form
-    if (this.otpForm.invalid) {
-      this.otpForm.markAllAsTouched();
+  resendOtp() {
+    if (!this.canResend) return;
+    this.startCountdown();
+    this.notification.show('New code sent! (Use code: 123456)', 'info');
+  }
+
+  // OTP Handlers
+  onOtpDigitInput(index: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/\D/g, '');
+
+    if (value.length > 1) {
+      this.handlePastedOtp(value);
+      return;
+    }
+
+    this.otpDigits[index] = value;
+    this.otpError = '';
+
+    if (value && index < 5) {
+      const nextInput = document.getElementById(`reg-otp-${index + 1}`) as HTMLInputElement;
+      nextInput?.focus();
+    }
+    this.cdr.detectChanges();
+  }
+
+  onOtpKeyDown(index: number, event: KeyboardEvent) {
+    if (event.key === 'Backspace') {
+      if (!this.otpDigits[index] && index > 0) {
+        const prevInput = document.getElementById(`reg-otp-${index - 1}`) as HTMLInputElement;
+        prevInput?.focus();
+        this.otpDigits[index - 1] = '';
+        this.cdr.detectChanges();
+      } else {
+        this.otpDigits[index] = '';
+      }
+    }
+  }
+
+  onOtpPaste(event: ClipboardEvent) {
+    event.preventDefault();
+    const pasted = event.clipboardData?.getData('text') || '';
+    const clean = pasted.replace(/\D/g, '').slice(0, 6);
+    this.handlePastedOtp(clean);
+  }
+
+  private handlePastedOtp(clean: string) {
+    for (let i = 0; i < 6; i++) {
+      this.otpDigits[i] = clean[i] || '';
+    }
+    const targetIdx = Math.min(clean.length, 5);
+    const targetInput = document.getElementById(`reg-otp-${targetIdx}`) as HTMLInputElement;
+    targetInput?.focus();
+    this.otpError = '';
+    this.cdr.detectChanges();
+  }
+
+  // STEP 2: Verify OTP
+  verifyOtp() {
+    const fullCode = this.otpDigits.join('');
+    if (fullCode.length < 6) {
+      this.otpError = 'Please enter all 6 digits of the verification code';
+      return;
+    }
+
+    if (fullCode !== '123456' && fullCode.length !== 6) {
+      this.otpError = 'Invalid code. For testing, use code: 123456';
       return;
     }
 
     this.isVerifyingOtp = true;
-    
-    // Mocking OTP verification for UI testing
     setTimeout(() => {
       this.isVerifyingOtp = false;
-      this.isEmailVerified = true;
-      this.isPhoneVerified = true;
-      this.notification.show('Verification successful!', 'success');
+      this.clearTimer();
+      this.step = 'name';
+      this.notification.show('Code verified! Tell us your name.', 'success');
       this.cdr.detectChanges();
-      
-      this.onSubmitRegistration();
-    }, 1500);
+
+      setTimeout(() => {
+        const nameInput = document.getElementById('reg-name-input');
+        nameInput?.focus();
+      }, 100);
+    }, 400);
   }
 
-  isSubmitting = false;
+  // STEP 3: Submit Name
+  onSubmitName() {
+    const nameControl = this.registerForm.get('name');
+    if (!nameControl || nameControl.invalid) {
+      nameControl?.markAsTouched();
+      this.notification.show('Please enter your full name (at least 2 characters)', 'error');
+      return;
+    }
 
-  onSubmitRegistration() {
-    this.isSubmitting = true;
-
-    // Mocking final registration API call
+    this.isSubmittingName = true;
     setTimeout(() => {
-      this.isSubmitting = false;
-      this.notification.show('Registration successful! (Mocked)', 'success');
-      this.router.navigate(['/']);
+      this.isSubmittingName = false;
+
+      const newUser = {
+        id: Date.now(),
+        name: nameControl.value.trim(),
+        email: this.activeTab === 'email' ? this.registerForm.value.email : 'user@example.com',
+        mobile: this.activeTab === 'phone' ? this.registerForm.value.phone : '98XXXXXX32',
+        avatar_url: 'assets/images/umeed_singh.jpg'
+      };
+
+      this.jwtService.setCustomerIsLoggedIn(true);
+      this.jwtService.saveCustomerToken(`mock_register_token_${Date.now()}`);
+      this.jwtService.saveCustomerData(newUser);
+      this.jwtService.saveCustomerId(newUser.id);
+
+      this.step = 'success';
+      this.notification.show('Account created successfully!', 'success');
       this.cdr.detectChanges();
-    }, 1500);
+    }, 400);
+  }
+
+  onSocialRegister(provider: string) {
+    this.notification.show(`Signing up with ${provider} (Mock)...`, 'info');
+    setTimeout(() => {
+      const user = {
+        id: Date.now(),
+        name: `${provider} User`,
+        email: `newuser.${provider.toLowerCase()}@gmail.com`,
+        mobile: '98XXXXXX32',
+        avatar_url: 'assets/images/umeed_singh.jpg'
+      };
+      this.jwtService.setCustomerIsLoggedIn(true);
+      this.jwtService.saveCustomerToken(`mock_${provider.toLowerCase()}_token`);
+      this.jwtService.saveCustomerData(user);
+      this.jwtService.saveCustomerId(user.id);
+      this.step = 'success';
+      this.notification.show('Account created successfully!', 'success');
+      this.cdr.detectChanges();
+    }, 500);
+  }
+
+  onStartShopping() {
+    this.router.navigate(['/shop']);
+  }
+
+  onClose() {
+    if (this.step === 'otp') {
+      this.step = 'input';
+      this.clearTimer();
+    } else if (this.step === 'name') {
+      this.step = 'otp';
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 }

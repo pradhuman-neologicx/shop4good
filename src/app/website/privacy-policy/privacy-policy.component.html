@@ -1,92 +1,153 @@
-<div class="privacy-page flex flex-col min-h-screen bg-slate-50">
-  <app-navbar></app-navbar>
+<app-navbar></app-navbar>
 
-  <div class="bg-gradient-to-r from-[#032826] to-[#05413e] pt-32 pb-16 relative text-center">
-    <div class="max-w-4xl mx-auto px-4 relative z-10">
-      <span class="text-emerald-400 text-sm font-bold tracking-widest uppercase mb-4 block">Compliance & Trust</span>
-      <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4">Privacy Policy</h1>
-      <p class="text-slate-300 text-lg">How we manage and protect your personal information at Shop4Good.</p>
+<main class="min-h-screen bg-white py-6 sm:py-12 lg:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- ── Header Section ── -->
+    <div class="mb-6 sm:mb-8 max-w-2xl">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-[#08265C] tracking-tight font-heading leading-tight mb-1.5">
+        Privacy Policy
+      </h1>
+      <p class="text-[11px] sm:text-xs text-slate-400 font-medium mb-3">
+        Last updated: {{ lastUpdated }}
+      </p>
+      <p class="text-sm text-slate-500 font-normal leading-relaxed">
+        At Shop4Good, we value your trust and are committed to protecting your personal information.
+      </p>
     </div>
-  </div>
 
-  <main class="flex-grow max-w-4xl mx-auto px-4 py-16 w-full">
-    <article class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200 text-slate-700 space-y-8 leading-relaxed">
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">Executive Summary</h2>
-        <p class="mb-4">
-          As <strong>Shop4Good</strong> and therefore custodian of personal information relating to your account, donations, and shopping activity, we must only use that information in accordance with all applicable laws and guidance. This Privacy Notice provides you with a detailed overview of how we will manage your data.
-        </p>
-        <p>
-          We use your personal information primarily for providing our affiliate shopping platform, processing charitable donations, and improving our services. We do not sell your personal data to third parties.
-        </p>
-      </section>
+    <!-- ── Main Grid Layout (Mobile: Single Column, Desktop: max-w-7xl 2-Column) ── -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
 
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">Information We Collect</h2>
-        <ul class="list-disc pl-6 space-y-2 mb-4">
-          <li><strong>Identity Data:</strong> Name, username, email address.</li>
-          <li><strong>Transaction Data:</strong> Details about affiliate clicks, generated donations, and chosen charities.</li>
-          <li><strong>Technical Data:</strong> IP address, browser type, device identifiers, and platform usage data.</li>
-        </ul>
-        <p>
-          Note: We do not collect or store your payment details or credit card information. All actual purchases happen on our partner marketplaces (e.g., Amazon, Myntra), which have their own privacy policies.
-        </p>
-      </section>
+      <!-- ── LEFT / MAIN CONTENT: Policy Sections Card & Callout ── -->
+      <div class="lg:col-span-7 xl:col-span-8 flex flex-col space-y-4">
 
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">How We Use Your Data</h2>
-        <p class="mb-4">We rely on the following legal justifications to process your data:</p>
-        <ul class="list-disc pl-6 space-y-2">
-          <li><strong>Contractual:</strong> To create your account and allocate generated donations to your chosen cause.</li>
-          <li><strong>Business Need:</strong> For quality assurance, platform improvement, and security.</li>
-          <li><strong>Legal Obligation:</strong> To comply with financial and tax reporting requirements regarding charitable donations.</li>
-          <li><strong>Consent:</strong> For marketing communications, where you have explicitly opted in.</li>
-        </ul>
-      </section>
+        <!-- Policy Sections White Card -->
+        <div class="mt-2 divide-y divide-slate-100">
+          
+          @for (section of sections; track section.number; let isFirst = $first; let isLast = $last) {
+            <div 
+              class="flex items-start gap-3 sm:gap-4" 
+              [ngClass]="{
+                'pb-4 sm:pb-5': !isLast,
+                'pt-4 sm:pt-5': !isFirst
+              }"
+            >
+              <!-- Number Circle Badge -->
+              <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 text-slate-600 font-bold text-xs sm:text-sm flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                {{ section.number }}
+              </div>
 
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">Disclosures to Third Parties</h2>
-        <p>
-          We only share necessary data with trusted partners required to operate our service (such as hosting providers, analytics tools, and the charities you support for reporting purposes).
-        </p>
-      </section>
+              <!-- Content Body -->
+              <div class="flex-1 min-w-0">
+                <h3 class="text-sm sm:text-base font-bold text-[#08265C] font-heading leading-snug mb-1">
+                  {{ section.title }}
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed">
+                  {{ section.description }}
+                </p>
+              </div>
+            </div>
+          }
 
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">Your Rights</h2>
-        <p class="mb-4">Under data protection law you have certain rights, including:</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
-            <strong class="text-emerald-700 block mb-1">Access</strong> 
-            The right to request a copy of your personal data.
+        </div>
+
+        <!-- Mint Green Callout Box (Matches Figma bottom banner) -->
+        <div class="bg-[#E8F5F1] rounded-xl sm:rounded-2xl border border-emerald-100/90 p-3.5 sm:p-4 flex items-center gap-3.5 shadow-2xs">
+          <!-- Lock Icon -->
+          <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white text-[#087F6A] flex items-center justify-center shrink-0 shadow-2xs">
+            <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
           </div>
-          <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
-            <strong class="text-emerald-700 block mb-1">Rectification</strong> 
-            The right to amend inaccurate data.
+
+          <!-- Callout Text -->
+          <p class="text-xs sm:text-[13px] text-slate-700 font-medium leading-relaxed">
+            Questions about your privacy? Write to 
+            <a href="mailto:support@shop4good.com" class="text-[#087F6A] font-semibold hover:underline cursor-pointer">
+              support@shop4good.com
+            </a>
+          </p>
+        </div>
+
+      </div>
+
+      <!-- ── RIGHT COLUMN: Desktop Sticky Sidebar ── -->
+      <div class="hidden  lg:col-span-5 xl:col-span-4 lg:flex flex-col space-y-5 lg:sticky lg:top-28">
+
+        <!-- Deep Navy Trust Commitment Card -->
+        <div class="w-full bg-[#0B2545] rounded-2xl sm:rounded-3xl p-5 sm:p-6 text-white shadow-sm flex flex-col justify-between relative overflow-hidden">
+          
+          <!-- Subtle decorative radial background glow -->
+          <div class="absolute -top-16 -right-16 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div>
+            <!-- Shield Icon Container (White circle with emerald icon) -->
+            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white flex items-center justify-center text-[#087F6A] mb-4 shadow-sm">
+              <svg class="w-5 h-5 sm:w-5.5 sm:h-5.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h3 class="text-lg sm:text-xl font-bold text-white font-heading leading-tight mb-2">
+              Our Privacy Pledge
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed mb-6">
+              Your trust is our priority. We uphold strict transparency standards and never sell your personal data.
+            </p>
           </div>
-          <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
-            <strong class="text-emerald-700 block mb-1">Erasure</strong> 
-            The right to delete your account and data.
+
+          <!-- Contact Us Button -->
+          <div>
+            <a 
+              routerLink="/contact"
+              class="inline-flex items-center justify-center gap-2 bg-[#087F6A] hover:bg-[#066c5a] text-white text-xs sm:text-sm font-semibold py-3 px-5 rounded-xl transition-all shadow-sm group cursor-pointer"
+            >
+              <span>Contact Support</span>
+              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
           </div>
-          <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
-            <strong class="text-emerald-700 block mb-1">Portability</strong> 
-            The right to transfer data to another organisation.
+
+        </div>
+
+        <!-- Desktop Quick Links Card -->
+        <div class=" bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs space-y-3">
+          <h4 class="text-sm font-bold text-[#08265C] font-heading mb-3">
+            Related Information
+          </h4>
+
+          <div class="space-y-2 text-xs text-slate-600">
+            <a routerLink="/terms-and-conditions" class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
+              <span class="font-medium text-slate-700 group-hover:text-[#087F6A]">Terms of Service</span>
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-[#087F6A] group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </a>
+
+            <a routerLink="/help/faqs" class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
+              <span class="font-medium text-slate-700 group-hover:text-[#087F6A]">Frequently Asked Questions</span>
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-[#087F6A] group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </a>
+
+            <a routerLink="/about/how-it-works" class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
+              <span class="font-medium text-slate-700 group-hover:text-[#087F6A]">How Shop4Good Works</span>
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-[#087F6A] group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </a>
           </div>
         </div>
-      </section>
 
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">Contact Us</h2>
-        <p>
-          If you have any questions about this Privacy Policy, please contact our Data Protection Officer at:
-          <a href="mailto:privacy@shop4good.com" class="text-teal-600 font-medium hover:underline">privacy&#64;shop4good.com</a>
-        </p>
-      </section>
+      </div>
 
-      <footer class="pt-8 mt-8 border-t border-slate-200 text-sm text-slate-500 text-center">
-        <p>This Privacy Notice was last updated on October 2026.</p>
-      </footer>
-    </article>
-  </main>
+    </div>
 
-  <app-footer></app-footer>
-</div>
+  </div>
+</main>
+
+<app-footer></app-footer>

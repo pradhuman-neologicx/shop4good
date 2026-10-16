@@ -1,157 +1,367 @@
-<div class="min-h-screen flex items-center justify-center bg-slate-50 relative py-12 px-4 sm:px-6 lg:px-8">
-  <div class="absolute inset-0 bg-gradient-to-br from-[#032826] to-[#05413e] opacity-5"></div>
-  <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+<div class="min-h-screen flex items-center justify-center bg-slate-50/60 p-4 sm:p-6 font-sans">
   
-  <div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden relative z-10 border border-slate-100">
-    <div class="p-8 sm:p-12">
-      <!-- Logo -->
-      <div class="flex justify-center mb-8">
-        <a routerLink="/">
-          <img ngSrc="assets/logo.png" width="150" height="48" alt="Shop4Good" class="h-12 w-auto object-contain" />
+  <!-- Main Modal / Card -->
+  <div class="w-full max-w-[420px] bg-white rounded-[24px] shadow-lg border border-slate-100 p-6 sm:p-8 relative transition-all">
+    
+    <!-- Top-Right Close Button -->
+    <button 
+      type="button" 
+      (click)="onClose()"
+      class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+      title="Close"
+    >
+      <i class="fa-solid fa-xmark text-sm"></i>
+    </button>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- STEP 1: CREATE ACCOUNT (Phone / Email)                          -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    @if (step === 'input') {
+      <div class="flex flex-col items-center">
+        
+        <!-- Logo -->
+        <a routerLink="/" class="inline-block mb-3">
+          <img src="assets/logo.png" alt="Shop4Good" class="h-10 w-auto object-contain" />
         </a>
-      </div>
 
-      <div class="text-center mb-8">
-        <h2 class="text-2xl font-bold text-slate-900 mb-2">Create an Account</h2>
-        <p class="text-slate-500 text-sm">Join Shop4Good and start making a difference with every purchase.</p>
-      </div>
+        <!-- Heading -->
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#08265C] font-heading text-center mb-1 leading-tight">
+          Create your account
+        </h2>
+        <p class="text-xs text-gray-500 text-center leading-relaxed mb-5 max-w-[280px]">
+          Start shopping and make a positive impact with every purchase.
+        </p>
 
-      @if (step === 1) {
-        <form [formGroup]="registerForm" (ngSubmit)="goToNextStep()" class="grid grid-cols-1 gap-y-5">
-          <div>
-            <label for="name" class="block text-sm font-semibold text-slate-700 mb-2">Full Name <span class="text-red-500">*</span></label>
-            <div class="relative">
-              <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-              <input type="text" id="name" formControlName="name" placeholder="Enter your full name" 
-                class="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
-                [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['name'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['name'].errors)}" />
-            </div>
-            @if (submitted && f['name'].errors) {
-              <div class="text-red-500 text-xs mt-1">
-                @if (f['name'].errors?.['required']) { <div>Name is required</div> }
-                @if (f['name'].errors?.['minlength']) { <div>Name must be at least 3 characters</div> }
-              </div>
-            }
-          </div>
-
-          <div>
-            <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">Email Address <span class="text-red-500">*</span></label>
-            <div class="relative">
-              <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-              <input type="email" id="email" formControlName="email" placeholder="Enter your email address" 
-                class="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
-                [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['email'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['email'].errors)}" />
-            </div>
-            @if (submitted && f['email'].errors) {
-              <div class="text-red-500 text-xs mt-1">
-                @if (f['email'].errors?.['required']) { <div>Email is required</div> }
-                @if (f['email'].errors?.['email'] || f['email'].errors?.['pattern']) { <div>Email must be a valid email address (e.g., name@domain.com)</div> }
-              </div>
-            }
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Phone Number <span class="text-red-500">*</span></label>
-            <div class="relative w-full">
-              <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-              <input type="tel" id="phone" formControlName="phone" placeholder="Enter phone number" 
-                maxlength="10"
-                (input)="onPhoneInput($event)"
-                class="w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
-                [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['phone'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['phone'].errors)}">
-            </div>
-            @if (submitted && f['phone'].errors) {
-              <div class="text-red-500 text-xs mt-1">
-                @if (f['phone'].errors?.['required']) { <div>Valid phone number is required</div> }
-                @if (f['phone'].errors?.['pattern']) { <div>Please enter a 10-digit phone number</div> }
-              </div>
-            }
-          </div>
-
-          <div class="mt-2">
-            <button type="submit" [disabled]="isSendingOtp" class="w-full flex justify-center items-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:opacity-75 disabled:cursor-wait focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all">
-              @if (isSendingOtp) {
-                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Submitting...
-              } @else {
-                Continue
-              }
-            </button>
-          </div>
-        </form>
-      }
-
-      @if (step === 2) {
-        <div>
-          <div class="mb-6 flex items-center justify-between">
-            <h3 class="text-lg font-bold text-slate-800">Verify Your Details</h3>
-            <button type="button" (click)="backToStep1()" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
-              <i class="fa-solid fa-arrow-left mr-1"></i> Back
-            </button>
-          </div>
-          
-          <form [formGroup]="otpForm" (ngSubmit)="verifyBothOtps()" class="grid grid-cols-1 gap-y-6">
-            
-            <!-- Email Verification -->
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-              <div class="flex items-center justify-between mb-3">
-                <p class="text-sm text-slate-600">Email: <strong>{{ f['email'].value }}</strong></p>
-                <button type="button" (click)="sendEmailOtp()" [disabled]="isSendingEmailOtp || isEmailVerified" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors disabled:opacity-50">
-                  @if (isSendingEmailOtp) {
-                    <i class="fa-solid fa-spinner fa-spin mr-1"></i> Sending
-                  } @else if (isEmailVerified) {
-                    <i class="fa-solid fa-check mr-1"></i> Verified
-                  } @else {
-                    {{ emailOtpSent ? 'Resend OTP' : 'Verify Email' }}
-                  }
-                </button>
-              </div>
-              
-              @if (emailOtpSent && !isEmailVerified) {
-                <label class="block text-sm font-semibold text-slate-700 mb-2">Enter Email OTP</label>
-                <input type="text" formControlName="emailOtp" maxlength="6" placeholder="000000" 
-                  class="w-full text-center text-xl tracking-[0.5em] font-mono py-2 rounded-lg border focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
-                  [ngClass]="{'border-red-500': otpForm.get('emailOtp')?.invalid && otpForm.get('emailOtp')?.touched, 'border-slate-300': !(otpForm.get('emailOtp')?.invalid && otpForm.get('emailOtp')?.touched)}">
-                @if (otpForm.get('emailOtp')?.invalid && (otpForm.get('emailOtp')?.touched || otpForm.get('emailOtp')?.errors?.['invalid'])) {
-                  <p class="text-red-500 text-xs mt-1 text-center font-medium">Valid 6-digit OTP is required</p>
-                }
-              }
-            </div>
-
-            <!-- Phone Verification -->
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-              <div class="flex items-center justify-between mb-3">
-                <p class="text-sm text-slate-600">Phone: <strong>{{ f['phone'].value }}</strong></p>
-                <button type="button" (click)="sendPhoneOtp()" [disabled]="isSendingPhoneOtp || isPhoneVerified" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors disabled:opacity-50">
-                  @if (isSendingPhoneOtp) {
-                    <i class="fa-solid fa-spinner fa-spin mr-1"></i> Sending
-                  } @else if (isPhoneVerified) {
-                    <i class="fa-solid fa-check mr-1"></i> Verified
-                  } @else {
-                    {{ phoneOtpSent ? 'Resend OTP' : 'Verify Phone' }}
-                  }
-                </button>
-              </div>
-
-              @if (phoneOtpSent && !isPhoneVerified) {
-                <label class="block text-sm font-semibold text-slate-700 mb-2">Enter Phone OTP</label>
-                <input type="text" formControlName="phoneOtp" maxlength="6" placeholder="000000" 
-                  class="w-full text-center text-xl tracking-[0.5em] font-mono py-2 rounded-lg border focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
-                  [ngClass]="{'border-red-500': otpForm.get('phoneOtp')?.invalid && otpForm.get('phoneOtp')?.touched, 'border-slate-300': !(otpForm.get('phoneOtp')?.invalid && otpForm.get('phoneOtp')?.touched)}">
-                @if (otpForm.get('phoneOtp')?.invalid && (otpForm.get('phoneOtp')?.touched || otpForm.get('phoneOtp')?.errors?.['invalid'])) {
-                  <p class="text-red-500 text-xs mt-1 text-center font-medium">Valid 6-digit OTP is required</p>
-                }
-              }
-            </div>
-
-            <div class="mt-2">
-              <button type="submit" [disabled]="!emailOtpSent || !phoneOtpSent || isVerifyingOtp || isSubmitting" class="w-full flex justify-center items-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:opacity-75 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all">
-                @if (isVerifyingOtp || isSubmitting) {
-                  <i class="fa-solid fa-spinner fa-spin mr-2"></i> Verifying & Completing...
-                } @else {
-                  Verify & Register
-                }
-              </button>
-            </div>
-          </form>
+        <!-- Segmented Tab Control -->
+        <div class="w-full grid grid-cols-2 p-1 bg-gray-100/90 rounded-[12px] mb-5 border border-gray-200/60">
+          <button 
+            type="button" 
+            (click)="switchTab('phone')"
+            [ngClass]="activeTab === 'phone' ? 'bg-white text-[#08265C] font-bold shadow-2xs' : 'text-gray-500 font-semibold hover:text-gray-800'"
+            class="py-2 text-xs sm:text-sm rounded-[10px] transition-all cursor-pointer text-center"
+          >
+            Phone
+          </button>
+          <button 
+            type="button" 
+            (click)="switchTab('email')"
+            [ngClass]="activeTab === 'email' ? 'bg-white text-[#08265C] font-bold shadow-2xs' : 'text-gray-500 font-semibold hover:text-gray-800'"
+            class="py-2 text-xs sm:text-sm rounded-[10px] transition-all cursor-pointer text-center"
+          >
+            Email
+          </button>
         </div>
-      }
+
+        <!-- Input Form -->
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmitInput()" class="w-full flex flex-col gap-4" novalidate>
+          
+          <!-- Phone Tab Input -->
+          @if (activeTab === 'phone') {
+            <div>
+              <div 
+                class="w-full flex items-center border rounded-[14px] overflow-hidden transition-colors"
+                [ngClass]="f['phone'].invalid && f['phone'].touched ? 'border-red-400 bg-red-50/20' : 'border-gray-200 focus-within:border-[#087F6A]'"
+              >
+                <!-- Country flag & code -->
+                <div class="flex items-center gap-1.5 px-3 py-3 bg-gray-50/70 border-r border-gray-200 shrink-0 text-xs sm:text-sm font-semibold text-gray-700 select-none">
+                  <span>🇮🇳</span>
+                  <span>+91</span>
+                  <i class="fa-solid fa-chevron-down text-[9px] text-gray-400 ml-0.5"></i>
+                </div>
+                <input 
+                  type="tel" 
+                  formControlName="phone" 
+                  maxlength="10"
+                  (input)="onPhoneInput($event)"
+                  placeholder="Enter your phone number" 
+                  class="w-full px-3.5 py-3 text-xs sm:text-sm font-medium text-[#08265C] focus:outline-none bg-transparent"
+                />
+              </div>
+              @if (f['phone'].invalid && f['phone'].touched) {
+                <p class="text-xs text-red-500 font-medium mt-1 pl-1 flex items-center gap-1">
+                  <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+                  <span>Please enter a valid 10-digit mobile number</span>
+                </p>
+              }
+            </div>
+          }
+
+          <!-- Email Tab Input -->
+          @if (activeTab === 'email') {
+            <div>
+              <div 
+                class="w-full border rounded-[14px] overflow-hidden transition-colors"
+                [ngClass]="f['email'].invalid && f['email'].touched ? 'border-red-400 bg-red-50/20' : 'border-gray-200 focus-within:border-[#087F6A]'"
+              >
+                <input 
+                  type="email" 
+                  formControlName="email" 
+                  placeholder="Enter your mail id" 
+                  class="w-full px-3.5 py-3 text-xs sm:text-sm font-medium text-[#08265C] focus:outline-none bg-transparent"
+                />
+              </div>
+              @if (f['email'].invalid && f['email'].touched) {
+                <p class="text-xs text-red-500 font-medium mt-1 pl-1 flex items-center gap-1">
+                  <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+                  <span>Please enter a valid email address</span>
+                </p>
+              }
+            </div>
+          }
+
+          <!-- Continue Button -->
+          <button 
+            type="submit" 
+            [disabled]="isSendingOtp"
+            class="w-full bg-[#087F6A] hover:bg-[#066c5a] active:scale-[0.99] disabled:opacity-70 text-white font-bold py-3.5 rounded-[14px] font-heading text-sm transition-all cursor-pointer shadow-xs flex items-center justify-center mt-1"
+          >
+            @if (isSendingOtp) {
+              <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+              <span>Sending code...</span>
+            } @else {
+              <span>Continue</span>
+            }
+          </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="w-full relative my-5 flex items-center justify-center">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-200"></div>
+          </div>
+          <span class="relative px-3 bg-white text-[11px] font-medium text-gray-400 tracking-wide">
+            or continue with
+          </span>
+        </div>
+
+        <!-- Social Buttons -->
+        <div class="flex items-center justify-center gap-4 mb-6">
+          <!-- Google -->
+          <button 
+            type="button" 
+            (click)="onSocialRegister('Google')"
+            class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors shadow-2xs cursor-pointer"
+            title="Continue with Google"
+          >
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5 object-contain" />
+          </button>
+
+          <!-- Apple -->
+          <button 
+            type="button" 
+            (click)="onSocialRegister('Apple')"
+            class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors shadow-2xs text-black cursor-pointer"
+            title="Continue with Apple"
+          >
+            <i class="fa-brands fa-apple text-xl"></i>
+          </button>
+
+          <!-- Email -->
+          <button 
+            type="button" 
+            (click)="switchTab('email')"
+            class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors shadow-2xs text-gray-600 cursor-pointer"
+            title="Continue with Email"
+          >
+            <i class="fa-regular fa-envelope text-base"></i>
+          </button>
+        </div>
+
+        <!-- Bottom Link -->
+        <p class="text-xs text-gray-500 text-center">
+          Already have an account? 
+          <a routerLink="/auth/login" class="font-bold text-[#087F6A] hover:underline ml-1">
+            Log in
+          </a>
+        </p>
+
+      </div>
+    }
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- STEP 2: 6-DIGIT OTP VERIFICATION                                -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    @if (step === 'otp') {
+      <div class="flex flex-col items-center">
+        
+        <!-- Logo -->
+        <a routerLink="/" class="inline-block mb-3">
+          <img src="assets/logo.png" alt="Shop4Good" class="h-10 w-auto object-contain" />
+        </a>
+
+        <!-- Heading -->
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#08265C] font-heading text-center mb-1 leading-tight">
+          Enter the 6-digit code
+        </h2>
+        <p class="text-xs text-gray-500 text-center leading-relaxed mb-6 max-w-[300px]">
+          We've sent a verification code to <br />
+          <strong class="text-[#08265C]">
+            {{ activeTab === 'phone' ? '+91 ' + registerForm.value.phone : registerForm.value.email }}
+          </strong>
+        </p>
+
+        <!-- 6 OTP Input Boxes -->
+        <div class="w-full flex items-center justify-center gap-2 sm:gap-2.5 mb-2" (paste)="onOtpPaste($event)">
+          @for (digit of otpDigits; track $index) {
+            <input 
+              [id]="'reg-otp-' + $index"
+              type="text" 
+              inputmode="numeric"
+              maxlength="1" 
+              [value]="otpDigits[$index]"
+              (input)="onOtpDigitInput($index, $event)"
+              (keydown)="onOtpKeyDown($index, $event)"
+              class="w-11 h-13 sm:w-12 sm:h-14 rounded-[12px] text-center font-bold text-xl text-[#08265C] border bg-gray-50/40 focus:bg-white focus:outline-none transition-all"
+              [ngClass]="otpError ? 'border-red-400 bg-red-50/20' : 'border-gray-200 focus:border-[#087F6A] focus:ring-2 focus:ring-[#087F6A]/20'"
+            />
+          }
+        </div>
+
+        <!-- Error Message -->
+        @if (otpError) {
+          <p class="text-xs text-red-500 font-medium mb-3 text-center flex items-center justify-center gap-1">
+            <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+            <span>{{ otpError }}</span>
+          </p>
+        } @else {
+          <p class="text-[11px] text-emerald-600 font-semibold mb-3 text-center">
+            (For testing, use code: 123456)
+          </p>
+        }
+
+        <!-- Continue Button -->
+        <button 
+          type="button" 
+          (click)="verifyOtp()"
+          [disabled]="isVerifyingOtp"
+          class="w-full bg-[#087F6A] hover:bg-[#066c5a] active:scale-[0.99] disabled:opacity-70 text-white font-bold py-3.5 rounded-[14px] font-heading text-sm transition-all cursor-pointer shadow-xs flex items-center justify-center mb-5"
+        >
+          @if (isVerifyingOtp) {
+            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+            <span>Verifying...</span>
+          } @else {
+            <span>Continue</span>
+          }
+        </button>
+
+        <!-- Resend Countdown -->
+        <p class="text-xs text-gray-500 text-center">
+          Didn't receive the code? 
+          @if (!canResend) {
+            <span class="font-medium text-gray-700 ml-1">
+              Resend in 00:{{ resendCountdown < 10 ? '0' + resendCountdown : resendCountdown }}
+            </span>
+          } @else {
+            <button 
+              type="button" 
+              (click)="resendOtp()" 
+              class="font-bold text-[#087F6A] hover:underline ml-1 cursor-pointer bg-transparent border-none p-0 inline"
+            >
+              Resend code
+            </button>
+          }
+        </p>
+
+      </div>
+    }
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- STEP 3: WHAT SHOULD WE CALL YOU? (Name Input)                   -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    @if (step === 'name') {
+      <div class="flex flex-col items-center">
+        
+        <!-- Logo -->
+        <a routerLink="/" class="inline-block mb-3">
+          <img src="assets/logo.png" alt="Shop4Good" class="h-10 w-auto object-contain" />
+        </a>
+
+        <!-- Heading -->
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#08265C] font-heading text-center mb-1 leading-tight">
+          What should we call you?
+        </h2>
+        <p class="text-xs text-gray-500 text-center leading-relaxed mb-6 max-w-[280px]">
+          This helps us personalise your experience.
+        </p>
+
+        <!-- Name Form -->
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmitName()" class="w-full flex flex-col gap-4" novalidate>
+          <div>
+            <div 
+              class="w-full border rounded-[14px] overflow-hidden transition-colors"
+              [ngClass]="f['name'].invalid && f['name'].touched ? 'border-red-400 bg-red-50/20' : 'border-gray-200 focus-within:border-[#087F6A]'"
+            >
+              <input 
+                id="reg-name-input"
+                type="text" 
+                formControlName="name" 
+                placeholder="Enter your full name" 
+                class="w-full px-4 py-3.5 text-xs sm:text-sm font-medium text-[#08265C] focus:outline-none bg-transparent"
+              />
+            </div>
+            @if (f['name'].invalid && f['name'].touched) {
+              <p class="text-xs text-red-500 font-medium mt-1 pl-1 flex items-center gap-1">
+                <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+                <span>Please enter your full name (minimum 2 characters)</span>
+              </p>
+            }
+          </div>
+
+          <!-- Continue Button -->
+          <button 
+            type="submit" 
+            [disabled]="isSubmittingName"
+            class="w-full bg-[#087F6A] hover:bg-[#066c5a] active:scale-[0.99] disabled:opacity-70 text-white font-bold py-3.5 rounded-[14px] font-heading text-sm transition-all cursor-pointer shadow-xs flex items-center justify-center mt-2"
+          >
+            @if (isSubmittingName) {
+              <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+              <span>Setting up your account...</span>
+            } @else {
+              <span>Continue</span>
+            }
+          </button>
+        </form>
+
+      </div>
+    }
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- STEP 4: YOU'RE ALL SET! (Success)                               -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    @if (step === 'success') {
+      <div class="flex flex-col items-center py-4">
+        
+        <!-- Animated / Illustrated Checkmark Circle -->
+        <div class="relative mb-5 flex items-center justify-center">
+          <span class="absolute -top-2 left-2 text-amber-400 text-xs animate-ping">✦</span>
+          <span class="absolute -bottom-1 -right-1 text-emerald-400 text-sm">✦</span>
+          <span class="absolute top-1 -right-2 text-rose-400 text-xs">●</span>
+          
+          <div class="w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-[#087F6A]/10 text-[#087F6A] border-4 border-[#087F6A]/20 flex items-center justify-center text-3xl shadow-sm">
+            <i class="fa-solid fa-check font-black"></i>
+          </div>
+        </div>
+
+        <!-- Heading -->
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#08265C] font-heading text-center mb-1.5 leading-tight">
+          You're all set!
+        </h2>
+        <p class="text-xs sm:text-sm text-gray-500 text-center leading-relaxed mb-6 max-w-[280px]">
+          Your account has been created successfully.
+        </p>
+
+        <!-- Start Shopping Button -->
+        <button 
+          type="button" 
+          (click)="onStartShopping()"
+          class="w-full bg-[#087F6A] hover:bg-[#066c5a] active:scale-[0.99] text-white font-bold py-3.5 sm:py-4 rounded-[14px] font-heading text-sm sm:text-base transition-all cursor-pointer shadow-xs text-center"
+        >
+          Start Shopping
+        </button>
+
+      </div>
+    }
+
+  </div>
+
+</div>

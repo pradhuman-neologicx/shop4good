@@ -32,7 +32,7 @@ import { HeroNewComponent } from '../components/hero-new/hero-new.component';
     // HeroComponent,
     HeroNewComponent,
     // NgoImpactComponent,
-    FaqComponent,
+    
     CausesNewComponent,
     HowWorksComponent,
     ImpactProofComponent],

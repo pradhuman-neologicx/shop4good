@@ -1,143 +1,308 @@
-<div class="min-h-screen flex items-center justify-center bg-slate-50 relative py-12 px-4 sm:px-6 lg:px-8">
-  <div class="absolute inset-0 bg-gradient-to-br from-[#032826] to-[#05413e] opacity-5"></div>
-  <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+<div class="min-h-screen flex items-center justify-center bg-slate-50/60 p-4 sm:p-6 font-sans">
   
-  <div class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden relative z-10 border border-slate-100">
-    <div class="p-8 sm:p-12">
-      <!-- Logo -->
-      <div class="flex justify-center mb-8">
-        <a routerLink="/">
-          <img ngSrc="assets/logo.png" width="150" height="48" alt="Shop4Good" class="h-12 w-auto object-contain" />
-        </a>
-      </div>
-
-      <div class="text-center mb-8">
-        <h2 class="text-2xl font-bold text-slate-900 mb-2">Log in to your account</h2>
-        <p class="text-slate-500 text-sm">Start shopping and make a positive impact with every purchase.</p>
-      </div>
-
-      <!-- Tabs -->
-      <div class="flex p-1 bg-slate-100 rounded-lg mb-6 border border-slate-200">
-        <button type="button" (click)="switchTab('phone')" [class.bg-white]="activeTab === 'phone'" [class.shadow-sm]="activeTab === 'phone'" class="flex-1 py-2.5 text-sm font-semibold rounded-md transition-all text-slate-700">Phone</button>
-        <button type="button" (click)="switchTab('email')" [class.bg-white]="activeTab === 'email'" [class.shadow-sm]="activeTab === 'email'" class="flex-1 py-2.5 text-sm font-semibold rounded-md transition-all text-slate-700">Email</button>
-      </div>
-
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
-        @if (activeTab === 'phone') {
-          <div>
-            <div class="relative flex">
-              <!-- Country Code Select -->
-              <div class="relative w-[90px] flex-shrink-0 border border-r-0 border-slate-300 rounded-l-lg bg-white overflow-hidden">
-                <div class="flex items-center justify-center h-full w-full pointer-events-none px-2 gap-1 bg-slate-50">
-                  <span class="text-lg">🇮🇳</span>
-                  <span class="text-sm font-medium text-slate-700">+91</span>
-                  <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 ml-1"></i>
-                </div>
-              </div>
-              <input type="tel" id="mobile" formControlName="mobile" placeholder="Enter your phone number" 
-                maxlength="10" minlength="10"
-                class="w-full px-4 py-3 rounded-r-lg border focus:ring-2 outline-none transition-all"
-                [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['mobile'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500 z-10': !(submitted && f['mobile'].errors)}" />
-            </div>
-            @if (submitted && f['mobile'].errors) {
-              <div class="text-red-500 text-xs mt-1">
-                @if (f['mobile'].errors?.['required']) { <div>Phone number is required</div> }
-                @if (f['mobile'].errors?.['pattern']) { <div>Please enter a valid 10-digit phone number</div> }
-              </div>
-            }
-          </div>
-        } @else {
-          <div>
-            <div class="relative">
-              <input type="email" id="email" formControlName="email" placeholder="Enter your mail id" 
-                class="w-full px-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all"
-                [ngClass]="{'border-red-500 focus:ring-red-500 focus:border-red-500': submitted && f['email'].errors, 'border-slate-300 focus:ring-emerald-500 focus:border-emerald-500': !(submitted && f['email'].errors)}" />
-            </div>
-            @if (submitted && f['email'].errors) {
-              <div class="text-red-500 text-xs mt-1">
-                @if (f['email'].errors?.['required']) { <div>Email address is required</div> }
-                @if (f['email'].errors?.['email']) { <div>Please enter a valid email address</div> }
-              </div>
-            }
-          </div>
-        }
-
-        <div>
-          <button type="submit" [disabled]="isSendingOtp" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all disabled:opacity-70">
-            @if (isSendingOtp) {
-              <i class="fa-solid fa-spinner fa-spin mr-2"></i> Sending OTP...
-            } @else {
-              Continue
-            }
-          </button>
-        </div>
-
-        <div class="relative my-6">
-          <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-slate-200"></div>
-          </div>
-          <div class="relative flex justify-center text-sm">
-            <span class="px-2 bg-white text-slate-500">or continue with</span>
-          </div>
-        </div>
-
-        <div class="flex justify-center gap-4">
-          <button type="button" class="flex justify-center items-center h-12 w-16 border border-slate-200 rounded-full hover:bg-slate-50 transition-colors">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-6 h-6" />
-          </button>
-          <button type="button" class="flex justify-center items-center h-12 w-16 border border-slate-200 rounded-full hover:bg-slate-50 transition-colors text-black">
-            <i class="fa-brands fa-apple text-xl"></i>
-          </button>
-          <button type="button" class="flex justify-center items-center h-12 w-16 border border-slate-200 rounded-full hover:bg-slate-50 transition-colors text-slate-700">
-            <i class="fa-regular fa-envelope text-xl"></i>
-          </button>
-        </div>
-      </form>
-    </div>
+  <!-- Main Modal / Card -->
+  <div class="w-full max-w-[420px] bg-white rounded-[24px] shadow-lg border border-slate-100 p-6 sm:p-8 relative transition-all">
     
-    <div class="bg-white px-8 pb-8 text-center border-t-0">
-      <p class="text-sm text-slate-600">
-        Don't have an account? 
-        <a routerLink="/auth/register" class="font-bold text-blue-600 hover:text-blue-700">Sign up</a>
-      </p>
-    </div>
-  </div>
-</div>
+    <!-- Top-Right Close Button -->
+    <button 
+      type="button" 
+      (click)="onClose()"
+      class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+      title="Close"
+    >
+      <i class="fa-solid fa-xmark text-sm"></i>
+    </button>
 
-<!-- OTP Verification Modal -->
-@if (showOtpModal) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden transform transition-all">
-      <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-        <h3 class="font-bold text-slate-800">Verify OTP</h3>
-        <button type="button" (click)="closeOtpModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="p-6">
-        <p class="text-sm text-slate-600 mb-5 text-center">
-          We've sent a 6-digit verification code to <br>
-          <span class="font-semibold text-slate-800">
-            {{ activeTab === 'phone' ? '+91 ' + f['mobile'].value : f['email'].value }}
-          </span>
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- STEP 1: PHONE / EMAIL INPUT                                     -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    @if (step === 'input') {
+      <div class="flex flex-col items-center">
+        
+        <!-- Logo -->
+        <a routerLink="/" class="inline-block mb-3">
+          <img src="assets/logo.png" alt="Shop4Good" class="h-10 w-auto object-contain" />
+        </a>
+
+        <!-- Heading -->
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#08265C] font-heading text-center mb-1 leading-tight">
+          Log Back Into Your Account
+        </h2>
+        <p class="text-xs text-gray-500 text-center leading-relaxed mb-5 max-w-[280px]">
+          Start shopping and make a positive impact with every purchase.
         </p>
-        <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
-          <div class="mb-5">
-            <input type="text" formControlName="otp" maxlength="6" placeholder="000000" 
-              class="w-full text-center text-2xl tracking-[0.5em] font-mono py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all">
-            @if (otpForm.get('otp')?.errors?.['invalid']) {
-              <p class="text-red-500 text-xs mt-2 text-center font-medium">Invalid OTP code. Please try again.</p>
-            }
-          </div>
-          <button type="submit" [disabled]="otpForm.invalid || isVerifyingOtp" class="w-full py-3 font-bold text-white bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-sm transition-all flex justify-center items-center">
-            @if (isVerifyingOtp) {
-              <i class="fa-solid fa-spinner fa-spin mr-2"></i> Verifying...
+
+        <!-- Segmented Tab Control -->
+        <div class="w-full grid grid-cols-2 p-1 bg-gray-100/90 rounded-[12px] mb-5 border border-gray-200/60">
+          <button 
+            type="button" 
+            (click)="switchTab('phone')"
+            [ngClass]="activeTab === 'phone' ? 'bg-white text-[#08265C] font-bold shadow-2xs' : 'text-gray-500 font-semibold hover:text-gray-800'"
+            class="py-2 text-xs sm:text-sm rounded-[10px] transition-all cursor-pointer text-center"
+          >
+            Phone
+          </button>
+          <button 
+            type="button" 
+            (click)="switchTab('email')"
+            [ngClass]="activeTab === 'email' ? 'bg-white text-[#08265C] font-bold shadow-2xs' : 'text-gray-500 font-semibold hover:text-gray-800'"
+            class="py-2 text-xs sm:text-sm rounded-[10px] transition-all cursor-pointer text-center"
+          >
+            Email
+          </button>
+        </div>
+
+        <!-- Input Form -->
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmitInput()" class="w-full flex flex-col gap-4" novalidate>
+          
+          <!-- Phone Tab Input -->
+          @if (activeTab === 'phone') {
+            <div>
+              <div 
+                class="w-full flex items-center border rounded-[14px] overflow-hidden transition-colors"
+                [ngClass]="f['phone'].invalid && f['phone'].touched ? 'border-red-400 bg-red-50/20' : 'border-gray-200 focus-within:border-[#087F6A]'"
+              >
+                <!-- Country flag & code -->
+                <div class="flex items-center gap-1.5 px-3 py-3 bg-gray-50/70 border-r border-gray-200 shrink-0 text-xs sm:text-sm font-semibold text-gray-700 select-none">
+                  <span>🇮🇳</span>
+                  <span>+91</span>
+                  <i class="fa-solid fa-chevron-down text-[9px] text-gray-400 ml-0.5"></i>
+                </div>
+                <input 
+                  type="tel" 
+                  formControlName="phone" 
+                  maxlength="10"
+                  (input)="onPhoneInput($event)"
+                  placeholder="Enter your phone number" 
+                  class="w-full px-3.5 py-3 text-xs sm:text-sm font-medium text-[#08265C] focus:outline-none bg-transparent"
+                />
+              </div>
+              @if (f['phone'].invalid && f['phone'].touched) {
+                <p class="text-xs text-red-500 font-medium mt-1 pl-1 flex items-center gap-1">
+                  <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+                  <span>Please enter a valid 10-digit mobile number</span>
+                </p>
+              }
+            </div>
+          }
+
+          <!-- Email Tab Input -->
+          @if (activeTab === 'email') {
+            <div>
+              <div 
+                class="w-full border rounded-[14px] overflow-hidden transition-colors"
+                [ngClass]="f['email'].invalid && f['email'].touched ? 'border-red-400 bg-red-50/20' : 'border-gray-200 focus-within:border-[#087F6A]'"
+              >
+                <input 
+                  type="email" 
+                  formControlName="email" 
+                  placeholder="Enter your mail id" 
+                  class="w-full px-3.5 py-3 text-xs sm:text-sm font-medium text-[#08265C] focus:outline-none bg-transparent"
+                />
+              </div>
+              @if (f['email'].invalid && f['email'].touched) {
+                <p class="text-xs text-red-500 font-medium mt-1 pl-1 flex items-center gap-1">
+                  <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+                  <span>Please enter a valid email address</span>
+                </p>
+              }
+            </div>
+          }
+
+          <!-- Continue Button -->
+          <button 
+            type="submit" 
+            [disabled]="isSendingOtp"
+            class="w-full bg-[#087F6A] hover:bg-[#066c5a] active:scale-[0.99] disabled:opacity-70 text-white font-bold py-3.5 rounded-[14px] font-heading text-sm transition-all cursor-pointer shadow-xs flex items-center justify-center mt-1"
+          >
+            @if (isSendingOtp) {
+              <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+              <span>Sending code...</span>
             } @else {
-              Verify Code & Login
+              <span>Continue</span>
             }
           </button>
         </form>
+
+        <!-- Divider -->
+        <div class="w-full relative my-5 flex items-center justify-center">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-200"></div>
+          </div>
+          <span class="relative px-3 bg-white text-[11px] font-medium text-gray-400 tracking-wide">
+            or continue with
+          </span>
+        </div>
+
+        <!-- Social Buttons -->
+        <div class="flex items-center justify-center gap-4 mb-6">
+          <!-- Google -->
+          <button 
+            type="button" 
+            (click)="onSocialLogin('Google')"
+            class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors shadow-2xs cursor-pointer"
+            title="Continue with Google"
+          >
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5 object-contain" />
+          </button>
+
+          <!-- Apple -->
+          <button 
+            type="button" 
+            (click)="onSocialLogin('Apple')"
+            class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors shadow-2xs text-black cursor-pointer"
+            title="Continue with Apple"
+          >
+            <i class="fa-brands fa-apple text-xl"></i>
+          </button>
+
+          <!-- Email -->
+          <button 
+            type="button" 
+            (click)="switchTab('email')"
+            class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors shadow-2xs text-gray-600 cursor-pointer"
+            title="Continue with Email"
+          >
+            <i class="fa-regular fa-envelope text-base"></i>
+          </button>
+        </div>
+
+        <!-- Bottom Link -->
+        <p class="text-xs text-gray-500 text-center">
+          Don't have an account? 
+          <a routerLink="/auth/register" class="font-bold text-[#087F6A] hover:underline ml-1">
+            Sign up
+          </a>
+        </p>
+
       </div>
-    </div>
+    }
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- STEP 2: 6-DIGIT OTP VERIFICATION                                -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    @if (step === 'otp') {
+      <div class="flex flex-col items-center">
+        
+        <!-- Logo -->
+        <a routerLink="/" class="inline-block mb-3">
+          <img src="assets/logo.png" alt="Shop4Good" class="h-10 w-auto object-contain" />
+        </a>
+
+        <!-- Heading -->
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#08265C] font-heading text-center mb-1 leading-tight">
+          Enter the 6-digit code
+        </h2>
+        <p class="text-xs text-gray-500 text-center leading-relaxed mb-6 max-w-[300px]">
+          We've sent a verification code to <br />
+          <strong class="text-[#08265C]">
+            {{ activeTab === 'phone' ? '+91 ' + loginForm.value.phone : loginForm.value.email }}
+          </strong>
+        </p>
+
+        <!-- 6 OTP Input Boxes -->
+        <div class="w-full flex items-center justify-center gap-2 sm:gap-2.5 mb-2" (paste)="onOtpPaste($event)">
+          @for (digit of otpDigits; track $index) {
+            <input 
+              [id]="'otp-' + $index"
+              type="text" 
+              inputmode="numeric"
+              maxlength="1" 
+              [value]="otpDigits[$index]"
+              (input)="onOtpDigitInput($index, $event)"
+              (keydown)="onOtpKeyDown($index, $event)"
+              class="w-11 h-13 sm:w-12 sm:h-14 rounded-[12px] text-center font-bold text-xl text-[#08265C] border bg-gray-50/40 focus:bg-white focus:outline-none transition-all"
+              [ngClass]="otpError ? 'border-red-400 bg-red-50/20' : 'border-gray-200 focus:border-[#087F6A] focus:ring-2 focus:ring-[#087F6A]/20'"
+            />
+          }
+        </div>
+
+        <!-- Error Message -->
+        @if (otpError) {
+          <p class="text-xs text-red-500 font-medium mb-3 text-center flex items-center justify-center gap-1">
+            <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+            <span>{{ otpError }}</span>
+          </p>
+        } @else {
+          <p class="text-[11px] text-emerald-600 font-semibold mb-3 text-center">
+            (For testing, use code: 123456)
+          </p>
+        }
+
+        <!-- Continue Button -->
+        <button 
+          type="button" 
+          (click)="verifyOtp()"
+          [disabled]="isVerifyingOtp"
+          class="w-full bg-[#087F6A] hover:bg-[#066c5a] active:scale-[0.99] disabled:opacity-70 text-white font-bold py-3.5 rounded-[14px] font-heading text-sm transition-all cursor-pointer shadow-xs flex items-center justify-center mb-5"
+        >
+          @if (isVerifyingOtp) {
+            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+            <span>Verifying...</span>
+          } @else {
+            <span>Continue</span>
+          }
+        </button>
+
+        <!-- Resend Countdown -->
+        <p class="text-xs text-gray-500 text-center">
+          Didn't receive the code? 
+          @if (!canResend) {
+            <span class="font-medium text-gray-700 ml-1">
+              Resend in 00:{{ resendCountdown < 10 ? '0' + resendCountdown : resendCountdown }}
+            </span>
+          } @else {
+            <button 
+              type="button" 
+              (click)="resendOtp()" 
+              class="font-bold text-[#087F6A] hover:underline ml-1 cursor-pointer bg-transparent border-none p-0 inline"
+            >
+              Resend code
+            </button>
+          }
+        </p>
+
+      </div>
+    }
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- STEP 3: YOU'RE ALL SET! (Success)                               -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    @if (step === 'success') {
+      <div class="flex flex-col items-center py-4">
+        
+        <!-- Animated / Illustrated Checkmark Circle -->
+        <div class="relative mb-5 flex items-center justify-center">
+          <!-- Sparkles -->
+          <span class="absolute -top-2 left-2 text-amber-400 text-xs animate-ping">✦</span>
+          <span class="absolute -bottom-1 -right-1 text-emerald-400 text-sm">✦</span>
+          <span class="absolute top-1 -right-2 text-rose-400 text-xs">●</span>
+          
+          <div class="w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-[#087F6A]/10 text-[#087F6A] border-4 border-[#087F6A]/20 flex items-center justify-center text-3xl shadow-sm">
+            <i class="fa-solid fa-check font-black"></i>
+          </div>
+        </div>
+
+        <!-- Heading -->
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#08265C] font-heading text-center mb-1.5 leading-tight">
+          You're all set!
+        </h2>
+        <p class="text-xs sm:text-sm text-gray-500 text-center leading-relaxed mb-6 max-w-[280px]">
+          Welcome back! You're logged in.
+        </p>
+
+        <!-- Start Shopping Button -->
+        <button 
+          type="button" 
+          (click)="onStartShopping()"
+          class="w-full bg-[#087F6A] hover:bg-[#066c5a] active:scale-[0.99] text-white font-bold py-3.5 sm:py-4 rounded-[14px] font-heading text-sm sm:text-base transition-all cursor-pointer shadow-xs text-center"
+        >
+          Start Shopping
+        </button>
+
+      </div>
+    }
+
   </div>
-}
+
+</div>

@@ -1,0 +1,45 @@
+// Mobile Section Reordering
+// On mobile (< 1024px), sections are re-ordered into a single column:
+// 1. User Header Card
+// 2. Your Cause
+// 3. Your Impact Card (moved up right below Your Cause)
+// 4. Where You Shop (moved up right below Your Impact)
+// 5. Your Giving Section
+// 6. Sign Out Button
+// On desktop (>= 1024px), columns are standard 5-col / 7-col grid in natural DOM order.
+
+@media (max-width: 1023.98px) {
+  .profile-layout-container {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .profile-col-left,
+  .profile-col-right {
+    display: contents !important;
+  }
+
+  .profile-section-user {
+    order: 1 !important;
+  }
+
+  .profile-section-cause {
+    order: 2 !important;
+  }
+
+  .profile-section-impact {
+    order: 3 !important;
+  }
+
+  .profile-section-shop {
+    order: 4 !important;
+  }
+
+  .profile-section-giving {
+    order: 5 !important;
+  }
+
+  .profile-section-signout {
+    order: 6 !important;
+  }
+}
