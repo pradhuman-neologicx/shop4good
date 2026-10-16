@@ -1,19 +1,20 @@
 <!-- ── STICKY NAVBAR ── -->
 <nav class="navbar" [class.navbar--scrolled]="isScrolled || forceScrolled" [class.navbar--menu-open]="isMenuOpen">
   <div class="navbar__container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- ── LEFT: LOGO ── -->
-    <a routerLink="/" class="navbar__logo" (click)="closeMenu()">
-      <img ngSrc="assets/logo.png" width="70" height="50" priority alt="Shop4Good" />
-    </a>
+    <!-- ── LEFT: LOGO & NAV LINKS (Desktop) ── -->
+    <div class="flex items-center gap-6 lg:gap-10">
+      <a routerLink="/" class="navbar__logo" (click)="closeMenu()">
+        <img ngSrc="assets/logo.png" width="70" height="50" priority alt="Shop4Good" />
+      </a>
 
-    <!-- ── CENTER: NAV LINKS (Desktop) ── -->
-    <ul class="navbar__links flex items-center gap-1 list-none m-0 p-0">
+      <!-- ── NAV LINKS (Desktop) ── -->
+      <ul class="navbar__links flex items-center gap-1 list-none m-0 p-0">
       <li>
         <a routerLink="/" class="navbar__link">Home</a>
       </li>
  <!-- 2. SHOP OPTION (Direct Click) -->
       <li>
-        <a routerLink="/shop" class="navbar__link">Shop</a>
+        <a routerLink="/shop" class="navbar__link">Brands</a>
       </li>
       <!-- 1. CAUSES DROPDOWN (Hover) -->
       <li class="relative group" 
@@ -130,6 +131,7 @@
         </div>
       </li>
     </ul>
+    </div>
 
     <!-- ── RIGHT: CTA + MOBILE TOGGLE ── -->
     <div class="navbar__actions flex items-center gap-3">
