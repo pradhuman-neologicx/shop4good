@@ -126,7 +126,7 @@
         <!-- CTA Action Button -->
         <div class="pt-1">
           <a 
-            routerLink="/contact" 
+            [routerLink]="activeTab === 'brands' ? '/contact' : '/apply-ngo'" 
             class="w-full bg-[#087F6A] hover:bg-[#066c5a] text-white font-semibold py-3.5 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-700/15 cursor-pointer text-sm group active:scale-[0.99]"
           >
             @if (activeTab === 'brands') {
@@ -280,7 +280,7 @@
         <!-- Bottom CTA Action Bar (Figma: Button on Left, Questions text on Right) -->
         <div class="flex items-center gap-6 pt-1">
           <a 
-            routerLink="/contact" 
+            [routerLink]="activeTab === 'brands' ? '/contact' : '/apply-ngo'" 
             class="inline-flex items-center gap-2 bg-[#087F6A] hover:bg-[#066c5a] text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-sm cursor-pointer text-sm shrink-0 group active:scale-[0.99]"
           >
             @if (activeTab === 'brands') {

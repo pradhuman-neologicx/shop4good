@@ -1,1 +1,457 @@
-<p>apply-ngo works!</p>
+<app-navbar></app-navbar>
+
+<main class="min-h-screen bg-[#FAFBFD] py-8 sm:py-12 lg:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- ── 2-Column Responsive Layout (Desktop 2-Col, Mobile Stacked) ── -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+
+      <!-- ── LEFT COLUMN: Info, Header & Benefit Bullet Points ── -->
+      <div class="lg:col-span-5 flex flex-col justify-start">
+        
+        <!-- Back Link: ← Partner With Us -->
+        <a 
+          routerLink="/partner-with-us" 
+          class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-500 hover:text-[#087F6A] transition-colors mb-5 group cursor-pointer"
+        >
+          <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          <span>Partner With Us</span>
+        </a>
+
+        <!-- Category Tag -->
+        <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#087F6A] mb-2 sm:mb-3 block font-heading">
+          FOR NGOS
+        </span>
+
+        <!-- Page Main Heading -->
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#08265C] tracking-tight font-heading leading-tight mb-3 sm:mb-4">
+          Apply as an NGO Partner
+        </h1>
+
+        <!-- Page Subtitle Description -->
+        <p class="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed mb-8 max-w-md">
+          Tell us about your organisation. It takes about 3 minutes, and our team reviews every application within 5–7 working days.
+        </p>
+
+        <!-- 3 Key Value Props / Benefit Points (Figma) -->
+        <div class="space-y-4">
+          
+          <!-- Benefit 1: Verified badge on your cause page -->
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 rounded-full bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 shadow-2xs">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-slate-700">
+              Verified badge on your cause page
+            </span>
+          </div>
+
+          <!-- Benefit 2: 2% of every order, shared transparently -->
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 rounded-full bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 shadow-2xs">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 4.5l-15 15M6.75 8.25a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm10.5 10.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+              </svg>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-slate-700">
+              2% of every order, shared transparently
+            </span>
+          </div>
+
+          <!-- Benefit 3: Monthly impact reports -->
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 rounded-full bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 shadow-2xs">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+              </svg>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-slate-700">
+              Monthly impact reports
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ── RIGHT COLUMN: Application Form Card (Figma) ── -->
+      <div class="lg:col-span-7 w-full">
+        <div class="bg-white rounded-2xl sm:rounded-[24px] border border-slate-200/90 p-5 sm:p-7 lg:p-8 shadow-2xs">
+          
+          <form (ngSubmit)="onSubmit()" class="space-y-4 sm:space-y-5" novalidate>
+
+            <!-- Row 1: NGO Name & Registration Number -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- NGO Name -->
+              <div>
+                <label for="ngoName" class="block text-xs font-semibold text-slate-700 font-heading mb-1.5">
+                  NGO Name <span class="text-red-500">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="ngoName" 
+                  [(ngModel)]="formData.ngoName" 
+                  (blur)="touch('ngoName')"
+                  (input)="touch('ngoName')"
+                  name="ngoName" 
+                  placeholder="Registered name of your NGO" 
+                  class="w-full bg-white border rounded-xl px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 transition-all shadow-2xs"
+                  [ngClass]="isInvalid('ngoName') 
+                    ? 'border-red-400 bg-red-50/15 focus:ring-red-400/20 focus:border-red-500' 
+                    : 'border-slate-200/90 focus:ring-[#087F6A]/20 focus:border-[#087F6A]'" 
+                />
+                @if (isInvalid('ngoName')) {
+                  <p class="text-[11px] text-red-500 font-medium mt-1 pl-0.5 flex items-center gap-1 animate-fadeIn">
+                    <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ errors['ngoName'] }}</span>
+                  </p>
+                }
+              </div>
+
+              <!-- Registration Number -->
+              <div>
+                <label for="regNumber" class="block text-xs font-semibold text-slate-700 font-heading mb-1.5">
+                  Registration Number <span class="text-red-500">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="regNumber" 
+                  [(ngModel)]="formData.regNumber" 
+                  (blur)="touch('regNumber')"
+                  (input)="touch('regNumber')"
+                  name="regNumber" 
+                  placeholder="12A / 80G registration no." 
+                  class="w-full bg-white border rounded-xl px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 transition-all shadow-2xs"
+                  [ngClass]="isInvalid('regNumber') 
+                    ? 'border-red-400 bg-red-50/15 focus:ring-red-400/20 focus:border-red-500' 
+                    : 'border-slate-200/90 focus:ring-[#087F6A]/20 focus:border-[#087F6A]'" 
+                />
+                @if (isInvalid('regNumber')) {
+                  <p class="text-[11px] text-red-500 font-medium mt-1 pl-0.5 flex items-center gap-1 animate-fadeIn">
+                    <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ errors['regNumber'] }}</span>
+                  </p>
+                }
+              </div>
+            </div>
+
+            <!-- Row 2: Contact Person & Email Address -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Contact Person -->
+              <div>
+                <label for="contactPerson" class="block text-xs font-semibold text-slate-700 font-heading mb-1.5">
+                  Contact Person <span class="text-red-500">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="contactPerson" 
+                  [(ngModel)]="formData.contactPerson" 
+                  (blur)="touch('contactPerson')"
+                  (input)="touch('contactPerson')"
+                  name="contactPerson" 
+                  placeholder="Full name" 
+                  class="w-full bg-white border rounded-xl px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 transition-all shadow-2xs"
+                  [ngClass]="isInvalid('contactPerson') 
+                    ? 'border-red-400 bg-red-50/15 focus:ring-red-400/20 focus:border-red-500' 
+                    : 'border-slate-200/90 focus:ring-[#087F6A]/20 focus:border-[#087F6A]'" 
+                />
+                @if (isInvalid('contactPerson')) {
+                  <p class="text-[11px] text-red-500 font-medium mt-1 pl-0.5 flex items-center gap-1 animate-fadeIn">
+                    <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ errors['contactPerson'] }}</span>
+                  </p>
+                }
+              </div>
+
+              <!-- Email Address -->
+              <div>
+                <label for="email" class="block text-xs font-semibold text-slate-700 font-heading mb-1.5">
+                  Email Address <span class="text-red-500">*</span>
+                </label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  [(ngModel)]="formData.email" 
+                  (blur)="touch('email')"
+                  (input)="touch('email')"
+                  name="email" 
+                  placeholder="name@yourngo.org" 
+                  class="w-full bg-white border rounded-xl px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 transition-all shadow-2xs"
+                  [ngClass]="isInvalid('email') 
+                    ? 'border-red-400 bg-red-50/15 focus:ring-red-400/20 focus:border-red-500' 
+                    : 'border-slate-200/90 focus:ring-[#087F6A]/20 focus:border-[#087F6A]'" 
+                />
+                @if (isInvalid('email')) {
+                  <p class="text-[11px] text-red-500 font-medium mt-1 pl-0.5 flex items-center gap-1 animate-fadeIn">
+                    <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ errors['email'] }}</span>
+                  </p>
+                }
+              </div>
+            </div>
+
+            <!-- Row 3: Phone Number & Website (optional) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Phone Number -->
+              <div>
+                <label for="phone" class="block text-xs font-semibold text-slate-700 font-heading mb-1.5">
+                  Phone Number <span class="text-red-500">*</span>
+                </label>
+                <div class="flex items-center gap-2">
+                  <!-- Country Selector Button -->
+                  <div class="relative country-dropdown-wrap shrink-0">
+                    <button 
+                      type="button" 
+                      (click)="toggleCountryDropdown()" 
+                      class="bg-white border border-slate-200/90 rounded-xl px-2.5 sm:px-3 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-slate-700 flex items-center gap-1.5 hover:border-slate-300 transition-colors cursor-pointer shadow-2xs"
+                    >
+                      <span>{{ selectedCountry.code }} {{ selectedCountry.dial }}</span>
+                      <svg class="w-3.5 h-3.5 text-slate-400 transition-transform" [class.rotate-180]="isCountryDropdownOpen" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                      </svg>
+                    </button>
+
+                    <!-- Country Dropdown Menu -->
+                    @if (isCountryDropdownOpen) {
+                      <div class="absolute left-0 top-full mt-1.5 w-44 bg-white border border-slate-200/90 rounded-xl shadow-lg py-1.5 z-30">
+                        @for (country of countryList; track country.code) {
+                          <button 
+                            type="button" 
+                            (click)="selectCountry(country)" 
+                            class="w-full px-3.5 py-2 text-left text-xs sm:text-sm text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] flex items-center justify-between cursor-pointer transition-colors"
+                            [class.bg-emerald-50]="selectedCountry.code === country.code"
+                            [class.font-semibold]="selectedCountry.code === country.code"
+                          >
+                            <span>{{ country.name }}</span>
+                            <span class="text-slate-400 text-xs">{{ country.dial }}</span>
+                          </button>
+                        }
+                      </div>
+                    }
+                  </div>
+
+                  <!-- Number Input Field -->
+                  <input 
+                    type="tel" 
+                    id="phone" 
+                    [(ngModel)]="formData.phone" 
+                    (blur)="touch('phone')"
+                    (input)="touch('phone')"
+                    name="phone" 
+                    placeholder="Your number" 
+                    class="flex-1 bg-white border rounded-xl px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 transition-all shadow-2xs"
+                    [ngClass]="isInvalid('phone') 
+                      ? 'border-red-400 bg-red-50/15 focus:ring-red-400/20 focus:border-red-500' 
+                      : 'border-slate-200/90 focus:ring-[#087F6A]/20 focus:border-[#087F6A]'" 
+                  />
+                </div>
+                @if (isInvalid('phone')) {
+                  <p class="text-[11px] text-red-500 font-medium mt-1 pl-0.5 flex items-center gap-1 animate-fadeIn">
+                    <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ errors['phone'] }}</span>
+                  </p>
+                }
+              </div>
+
+              <!-- Website (optional) -->
+              <div>
+                <label for="website" class="block text-xs font-semibold text-slate-700 font-heading mb-1.5">
+                  Website (optional)
+                </label>
+                <input 
+                  type="url" 
+                  id="website" 
+                  [(ngModel)]="formData.website" 
+                  (blur)="touch('website')"
+                  (input)="touch('website')"
+                  name="website" 
+                  placeholder="https://" 
+                  class="w-full bg-white border rounded-xl px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 transition-all shadow-2xs"
+                  [ngClass]="isInvalid('website') 
+                    ? 'border-red-400 bg-red-50/15 focus:ring-red-400/20 focus:border-red-500' 
+                    : 'border-slate-200/90 focus:ring-[#087F6A]/20 focus:border-[#087F6A]'" 
+                />
+                @if (isInvalid('website')) {
+                  <p class="text-[11px] text-red-500 font-medium mt-1 pl-0.5 flex items-center gap-1 animate-fadeIn">
+                    <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ errors['website'] }}</span>
+                  </p>
+                }
+              </div>
+            </div>
+
+            <!-- Row 4: Cause Area Chips (Figma) -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 font-heading mb-2">
+                Cause Area <span class="text-red-500">*</span>
+              </label>
+              <div class="flex flex-wrap gap-2">
+                @for (area of causeAreas; track area) {
+                  <button 
+                    type="button" 
+                    (click)="selectCauseArea(area)"
+                    class="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-semibold transition-all cursor-pointer shadow-2xs"
+                    [ngClass]="selectedCauseArea === area 
+                      ? 'bg-[#08265C] text-white shadow-xs' 
+                      : 'bg-white border border-slate-200/90 text-slate-600 hover:border-slate-300 hover:bg-slate-50'"
+                  >
+                    {{ area }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <!-- Row 5: About your NGO -->
+            <div>
+              <label for="aboutNgo" class="block text-xs font-semibold text-slate-700 font-heading mb-1.5">
+                About your NGO <span class="text-red-500">*</span>
+              </label>
+              <textarea 
+                id="aboutNgo" 
+                [(ngModel)]="formData.aboutNgo" 
+                (blur)="touch('aboutNgo')"
+                (input)="touch('aboutNgo')"
+                name="aboutNgo" 
+                rows="4" 
+                placeholder="Share your mission and the work you do..." 
+                class="w-full bg-white border rounded-xl p-3.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 transition-all resize-none shadow-2xs"
+                [ngClass]="isInvalid('aboutNgo') 
+                  ? 'border-red-400 bg-red-50/15 focus:ring-red-400/20 focus:border-red-500' 
+                  : 'border-slate-200/90 focus:ring-[#087F6A]/20 focus:border-[#087F6A]'"
+              ></textarea>
+              @if (isInvalid('aboutNgo')) {
+                <p class="text-[11px] text-red-500 font-medium mt-1 pl-0.5 flex items-center gap-1 animate-fadeIn">
+                  <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>
+                  <span>{{ errors['aboutNgo'] }}</span>
+                </p>
+              }
+            </div>
+
+            <!-- Row 6: Agreement Checkbox -->
+            <div class="pt-1">
+              <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                <input 
+                  type="checkbox" 
+                  [(ngModel)]="formData.agreeTerms" 
+                  (change)="touch('agreeTerms')"
+                  name="agreeTerms" 
+                  class="w-4 h-4 rounded text-[#087F6A] focus:ring-[#087F6A]/30 border-slate-300 mt-0.5 cursor-pointer accent-[#087F6A]"
+                />
+                <span class="text-xs text-slate-500 font-normal leading-relaxed">
+                  I confirm these details are accurate and agree to the 
+                  <a routerLink="/terms-and-conditions" target="_blank" class="text-slate-700 underline font-semibold hover:text-[#087F6A]">Terms</a> &amp; 
+                  <a routerLink="/privacy-policy" target="_blank" class="text-slate-700 underline font-semibold hover:text-[#087F6A]">Privacy Policy</a>.
+                </span>
+              </label>
+              @if (isInvalid('agreeTerms')) {
+                <p class="text-[11px] text-red-500 font-medium mt-1.5 pl-0.5 flex items-center gap-1 animate-fadeIn">
+                  <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>
+                  <span>{{ errors['agreeTerms'] }}</span>
+                </p>
+              }
+            </div>
+
+            <!-- Row 7: Submit Application CTA Button -->
+            <div class="pt-2">
+              <button 
+                type="submit" 
+                [disabled]="isSubmitting" 
+                class="bg-[#087F6A] hover:bg-[#066c5a] text-white font-semibold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer text-sm sm:text-base group disabled:opacity-60"
+              >
+                @if (!isSubmitting) {
+                  <span>Submit Application</span>
+                  <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                } @else {
+                  <span>Submitting...</span>
+                  <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                  </svg>
+                }
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<!-- Success Modal matching Figma "Message sent!" / "Application submitted!" -->
+@if (isSuccessModalOpen) {
+  <div 
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+    (click)="closeSuccessModal()"
+  >
+    <div 
+      class="bg-white rounded-[24px] p-6 sm:p-8 max-w-sm sm:max-w-md w-full text-center relative shadow-2xl animate-in zoom-in-95 duration-200 border border-slate-100"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Close Button (X) -->
+      <button 
+        type="button" 
+        (click)="closeSuccessModal()" 
+        class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+        aria-label="Close modal"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Success Check Icon in Emerald Circle -->
+      <div class="w-14 h-14 rounded-full bg-[#087F6A] text-white flex items-center justify-center mx-auto mb-4 shadow-sm">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+      </div>
+
+      <!-- Heading -->
+      <h3 class="text-xl sm:text-2xl font-bold text-[#08265C] font-heading mb-2">
+        Application submitted!
+      </h3>
+
+      <!-- Subtitle -->
+      <p class="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed mb-6 max-w-xs mx-auto">
+        Thanks for applying. Our team will review your application within 5–7 working days.
+      </p>
+
+      <!-- Done CTA Button -->
+      <button 
+        type="button" 
+        (click)="closeSuccessModal()" 
+        class="w-full bg-[#087F6A] hover:bg-[#066c5a] text-white font-semibold py-3 px-6 rounded-xl transition-colors cursor-pointer text-sm sm:text-base shadow-xs"
+      >
+        Done
+      </button>
+    </div>
+  </div>
+}
+
+<app-footer></app-footer>

@@ -83,6 +83,18 @@ export const routes: Routes = [
     loadComponent: () => import('./website/partner-with-us/partner-with-us.component').then(c => c.PartnerWithUsComponent)
   },
   {
+    path: 'apply-ngo',
+    loadComponent: () => import('./website/apply-ngo/apply-ngo.component').then(c => c.ApplyNgoComponent)
+  },
+  {
+    path: 'about/apply-ngo',
+    loadComponent: () => import('./website/apply-ngo/apply-ngo.component').then(c => c.ApplyNgoComponent)
+  },
+  {
+    path: 'partner-with-us/apply',
+    loadComponent: () => import('./website/apply-ngo/apply-ngo.component').then(c => c.ApplyNgoComponent)
+  },
+  {
     path: 'shop',
     loadComponent: () => import('./website/shop/shop.component').then(c => c.ShopComponent)
   },
