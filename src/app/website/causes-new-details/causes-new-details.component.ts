@@ -237,7 +237,7 @@ export class CausesNewDetailsComponent implements OnInit {
         },
         bgColor: '#245e55',
         impactStory: {
-          image: 'assets/images/pet_impact_story.jpg',
+          image: 'assets/images/3974b9a0688a2a111c798f118707a04eefd027aa.png',
           tag: 'IMPACT STORY',
           quote: 'Every life, no matter how small, matters.',
           bgColor: '#245e55'
@@ -277,7 +277,7 @@ export class CausesNewDetailsComponent implements OnInit {
         },
         bgColor: '#1e3a8a',
         impactStory: {
-          image: 'assets/images/kids_impact_story.jpg',
+          image: 'assets/images/cc81b811bb1cdb869786fe9f853ae5a6d1184f89.png',
           tag: 'IMPACT STORY',
           quote: 'Education opens doors to endless possibilities.',
           bgColor: '#1e3a8a'
@@ -317,7 +317,7 @@ export class CausesNewDetailsComponent implements OnInit {
         },
         bgColor: '#d2386c',
         impactStory: {
-          image: 'assets/images/women_impact_story.jpg',
+          image: 'assets/images/b10176811492927d6241054c868b168d16c6af4e.png',
           tag: 'IMPACT STORY',
           quote: 'When women grow, communities thrive.',
           bgColor: '#d2386c'
@@ -357,7 +357,7 @@ export class CausesNewDetailsComponent implements OnInit {
         },
         bgColor: '#4a8dd6',
         impactStory: {
-          image: 'assets/images/senior_impact_story.jpg',
+          image: 'assets/images/d3f2563f455e58bf105b9c450b3aee8a40e12f0f.png',
           tag: 'IMPACT STORY',
           quote: 'Because they cared for us, now it’s our turn.',
           bgColor: '#4a8dd6'

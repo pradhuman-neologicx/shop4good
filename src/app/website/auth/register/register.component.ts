@@ -8,7 +8,7 @@ import { NotificationService } from 'src/app/core/services/notificationnew.servi
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [RouterLink, NgOptimizedImage, ReactiveFormsModule, FormsModule, CommonModule],
+  imports: [RouterLink,  ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })

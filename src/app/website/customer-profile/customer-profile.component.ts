@@ -14,7 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-customer-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, NavbarComponent, FooterComponent, RouterLink, ChooseCauseComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, NavbarComponent, FooterComponent,  ChooseCauseComponent],
   styleUrl: './customer-profile.component.scss',
   templateUrl: './customer-profile.component.html',
 })

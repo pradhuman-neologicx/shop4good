@@ -8,7 +8,7 @@ import { NotificationService } from 'src/app/core/services/notificationnew.servi
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, NgOptimizedImage, ReactiveFormsModule, FormsModule, CommonModule],
+  imports: [RouterLink,  ReactiveFormsModule, FormsModule, CommonModule],
   styleUrl: './login.component.scss',
   templateUrl: './login.component.html',
 })
