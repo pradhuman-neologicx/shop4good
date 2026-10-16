@@ -1,26 +1,45 @@
-<footer class="bg-white border-t border-slate-200/80 pt-10 pb-8 sm:pt-14 sm:pb-12 text-slate-800">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<footer class="bg-[#F8F8F8] border-t border-[#D8DDE5] pt-10 pb-8 md:pt-16 md:pb-10 text-slate-800 font-sans">
+  <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    <!-- ── Mobile Layout (< md) & Desktop Grid (>= md) ── -->
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 pb-8 sm:pb-10">
+    <!-- ── Top Grid Section ── -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 pb-6 md:pb-10">
 
-      <!-- ── BRAND COLUMN ── -->
+      <!-- ── BRAND COLUMN (Desktop & Mobile) ── -->
       <div class="md:col-span-4 lg:col-span-4 flex flex-col items-start">
         <!-- Logo -->
-        <a routerLink="/" class="inline-block mb-2 cursor-pointer">
+        <a routerLink="/" class="inline-block mb-2.5 cursor-pointer">
           <img 
             ngSrc="assets/logo.png" 
-            width="160" 
-            height="64" 
+            width="220" 
+            height="110" 
             alt="Shop4Good" 
-            class="h-11 sm:h-13 md:h-14 w-auto object-contain" 
+            class="h-12 sm:h-14 md:h-16 lg:h-[68px] w-auto object-contain" 
           />
         </a>
 
         <!-- Tagline -->
-        <p class="text-xs text-slate-400 font-normal leading-relaxed max-w-xs mb-6 md:mb-0">
+        <p class="text-xs sm:text-[14px] text-slate-500 font-normal leading-relaxed max-w-xs mb-0 md:mb-6">
           Every purchase can create a better tomorrow.
         </p>
+
+        <!-- Socials on Desktop (Placed in Brand column as in Figma Desktop) -->
+        <div class="hidden md:block">
+          <span class="block text-[11px] text-slate-400 font-semibold tracking-wider uppercase mb-2">
+            FOLLOW THE GOOD
+          </span>
+          <div class="flex items-center gap-4 flex-wrap">
+            @for (social of socialLinks; track social.label) {
+              <a 
+                [href]="social.href" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="text-xs text-slate-600 hover:text-[#087F6A] font-medium transition-colors cursor-pointer"
+              >
+                {{ social.label }}
+              </a>
+            }
+          </div>
+        </div>
       </div>
 
       <!-- ── LINKS COLUMNS ── -->
@@ -30,10 +49,10 @@
         
         <!-- Column 1: Shop (On mobile: top left) -->
         <div>
-          <h3 class="text-xs sm:text-sm font-bold text-slate-800 font-heading mb-2.5 sm:mb-3">
+          <h3 class="text-xs sm:text-sm font-bold text-slate-900 font-heading mb-2.5 sm:mb-3.5">
             Shop
           </h3>
-          <ul class="space-y-1.5 list-none p-0 m-0">
+          <ul class="space-y-1.5 sm:space-y-2 list-none p-0 m-0">
             @for (link of shopLinks; track link.label) {
               <li>
                 <a 
@@ -47,8 +66,8 @@
           </ul>
 
           <!-- On mobile, About is placed under Shop -->
-          <div class="mt-6 sm:hidden">
-            <h3 class="text-xs sm:text-sm font-bold text-slate-800 font-heading mb-2.5">
+          <div class="mt-7 sm:hidden">
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 font-heading mb-2.5">
               About
             </h3>
             <ul class="space-y-1.5 list-none p-0 m-0">
@@ -68,10 +87,10 @@
 
         <!-- Column 2: Our Causes (On mobile: top right) -->
         <div>
-          <h3 class="text-xs sm:text-sm font-bold text-slate-800 font-heading mb-2.5 sm:mb-3">
+          <h3 class="text-xs sm:text-sm font-bold text-slate-900 font-heading mb-2.5 sm:mb-3.5">
             Our Causes
           </h3>
-          <ul class="space-y-1.5 list-none p-0 m-0">
+          <ul class="space-y-1.5 sm:space-y-2 list-none p-0 m-0">
             @for (link of causeLinks; track link.label) {
               <li>
                 <a 
@@ -85,8 +104,8 @@
           </ul>
 
           <!-- On mobile, Help is placed under Our Causes -->
-          <div class="mt-6 sm:hidden">
-            <h3 class="text-xs sm:text-sm font-bold text-slate-800 font-heading mb-2.5">
+          <div class="mt-7 sm:hidden">
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 font-heading mb-2.5">
               Help
             </h3>
             <ul class="space-y-1.5 list-none p-0 m-0">
@@ -106,10 +125,10 @@
 
         <!-- Column 3: About (Desktop view >= sm) -->
         <div class="hidden sm:block">
-          <h3 class="text-xs sm:text-sm font-bold text-slate-800 font-heading mb-2.5 sm:mb-3">
+          <h3 class="text-xs sm:text-sm font-bold text-slate-900 font-heading mb-2.5 sm:mb-3.5">
             About
           </h3>
-          <ul class="space-y-1.5 list-none p-0 m-0">
+          <ul class="space-y-1.5 sm:space-y-2 list-none p-0 m-0">
             @for (link of aboutLinks; track link.label) {
               <li>
                 <a 
@@ -125,10 +144,10 @@
 
         <!-- Column 4: Help (Desktop view >= sm) -->
         <div class="hidden sm:block">
-          <h3 class="text-xs sm:text-sm font-bold text-slate-800 font-heading mb-2.5 sm:mb-3">
+          <h3 class="text-xs sm:text-sm font-bold text-slate-900 font-heading mb-2.5 sm:mb-3.5">
             Help
           </h3>
-          <ul class="space-y-1.5 list-none p-0 m-0">
+          <ul class="space-y-1.5 sm:space-y-2 list-none p-0 m-0">
             @for (link of helpLinks; track link.label) {
               <li>
                 <a 
@@ -146,35 +165,33 @@
 
     </div>
 
-    <!-- ── SOCIALS & COPYRIGHT SECTION (Matches Figma bottom) ── -->
-    <div class="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-      
-      <!-- Follow the good -->
-      <div>
-        <span class="block text-[11px] sm:text-xs text-slate-400 font-medium mb-1.5">
-          Follow the good
-        </span>
-        <div class="flex items-center gap-3 sm:gap-4 flex-wrap">
-          @for (social of socialLinks; track social.label) {
-            <a 
-              [href]="social.href" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="text-xs text-slate-600 hover:text-[#087F6A] font-medium transition-colors cursor-pointer"
-            >
-              {{ social.label }}
-            </a>
-          }
-        </div>
+    <!-- ── SOCIALS & COPYRIGHT ON MOBILE (md:hidden) ── -->
+    <div class="md:hidden pt-4 pb-2">
+      <span class="block text-[11px] sm:text-xs text-slate-400 font-medium mb-2">
+        Follow the good
+      </span>
+      <div class="flex items-center gap-4 flex-wrap mb-6">
+        @for (social of socialLinks; track social.label) {
+          <a 
+            [href]="social.href" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="text-xs text-slate-700 hover:text-[#087F6A] font-medium transition-colors cursor-pointer"
+          >
+            {{ social.label }}
+          </a>
+        }
       </div>
+      <p class="text-[11px] sm:text-xs text-slate-400 font-normal m-0">
+        &copy; {{ currentYear }} Shop4Good. All rights reserved.
+      </p>
+    </div>
 
-      <!-- Copyright Text -->
-      <div class="pt-2 sm:pt-0">
-        <p class="text-[11px] sm:text-xs text-slate-400 font-normal m-0">
-          &copy; {{ currentYear }} Shop4Good. All rights reserved.
-        </p>
-      </div>
-
+    <!-- ── DESKTOP COPYRIGHT BAR (hidden md:block) ── -->
+    <div class="hidden md:block pt-6 border-t border-[#D8DDE5]/80">
+      <p class="text-xs text-slate-400 font-normal m-0 text-left">
+        &copy; {{ currentYear }} Shop4Good. All rights reserved.
+      </p>
     </div>
 
   </div>
