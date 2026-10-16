@@ -337,7 +337,10 @@
 
 <!-- Impact Story Card Template -->
 <ng-template #impactStoryTpl>
-  <div class="impact-story-card w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-sm border border-slate-200/90 bg-[#143029]">
+  <div 
+    class="impact-story-card w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-sm border border-slate-200/90 text-white"
+    [style.backgroundColor]="causeDetail?.bgColor || causeDetail?.impactStory?.bgColor || '#143029'"
+  >
     <!-- Story Image -->
     <div class="relative w-full aspect-[16/10] sm:aspect-[16/9] overflow-hidden">
       <img 
@@ -346,12 +349,18 @@
         fill
         class="w-full h-full object-cover transition-transform duration-700 hover:scale-102"
       >
-      <div class="absolute inset-0 bg-gradient-to-t from-[#143029] via-transparent to-transparent opacity-60"></div>
+      <div 
+        class="absolute inset-0 bg-gradient-to-t via-transparent to-transparent opacity-60"
+        [style.backgroundImage]="'linear-gradient(to top, ' + (causeDetail?.bgColor || causeDetail?.impactStory?.bgColor || '#143029') + ', transparent, transparent)'"
+      ></div>
     </div>
     <!-- Attached Bottom Dark Bar -->
-    <div class="p-5 sm:p-6 bg-[#143029] text-white">
-      <div class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#34D399] mb-1.5 flex items-center gap-1.5">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse"></span>
+    <div 
+      class="p-5 sm:p-6 text-white"
+      [style.backgroundColor]="causeDetail?.bgColor || causeDetail?.impactStory?.bgColor || '#143029'"
+    >
+      <div class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/80 mb-1.5 flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
         {{ causeDetail.impactStory.tag || 'IMPACT STORY' }}
       </div>
       <h3 class="text-base sm:text-lg lg:text-xl font-bold text-white leading-snug font-heading">
