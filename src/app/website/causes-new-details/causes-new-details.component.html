@@ -8,10 +8,14 @@
     <p class="text-slate-600 font-medium text-base">Loading cause details...</p>
   </div>
   } @else if (causeDetail) {
-  <main class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 md:py-8 lg:py-10 flex-grow">
+  
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- MOBILE VIEW (< 1024px) - 100% PRESERVED EXACTLY AS IS          -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <main class="block lg:hidden w-full max-w-7xl mx-auto px-4 sm:px-6 py-5 md:py-8 flex-grow">
     
     <!-- ═══════════ BREADCRUMB ═══════════ -->
-    <nav class="flex items-center gap-2 text-xs sm:text-sm text-slate-500 mb-4 md:mb-6 font-medium">
+    <nav class="flex items-center gap-2 text-xs sm:text-sm text-slate-500 mb-4 font-medium">
       <a routerLink="/" class="hover:text-emerald-700 transition-colors">Home</a>
       <span class="text-slate-300">/</span>
       <a routerLink="/causes" class="hover:text-emerald-700 transition-colors">Causes</a>
@@ -19,9 +23,9 @@
       <span class="text-slate-800 font-semibold truncate">{{ causeDetail.name }}</span>
     </nav>
 
-    <!-- ═══════════ 1. FULL WIDTH HERO IMAGE ═══════════ -->
-    <div class="cause-main-image-card relative w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-sm border border-slate-200/80 bg-slate-100 mb-6 sm:mb-8 lg:mb-10">
-      <div class="w-full h-[220px] sm:h-[340px] md:h-[400px] lg:h-[460px] relative">
+    <!-- ═══════════ 1. FULL WIDTH HERO IMAGE (Mobile) ═══════════ -->
+    <div class="cause-main-image-card relative w-full rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 bg-slate-100 mb-6">
+      <div class="w-full h-[220px] sm:h-[320px] relative">
         <img 
           [ngSrc]="causeDetail.cover_image_url" 
           [alt]="causeDetail.name" 
@@ -32,273 +36,393 @@
       </div>
     </div>
 
-    <!-- ═══════════ 2. TWO-COLUMN LAYOUT BELOW HERO (DESKTOP) / STACKED (MOBILE) ═══════════ -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+    <!-- ═══════════ Content Stack (Mobile) ═══════════ -->
+    <div class="flex flex-col justify-start">
+      
+      <!-- Badge -->
+      <div>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#EBF7EE] text-[#087F6A] border border-[#D5EEDC]">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+          </svg>
+          {{ causeDetail.badge || 'Our cause' }}
+        </span>
+      </div>
 
-      <!-- ─── LEFT SIDE: Content, Stats, Help, Partner, CTA ─── -->
-      <div class="lg:col-span-6 flex flex-col justify-start">
-        
-        <!-- Badge -->
-        <div>
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#EBF7EE] text-[#087F6A] border border-[#D5EEDC]">
+      <!-- Heading & Subtitle -->
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-[#08265C] tracking-tight mt-3 mb-1.5 leading-tight font-heading">
+        {{ causeDetail.name }}
+      </h1>
+      <p class="text-sm text-slate-600 leading-relaxed mb-6 font-normal">
+        {{ causeDetail.subtitle }}
+      </p>
+
+      <!-- Stats Card -->
+      <div class="bg-white rounded-2xl border border-slate-200/90 p-3 shadow-xs mb-6">
+        <div class="grid grid-cols-2 divide-x divide-slate-100">
+          @for (stat of causeDetail.stats; track $index) {
+          <div class="flex items-center gap-3.5 px-2 first:pl-0 last:pr-0">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                 [ngClass]="$index === 0 ? 'bg-[#EBF7EE] text-[#087F6A]' : 'bg-[#E6F7F5] text-[#087F6A]'">
+              <ng-container *ngTemplateOutlet="statIconTpl; context: { icon: stat.icon }"></ng-container>
+            </div>
+            <div>
+              <div class="text-xl font-bold text-[#08265C] leading-none mb-1">
+                {{ stat.value }}
+              </div>
+              <div class="text-xs text-slate-500 font-medium leading-tight">
+                {{ stat.label }}
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- How we help (Mobile Compact) -->
+      <div class="mb-6">
+        <h2 class="text-base font-bold text-[#08265C] mb-3 font-heading">
+          How we help
+        </h2>
+        <div class="grid grid-cols-3 gap-2.5">
+          @for (item of causeDetail.howWeHelp; track $index) {
+          <div class="bg-white rounded-2xl border border-slate-200/80 p-3 flex flex-col items-center text-center transition-all duration-200 hover:border-emerald-200 hover:shadow-xs group">
+            <div class="w-11 h-11 rounded-full bg-[#EBF7EE] text-[#087F6A] flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+              <ng-container *ngTemplateOutlet="helpIconTpl; context: { icon: item.icon }"></ng-container>
+            </div>
+            <span class="text-[11px] font-semibold text-slate-800 leading-tight">
+              {{ item.title }}
+            </span>
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Our NGO Partner -->
+      <div class="mb-6">
+        <h2 class="text-base font-bold text-[#08265C] mb-3 font-heading">
+          Our NGO partner
+        </h2>
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-4 flex items-center gap-3.5 shadow-xs">
+          <div class="w-20 h-13 min-w-[80px] rounded-xl bg-white border border-slate-200/80 p-1.5 flex items-center justify-center shrink-0 shadow-2xs relative">
+            <img 
+              [src]="causeDetail.partner.logo" 
+              [alt]="causeDetail.partner.name" 
+              class="max-w-full max-h-full w-auto h-auto object-contain"
+            >
+          </div>
+          <div class="flex-grow min-w-0">
+            <h3 class="text-sm font-bold text-[#08265C] leading-snug truncate">
+              {{ causeDetail.partner.name }}
+            </h3>
+            <p class="text-xs text-slate-500 leading-snug mt-0.5 line-clamp-2">
+              {{ causeDetail.partner.description }}
+            </p>
+            @if (causeDetail.partner.verified) {
+            <div class="flex items-center gap-1 mt-1 text-[#087F6A] text-xs font-semibold">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span>Verified partner</span>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Button -->
+      <button 
+        (click)="openMarketplace()" 
+        class="w-full bg-[#087F6A] hover:bg-[#066856] active:scale-[0.99] text-white font-bold text-sm py-3.5 px-6 rounded-xl flex items-center justify-center gap-2.5 shadow-md shadow-emerald-800/15 transition-all duration-200 group cursor-pointer"
+      >
+        <span>Support this cause</span>
+        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+        </svg>
+      </button>
+
+      <!-- Impact Story Card (Mobile Placement) -->
+      <div class="mt-6">
+        <ng-container *ngTemplateOutlet="impactStoryTpl"></ng-container>
+      </div>
+
+      <!-- Mobile Share Box -->
+      <div class="mt-8">
+        <ng-container *ngTemplateOutlet="shareTpl"></ng-container>
+      </div>
+
+    </div>
+
+    <!-- Explore Other Causes (Mobile) -->
+    <section class="mt-12 pt-8 border-t border-slate-200">
+      <div class="text-left mb-6">
+        <h2 class="text-xl font-bold text-[#08265C] mb-2 font-heading">
+          Explore Other Causes You Can Support
+        </h2>
+        <p class="text-slate-500 text-xs">
+          Choose the stories you want to help write with every purchase.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4">
+        @for (cause of filteredOtherCauses; track cause.id) {
+        <div 
+          class="rounded-2xl text-white flex flex-col relative cursor-pointer shadow-sm overflow-hidden"
+          [style.backgroundColor]="cause.bgColor"
+          [routerLink]="['/causes', cause.id]"
+        >
+          <div class="p-4 flex flex-col flex-grow">
+            <div class="rounded-xl overflow-hidden mb-4 relative h-48 w-full shrink-0 bg-black/10">
+              <img 
+                [ngSrc]="cause.image" 
+                [alt]="cause.title" 
+                fill
+                class="w-full h-full object-cover grayscale brightness-90"
+              >
+            </div>
+            <h3 class="text-base font-bold mb-1 leading-tight font-heading">{{ cause.title }}</h3>
+            <p class="text-xs text-white/85 leading-snug font-light line-clamp-2">{{ cause.subtitle }}</p>
+          </div>
+          <div class="bg-black/25 backdrop-blur-xs px-4 py-3 flex items-center justify-between border-t border-white/20 mt-auto">
+            <span class="text-xs font-medium text-white/95 truncate mr-2">{{ cause.foundation }}</span>
+            <span class="text-xs font-semibold text-white flex items-center gap-1">
+              View <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        }
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- DESKTOP VIEW (>= 1024px) - FIGMA SPECIFICATION                -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <main class="hidden lg:block w-full flex-grow">
+    
+    <!-- ── 1. Desktop Hero Split Section ── -->
+    <div class="max-w-[1440px] mx-auto px-12 xl:px-24 pt-6 pb-12">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-xs sm:text-sm text-slate-500 mb-6 font-medium">
+        <a routerLink="/" class="hover:text-emerald-700 transition-colors">Home</a>
+        <span class="text-slate-300">/</span>
+        <a routerLink="/causes" class="hover:text-emerald-700 transition-colors">Causes</a>
+        <span class="text-slate-300">/</span>
+        <span class="text-slate-800 font-semibold truncate">{{ causeDetail.name }}</span>
+      </nav>
+
+      <!-- 2-Column Split: Info Left, Image Right (Figma) -->
+      <div class="grid grid-cols-12 gap-10 xl:gap-14 items-center">
+        <!-- Left: Text, Stats, CTA -->
+        <div class="col-span-6 flex flex-col items-start justify-center">
+          <!-- Badge -->
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#EBF7EE] text-[#087F6A] border border-[#D5EEDC] mb-3">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
             </svg>
             {{ causeDetail.badge || 'Our cause' }}
           </span>
-        </div>
 
-        <!-- Heading & Subtitle -->
-        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#08265C] tracking-tight mt-3 mb-1.5 leading-tight font-heading">
-          {{ causeDetail.name }}
-        </h1>
-        <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-6 font-normal">
-          {{ causeDetail.subtitle }}
-        </p>
+          <!-- Name -->
+          <h1 class="text-3xl xl:text-4xl font-extrabold text-[#08265C] tracking-tight mb-2 leading-tight font-heading">
+            {{ causeDetail.name }}
+          </h1>
 
-        <!-- Stats Card -->
-        <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs mb-6">
-          <div class="grid grid-cols-2 divide-x divide-slate-100">
+          <!-- Subtitle -->
+          <p class="text-sm xl:text-base text-slate-500 leading-relaxed mb-6 font-normal">
+            {{ causeDetail.subtitle }}
+          </p>
+
+          <!-- Stats Pill Bar (Figma) -->
+          <div class="inline-flex items-center gap-6 bg-white rounded-2xl border border-slate-200/80 p-3 px-5 shadow-2xs mb-6">
             @for (stat of causeDetail.stats; track $index) {
-            <div class="flex items-center gap-3.5 px-2 sm:px-4 first:pl-0 last:pr-0">
-              <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0"
-                   [ngClass]="$index === 0 ? 'bg-[#EBF7EE] text-[#087F6A]' : 'bg-[#E6F7F5] text-[#087F6A]'">
-                @if (stat.icon === 'users') {
-                  <!-- Users / People Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                  </svg>
-                } @else if (stat.icon === 'school') {
-                  <!-- School / Learning Centre Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3L2 8h20L12 3zM4 11v6M8 11v6M12 11v6M16 11v6M20 11v6M2 17h20M2 21h20" />
-                  </svg>
-                } @else if (stat.icon === 'heart') {
-                  <!-- Heart Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                  </svg>
-                } @else if (stat.icon === 'grad-cap') {
-                  <!-- Graduation Cap Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12v4.5" />
-                  </svg>
-                } @else if (stat.icon === 'paw') {
-                  <!-- Animal Paw Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.5 13.5c-1.38 0-2.5 1.12-2.5 2.5 0 1.66 1.79 3.5 6 3.5s6-1.84 6-3.5c0-1.38-1.12-2.5-2.5-2.5-1.05 0-1.95.65-2.32 1.57a1.25 1.25 0 01-2.36 0C10.45 14.15 9.55 13.5 8.5 13.5z"/>
-                    <circle cx="6.5" cy="9.5" r="1.5" />
-                    <circle cx="10" cy="6.5" r="1.5" />
-                    <circle cx="14" cy="6.5" r="1.5" />
-                    <circle cx="17.5" cy="9.5" r="1.5" />
-                  </svg>
-                } @else {
-                  <!-- Home / Shelter / Care Centre Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                  </svg>
-                }
-              </div>
-              <div>
-                <div class="text-xl sm:text-2xl font-bold text-[#08265C] leading-none mb-1">
-                  {{ stat.value }}
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                     [ngClass]="$index === 0 ? 'bg-[#EBF7EE] text-[#087F6A]' : 'bg-[#E6F7F5] text-[#087F6A]'">
+                  <ng-container *ngTemplateOutlet="statIconTpl; context: { icon: stat.icon }"></ng-container>
                 </div>
-                <div class="text-xs sm:text-[13px] text-slate-500 font-medium leading-tight">
-                  {{ stat.label }}
+                <div>
+                  <div class="text-base xl:text-lg font-bold text-[#08265C] leading-none mb-0.5">
+                    {{ stat.value }}
+                  </div>
+                  <div class="text-[11px] xl:text-xs text-slate-500 font-medium leading-tight">
+                    {{ stat.label }}
+                  </div>
                 </div>
               </div>
-            </div>
+              @if ($index === 0 && causeDetail.stats.length > 1) {
+                <div class="h-7 w-px bg-slate-200"></div>
+              }
             }
           </div>
+
+          <!-- CTA Button (Figma) -->
+          <button 
+            (click)="openMarketplace()" 
+            class="bg-[#087F6A] hover:bg-[#066856] text-white font-bold text-sm xl:text-base py-3 px-7 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer group"
+          >
+            <span>Support this cause</span>
+            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </button>
         </div>
 
-        <!-- How we help -->
-        <div class="mb-6">
-          <h2 class="text-base sm:text-lg font-bold text-[#08265C] mb-3 font-heading">
-            How we help
-          </h2>
-          <div class="grid grid-cols-3 gap-2.5 sm:gap-3.5">
-            @for (item of causeDetail.howWeHelp; track $index) {
-            <div class="bg-white rounded-2xl border border-slate-200/80 p-3 sm:p-4 flex flex-col items-center text-center transition-all duration-200 hover:border-emerald-200 hover:shadow-xs group">
-              <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#EBF7EE] text-[#087F6A] flex items-center justify-center mb-2 sm:mb-2.5 group-hover:scale-105 transition-transform">
-                @if (item.icon === 'book') {
-                  <!-- Open Book Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                } @else if (item.icon === 'bulb') {
-                  <!-- Lightbulb Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                } @else if (item.icon === 'grad-cap') {
-                  <!-- Graduation Cap Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12v4.5" />
-                  </svg>
-                } @else if (item.icon === 'sprout') {
-                  <!-- Sprout / Self-dependence Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 20h10M12 20v-9M12 11a4.5 4.5 0 01-4.5-4.5c0-1.5 1-2.5 1-2.5s2.5 0 3.5 2.5M12 11a4.5 4.5 0 004.5-4.5c0-1.5-1-2.5-1-2.5s-2.5 0-3.5 2.5" />
-                  </svg>
-                } @else if (item.icon === 'card') {
-                  <!-- Credit Card / Financial Independence Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <rect x="3" y="5" width="18" height="14" rx="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h3" />
-                  </svg>
-                } @else if (item.icon === 'users') {
-                  <!-- Users / Communities Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                  </svg>
-                } @else if (item.icon === 'stethoscope') {
-                  <!-- Stethoscope / Healthcare Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 4.5v3.75a4.5 4.5 0 009 0V4.5M3 4.5h3M12 4.5h3M9 12.75v3a4.5 4.5 0 009 0v-1.5M18 11.25a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" />
-                  </svg>
-                } @else if (item.icon === 'heart') {
-                  <!-- Heart / Emotional Wellness Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                  </svg>
-                } @else if (item.icon === 'heart-cross') {
-                  <!-- Heart Cross / Rescue & Rehabilitation Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8.5v5m-2.5-2.5h5" />
-                  </svg>
-                } @else if (item.icon === 'home') {
-                  <!-- House / Better Living Conditions Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                  </svg>
-                } @else {
-                  <!-- Shield / Animal Welfare Icon -->
-                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                  </svg>
-                }
+        <!-- Right: Cause Hero Image (Figma) -->
+        <div class="col-span-6">
+          <div class="relative w-full rounded-[24px] overflow-hidden shadow-sm border border-slate-200/80 bg-slate-100 aspect-[4/3] max-h-[380px]">
+            <img 
+              [ngSrc]="causeDetail.cover_image_url" 
+              [alt]="causeDetail.name" 
+              fill
+              priority
+              class="w-full h-full object-cover select-none object-center"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 2. How We Help Band (Full-Width Cream Background - Figma) ── -->
+    <section class="w-full bg-[#FAF7F2] py-14 border-y border-[#F2EDE4]/80 mb-14">
+      <div class="max-w-[1440px] mx-auto px-12 xl:px-24">
+        <h2 class="text-xl xl:text-2xl font-bold text-[#08265C] mb-6 font-heading">
+          How we help
+        </h2>
+        <div class="grid grid-cols-3 gap-6">
+          @for (item of causeDetail.howWeHelp; track $index) {
+            <div class="bg-white rounded-[20px] border border-gray-100 shadow-2xs p-6 flex flex-col justify-start hover:shadow-md transition-shadow">
+              <div class="w-11 h-11 rounded-xl bg-[#EBF7EE] text-[#087F6A] flex items-center justify-center mb-4 shrink-0">
+                <ng-container *ngTemplateOutlet="helpIconTpl; context: { icon: item.icon }"></ng-container>
               </div>
-              <span class="text-[11px] sm:text-xs font-semibold text-slate-800 leading-tight">
+              <h3 class="text-base font-bold text-[#08265C] font-heading mb-2 leading-tight">
                 {{ item.title }}
-              </span>
+              </h3>
+              <p class="text-xs xl:text-sm text-slate-500 leading-relaxed font-normal">
+                {{ item.desc }}
+              </p>
             </div>
-            }
-          </div>
+          }
         </div>
+      </div>
+    </section>
 
-        <!-- Our NGO Partner -->
-        <div class="mb-6">
-          <h2 class="text-base sm:text-lg font-bold text-[#08265C] mb-3 font-heading">
+    <!-- ── 3. Bottom 2-Column: Our NGO Partner & Impact Story (Figma) ── -->
+    <section class="max-w-[1440px] mx-auto px-12 xl:px-24 mb-16">
+      <div class="grid grid-cols-12 gap-8 items-start">
+        
+        <!-- Left: Our NGO Partner -->
+        <div class="col-span-6 flex flex-col">
+          <h2 class="text-xl xl:text-2xl font-bold text-[#08265C] mb-6 font-heading">
             Our NGO partner
           </h2>
-          <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 shadow-xs">
-            <div class="w-20 h-13 sm:w-24 sm:h-14 min-w-[80px] sm:min-w-[96px] rounded-xl bg-white border border-slate-200/80 p-1.5 sm:p-2 flex items-center justify-center shrink-0 shadow-2xs relative">
+          <div class="bg-white rounded-[22px] border border-gray-100 shadow-2xs p-6 flex flex-col justify-start">
+            <div class="w-24 h-14 rounded-xl bg-white border border-slate-200/80 p-2 flex items-center justify-center shrink-0 mb-4 shadow-2xs">
               <img 
                 [src]="causeDetail.partner.logo" 
                 [alt]="causeDetail.partner.name" 
                 class="max-w-full max-h-full w-auto h-auto object-contain"
               >
             </div>
-            <div class="flex-grow min-w-0">
-              <h3 class="text-sm sm:text-base font-bold text-[#08265C] leading-snug truncate">
-                {{ causeDetail.partner.name }}
-              </h3>
-              <p class="text-xs sm:text-[13px] text-slate-500 leading-snug mt-0.5 line-clamp-2">
-                {{ causeDetail.partner.description }}
-              </p>
-              @if (causeDetail.partner.verified) {
-              <div class="flex items-center gap-1 mt-1 text-[#087F6A] text-xs font-semibold">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <h3 class="text-base font-bold text-[#08265C] font-heading mb-1.5">
+              {{ causeDetail.partner.name }}
+            </h3>
+            <p class="text-xs xl:text-sm text-slate-500 leading-relaxed mb-4">
+              {{ causeDetail.partner.description }}
+            </p>
+            @if (causeDetail.partner.verified) {
+              <div class="flex items-center gap-1.5 text-[#087F6A] text-xs font-semibold">
+                <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
                 <span>Verified partner</span>
               </div>
-              }
+            }
+          </div>
+
+          <!-- Share Box under NGO partner on desktop -->
+          <div class="mt-6">
+            <ng-container *ngTemplateOutlet="shareTpl"></ng-container>
+          </div>
+        </div>
+
+        <!-- Right: Impact Story -->
+        <div class="col-span-6 flex flex-col">
+          <h2 class="text-xl xl:text-2xl font-bold text-[#08265C] mb-6 font-heading">
+            Impact story
+          </h2>
+          <div 
+            class="impact-story-card w-full rounded-[22px] overflow-hidden shadow-2xs border border-slate-200/90 text-white"
+            [style.backgroundColor]="causeDetail?.bgColor || causeDetail?.impactStory?.bgColor || '#143029'"
+          >
+            <div class="relative w-full aspect-[16/10] overflow-hidden">
+              <img 
+                [ngSrc]="causeDetail.impactStory.image" 
+                [alt]="causeDetail.name + ' Impact Story'" 
+                fill
+                class="w-full h-full object-cover transition-transform duration-700 hover:scale-102"
+              >
+              <div 
+                class="absolute inset-0 bg-gradient-to-t via-transparent to-transparent opacity-60"
+                [style.backgroundImage]="'linear-gradient(to top, ' + (causeDetail?.bgColor || causeDetail?.impactStory?.bgColor || '#143029') + ', transparent, transparent)'"
+              ></div>
+            </div>
+            <div 
+              class="p-5 xl:p-6 text-white"
+              [style.backgroundColor]="causeDetail?.bgColor || causeDetail?.impactStory?.bgColor || '#143029'"
+            >
+              <div class="text-[10px] xl:text-xs font-bold uppercase tracking-widest text-white/80 mb-2 flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                {{ causeDetail.impactStory.tag || 'IMPACT STORY' }}
+              </div>
+              <h3 class="text-base xl:text-lg font-bold text-white leading-snug font-heading">
+                “{{ causeDetail.impactStory.quote }}”
+              </h3>
             </div>
           </div>
         </div>
 
-        <!-- CTA Button -->
-        <button 
-          (click)="openMarketplace()" 
-          class="w-full bg-[#087F6A] hover:bg-[#066856] active:scale-[0.99] text-white font-bold text-sm sm:text-base py-3.5 sm:py-4 px-6 rounded-xl sm:rounded-2xl flex items-center justify-center gap-2.5 shadow-md shadow-emerald-800/15 transition-all duration-200 group cursor-pointer"
-        >
-          <span>Support this cause</span>
-          <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-          </svg>
-        </button>
-
-        <!-- Impact Story Card (Mobile Placement: Directly under CTA button) -->
-        <div class="block lg:hidden mt-6">
-          <ng-container *ngTemplateOutlet="impactStoryTpl"></ng-container>
-        </div>
-
       </div>
+    </section>
 
-      <!-- ─── RIGHT SIDE (Desktop: Impact Story Card + Share) ─── -->
-      <div class="hidden lg:flex lg:col-span-6 flex-col gap-6">
-        <ng-container *ngTemplateOutlet="impactStoryTpl"></ng-container>
-        <ng-container *ngTemplateOutlet="shareTpl"></ng-container>
-      </div>
-
-    </div>
-
-  
-
-    <!-- ═══════════ MOBILE SHARE BAR ═══════════ -->
-    <div class="block lg:hidden mt-8">
-      <ng-container *ngTemplateOutlet="shareTpl"></ng-container>
-    </div>
-
-    <!-- ═══════════ EXPLORE OTHER CAUSES ═══════════ -->
-    <section class="mt-12 sm:mt-16 pt-8 border-t border-slate-200">
-      <div class="text-left sm:text-center mb-6 sm:mb-10">
-        <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-[#08265C] mb-2 font-heading">
+    <!-- ── 4. Explore Other Causes (Desktop) ── -->
+    <section class="max-w-[1440px] mx-auto px-12 xl:px-24 mb-16 pt-10 border-t border-slate-200">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-[#08265C] mb-2 font-heading">
           Explore Other Causes You Can Support
         </h2>
-        <p class="text-slate-500 text-xs sm:text-sm max-w-xl mx-auto">
+        <p class="text-slate-500 text-sm max-w-xl mx-auto">
           Choose the stories you want to help write with every purchase.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div class="grid grid-cols-3 gap-6">
         @for (cause of filteredOtherCauses; track cause.id) {
-        <div 
-          class="rounded-2xl text-white flex flex-col relative cursor-pointer transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md overflow-hidden group"
-          [style.backgroundColor]="cause.bgColor"
-          [routerLink]="['/causes', cause.id]"
-        >
-          <div class="p-4 flex flex-col flex-grow">
-            <!-- Image -->
-            <div class="rounded-xl overflow-hidden mb-4 relative h-48 w-full shrink-0 bg-black/10">
-              <img 
-                [ngSrc]="cause.image" 
-                [alt]="cause.title" 
-                fill
-                class="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
-              >
+          <div 
+            class="rounded-2xl text-white flex flex-col relative cursor-pointer transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md overflow-hidden group"
+            [style.backgroundColor]="cause.bgColor"
+            [routerLink]="['/causes', cause.id]"
+          >
+            <div class="p-4 flex flex-col flex-grow">
+              <div class="rounded-xl overflow-hidden mb-4 relative h-44 w-full shrink-0 bg-black/10">
+                <img 
+                  [ngSrc]="cause.image" 
+                  [alt]="cause.title" 
+                  fill
+                  class="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                >
+              </div>
+              <h3 class="text-base font-bold mb-1 leading-tight font-heading">{{ cause.title }}</h3>
+              <p class="text-xs text-white/85 leading-snug font-light line-clamp-2">{{ cause.subtitle }}</p>
             </div>
-
-            <!-- Content -->
-            <h3 class="text-base sm:text-lg font-bold mb-1 leading-tight font-heading">{{ cause.title }}</h3>
-            <p class="text-xs text-white/85 leading-snug font-light line-clamp-2">{{ cause.subtitle }}</p>
+            <div class="bg-black/25 backdrop-blur-xs px-4 py-3 flex items-center justify-between border-t border-white/20 mt-auto">
+              <span class="text-xs font-medium text-white/95 truncate mr-2">{{ cause.foundation }}</span>
+              <span class="text-xs font-semibold text-white flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                View <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </span>
+            </div>
           </div>
-
-          <!-- Footer Bar -->
-          <div class="bg-black/25 backdrop-blur-xs px-4 py-3 flex items-center justify-between border-t border-white/20 mt-auto">
-            <span class="text-xs font-medium text-white/95 truncate mr-2">{{ cause.foundation }}</span>
-            <span class="text-xs font-semibold text-white flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-              View <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </span>
-          </div>
-        </div>
         }
       </div>
     </section>
@@ -330,6 +454,98 @@
     (closeModal)="isMarketplaceOpen = false">
   </app-marketplace-modal>
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- REUSABLE TEMPLATES                                          -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<!-- Stat Icon Template -->
+<ng-template #statIconTpl let-icon="icon">
+  @if (icon === 'users') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+    </svg>
+  } @else if (icon === 'school') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 3L2 8h20L12 3zM4 11v6M8 11v6M12 11v6M16 11v6M20 11v6M2 17h20M2 21h20" />
+    </svg>
+  } @else if (icon === 'heart') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+    </svg>
+  } @else if (icon === 'grad-cap') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 12v4.5" />
+    </svg>
+  } @else if (icon === 'paw') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M8.5 13.5c-1.38 0-2.5 1.12-2.5 2.5 0 1.66 1.79 3.5 6 3.5s6-1.84 6-3.5c0-1.38-1.12-2.5-2.5-2.5-1.05 0-1.95.65-2.32 1.57a1.25 1.25 0 01-2.36 0C10.45 14.15 9.55 13.5 8.5 13.5z"/>
+      <circle cx="6.5" cy="9.5" r="1.5" />
+      <circle cx="10" cy="6.5" r="1.5" />
+      <circle cx="14" cy="6.5" r="1.5" />
+      <circle cx="17.5" cy="9.5" r="1.5" />
+    </svg>
+  } @else {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+    </svg>
+  }
+</ng-template>
+
+<!-- Help Icon Template -->
+<ng-template #helpIconTpl let-icon="icon">
+  @if (icon === 'book') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+    </svg>
+  } @else if (icon === 'bulb') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+    </svg>
+  } @else if (icon === 'grad-cap') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 12v4.5" />
+    </svg>
+  } @else if (icon === 'sprout') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M7 20h10M12 20v-9M12 11a4.5 4.5 0 01-4.5-4.5c0-1.5 1-2.5 1-2.5s2.5 0 3.5 2.5M12 11a4.5 4.5 0 004.5-4.5c0-1.5-1-2.5-1-2.5s-2.5 0-3.5 2.5" />
+    </svg>
+  } @else if (icon === 'card') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <rect x="3" y="5" width="18" height="14" rx="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h3" />
+    </svg>
+  } @else if (icon === 'users') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+    </svg>
+  } @else if (icon === 'stethoscope') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 4.5v3.75a4.5 4.5 0 009 0V4.5M3 4.5h3M12 4.5h3M9 12.75v3a4.5 4.5 0 009 0v-1.5M18 11.25a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" />
+    </svg>
+  } @else if (icon === 'heart') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+    </svg>
+  } @else if (icon === 'heart-cross') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 8.5v5m-2.5-2.5h5" />
+    </svg>
+  } @else if (icon === 'home') {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+    </svg>
+  } @else {
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+    </svg>
+  }
+</ng-template>
 
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- REUSABLE TEMPLATES FOR RESPONSIVE PLACEMENT                -->

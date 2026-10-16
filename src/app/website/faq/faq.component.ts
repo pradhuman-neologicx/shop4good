@@ -81,8 +81,8 @@ export class FaqComponent {
     }
   ];
 
-  // In Figma, all items are displayed expanded. We initialize all IDs in the open set.
-  openIds: Set<number> = new Set<number>([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  // By default, all FAQ items are collapsed.
+  openIds: Set<number> = new Set<number>();
 
   get filteredFaqs(): FaqItem[] {
     const query = this.searchQuery.trim().toLowerCase();

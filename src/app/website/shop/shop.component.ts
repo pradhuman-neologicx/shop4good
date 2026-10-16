@@ -30,6 +30,13 @@ export class ShopComponent implements OnInit {
   selectedBrand: BrandItem | null = null;
   marketplaces: BrandItem[] = [];
 
+  defaultMarketplaces: BrandItem[] = [
+    { name: 'Amazon', src: 'assets/brands/amazon.svg', description: 'Everything you need, delivered fast', url: 'https://amazon.in' },
+    { name: 'Flipkart', src: 'assets/brands/flipkart.svg', description: 'Online Shopping India', url: 'https://flipkart.com' },
+    { name: 'Tata CLiQ', src: 'assets/brands/tata-cliq.svg', description: 'Luxury fashion & lifestyle', url: 'https://tatacliq.com' },
+    { name: 'Nykaa', src: 'assets/brands/nykaa.svg', description: 'Beauty, wellness & fashion', url: 'https://nykaa.com' }
+  ];
+
   private destroyRef = inject(DestroyRef);
 
   constructor(
@@ -38,6 +45,7 @@ export class ShopComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.marketplaces = [...this.defaultMarketplaces];
     this.loadMarketplaces();
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -50,7 +58,7 @@ export class ShopComponent implements OnInit {
 
     this.marketplaceService.getWebsiteMarketplaces().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
-        if (res && res.data && Array.isArray(res.data.items)) {
+        if (res && res.data && Array.isArray(res.data.items) && res.data.items.length > 0) {
           this.marketplaces = res.data.items.map((item: any) => ({
             id: item.id,
             name: item.name,
@@ -58,12 +66,16 @@ export class ShopComponent implements OnInit {
             description: item.short_description || item.description || '',
             url: item.website_url || item.affiliate_url || '#'
           }));
-          this.loaded = true;
+        } else {
+          this.marketplaces = [...this.defaultMarketplaces];
         }
+        this.loaded = true;
         this.isLoading = false;
         this.cdr.markForCheck();
       },
       error: () => {
+        this.marketplaces = [...this.defaultMarketplaces];
+        this.loaded = true;
         this.isLoading = false;
         this.cdr.markForCheck();
       }

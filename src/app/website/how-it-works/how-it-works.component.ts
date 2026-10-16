@@ -27,7 +27,7 @@ export class HowItWorksComponent implements OnInit {
     {
       number: '02',
       title: 'Shop as usual',
-      description: 'Browse and buy on Amazon, Flipkart, Tata CLiQ and Nykaa through our affiliate links.'
+      description: 'Browse and buy on Flipkart, Amazon, Myntra, Nykaa and 20+ more platforms through our affiliate links.'
     },
     {
       number: '03',

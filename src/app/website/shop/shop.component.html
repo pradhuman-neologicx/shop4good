@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 
-<main class="min-h-screen bg-[#FAFBFD] py-8 sm:py-12">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<main class="min-h-screen bg-[#FAFBFD] py-8 sm:py-12 lg:pt-12 lg:pb-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 xl:px-24">
 
     <!-- ── Header: Title & Subtitle ── -->
     <div class="mb-6 sm:mb-8">
@@ -13,8 +13,8 @@
       </p>
     </div>
 
-    <!-- ── Search Input (Full width on mobile, max-w-md on desktop) ── -->
-    <div class="relative mb-8 max-w-md">
+    <!-- ── Search Input (Figma) ── -->
+    <div class="relative mb-8 max-w-sm">
       <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <circle cx="11" cy="11" r="8"></circle>
@@ -25,7 +25,7 @@
         type="text" 
         [(ngModel)]="searchQuery" 
         placeholder="Search brands" 
-        class="w-full pl-10 pr-10 py-3 rounded-2xl border border-slate-200/90 text-sm placeholder-slate-400 focus:outline-none focus:border-[#087F6A] focus:ring-2 focus:ring-[#087F6A]/15 bg-white transition-all shadow-xs text-slate-800 font-medium"
+        class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200/90 text-xs sm:text-sm placeholder-slate-400 focus:outline-none focus:border-[#087F6A] focus:ring-1 focus:ring-[#087F6A]/20 bg-white transition-all shadow-2xs text-slate-800 font-medium"
       />
       @if (searchQuery) {
         <button 
@@ -42,39 +42,36 @@
     <!-- ── Section: Popular Brands ── -->
     <div class="mb-8">
       <div class="flex items-center justify-between mb-4 sm:mb-6">
-        <h2 class="text-base sm:text-lg font-bold text-[#08265C] font-heading">
+        <h2 class="text-lg sm:text-xl font-bold text-[#08265C] font-heading">
           Popular brands
         </h2>
-        <span class="text-xs text-slate-400 font-medium">
-          {{ filteredMarketplaces.length }} brands available
-        </span>
       </div>
 
       <!-- Loading skeleton -->
       @if (isLoading && !loaded) {
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           @for (n of [1, 2, 3, 4]; track $index) {
-            <div class="bg-white rounded-2xl border border-slate-100 p-6 flex flex-col items-center justify-center animate-pulse aspect-[1.3/1]">
-              <div class="h-10 w-24 bg-slate-100 rounded-lg mb-3"></div>
-              <div class="h-3 w-16 bg-slate-100 rounded"></div>
+            <div class="bg-white rounded-[22px] border border-slate-100 p-6 flex flex-col items-center justify-center animate-pulse min-h-[220px]">
+              <div class="h-12 w-28 bg-slate-100 rounded-lg mb-3"></div>
+              <div class="h-3 w-16 bg-slate-100 rounded mb-4"></div>
+              <div class="h-8 w-24 bg-slate-100 rounded-full"></div>
             </div>
           }
         </div>
       } @else {
-        <!-- Responsive Grid: 2 columns on mobile, 3-4 columns on desktop with max-w-7xl -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-6">
+        <!-- Responsive Grid: 4 columns in a row on desktop (Figma) -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           @for (brand of filteredMarketplaces; track brand.name) {
             <div 
               (click)="selectBrand(brand)"
-              (dblclick)="openBrandUrl(brand)"
-              class="bg-white rounded-2xl border p-3.5 sm:p-5 flex flex-col items-center justify-center text-center transition-all duration-200 hover:shadow-md cursor-pointer min-h-[120px] sm:min-h-[140px] relative group"
+              class="bg-white rounded-[22px] border p-5 sm:p-6 flex flex-col items-center justify-between text-center transition-all duration-200 hover:shadow-md cursor-pointer relative group min-h-[210px] sm:min-h-[240px]"
               [ngClass]="selectedBrand?.name === brand.name 
-                ? 'border-[#087F6A] ring-2 ring-[#087F6A]/20 bg-emerald-50/15 shadow-xs' 
-                : 'border-slate-200/80 hover:border-emerald-300 shadow-xs'"
+                ? 'border-[#087F6A] ring-2 ring-[#087F6A]/20 bg-emerald-50/10 shadow-xs' 
+                : 'border-slate-200/80 hover:border-emerald-300/80 shadow-2xs'"
             >
               <!-- Selected Checkmark Badge -->
               @if (selectedBrand?.name === brand.name) {
-                <div class="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-[#087F6A] text-white flex items-center justify-center shadow-xs animate-scale-in">
+                <div class="absolute top-3 right-3 w-5 h-5 rounded-full bg-[#087F6A] text-white flex items-center justify-center shadow-xs animate-scale-in">
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                   </svg>
@@ -82,19 +79,31 @@
               }
 
               <!-- Brand Logo Container -->
-              <div class="h-14 sm:h-16 w-full flex items-center justify-center mb-2 px-2">
+              <div class="h-16 w-full flex items-center justify-center mb-2 px-2">
                 <img 
                   [src]="brand.src" 
                   [alt]="brand.name"
-                  class="h-10 sm:h-12 w-auto max-w-[90%] object-contain group-hover:scale-105 transition-transform duration-200"
+                  class="h-10 sm:h-12 w-auto max-w-[85%] object-contain group-hover:scale-105 transition-transform duration-200"
                   (error)="onImageError($event, brand)"
                 />
               </div>
 
               <!-- Brand Name -->
-              <span class="text-sm font-semibold text-slate-800 leading-tight">
+              <span class="text-xs sm:text-sm font-semibold text-slate-700 leading-tight mb-4">
                 {{ brand.name }}
               </span>
+
+              <!-- Start Shopping Card Button (Figma) -->
+              <button 
+                type="button"
+                (click)="openBrandUrl(brand, $event)"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-full border border-slate-200 hover:border-[#087F6A] bg-white hover:bg-emerald-50/30 text-xs font-semibold text-slate-700 hover:text-[#087F6A] transition-colors cursor-pointer shadow-2xs group-hover:border-[#087F6A]"
+              >
+                <span>Start Shopping</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </button>
             </div>
           }
         </div>
@@ -117,26 +126,31 @@
             </button>
           </div>
         }
-      }
-    </div>
 
-    <!-- ── Start Shopping CTA Button ── -->
-    <div class="flex flex-col items-center justify-center pt-2">
-      <button 
-        (click)="startShopping()"
-        type="button"
-        class="w-full sm:w-auto sm:min-w-[280px] bg-[#087F6A] hover:bg-[#066c5a] text-white font-semibold py-3.5 px-8 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-700/10 active:scale-[0.99] cursor-pointer text-sm sm:text-base group"
-      >
-        <span>Start Shopping</span>
-        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-        </svg>
-      </button>
+        <!-- ── Full-Width Mint Banner Bar (Figma) ── -->
+        <div class="mt-6 w-full bg-[#E8F5F1] rounded-[22px] p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 border border-[#CDEAE1]/80 shadow-2xs">
+          <div class="flex items-center gap-3.5 text-left">
+            <div class="w-10 h-10 rounded-full bg-white text-[#087F6A] flex items-center justify-center shrink-0 shadow-2xs">
+              <svg class="w-5 h-5 text-[#087F6A]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </div>
+            <p class="text-xs sm:text-sm text-[#08265C] font-medium leading-snug">
+              2% of every order goes to the cause you choose — at no extra cost to you.
+            </p>
+          </div>
 
-      @if (selectedBrand) {
-        <p class="text-center text-xs text-slate-400 mt-2.5">
-          Selected: <span class="font-semibold text-slate-600">{{ selectedBrand.name }}</span> (Click "Start Shopping" to open)
-        </p>
+          <button 
+            type="button"
+            (click)="startShopping()"
+            class="shrink-0 w-full sm:w-auto bg-[#087F6A] hover:bg-[#066c5a] text-white font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-xl inline-flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xs"
+          >
+            <span>Start Shopping</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </button>
+        </div>
       }
     </div>
 

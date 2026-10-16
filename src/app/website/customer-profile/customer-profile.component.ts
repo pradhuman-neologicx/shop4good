@@ -35,7 +35,7 @@ export class CustomerProfileComponent implements OnInit {
   stores = [
     { name: 'Amazon', orders: '12 orders', amount: '₹48,500', logo: 'assets/brands/amazon.svg' },
     { name: 'Flipkart', orders: '8 orders', amount: '₹31,200', logo: 'assets/brands/flipkart.svg' },
-    { name: 'Nykaa', orders: '6 orders', amount: '₹22,800', logo: 'assets/brands/nykaa.svg' },
+    { name: 'Myntra', orders: '5 orders', amount: '₹22,800', logo: 'assets/brands/myntra.svg' },
     { name: 'Tata CLiQ', orders: '4 orders', amount: '₹19,500', logo: 'assets/brands/tata-cliq.svg' }
   ];
 

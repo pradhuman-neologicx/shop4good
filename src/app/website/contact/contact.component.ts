@@ -60,6 +60,7 @@ export class ContactComponent {
   isCountryDropdownOpen = false;
   submitted = false;
   isSubmitting = false;
+  isSuccessModalOpen = false;
 
   @HostListener('document:click', ['$event'])
   onClick(event: Event) {
@@ -80,6 +81,10 @@ export class ContactComponent {
   selectCountry(country: CountryCode): void {
     this.selectedCountry = country;
     this.isCountryDropdownOpen = false;
+  }
+
+  closeSuccessModal(): void {
+    this.isSuccessModalOpen = false;
   }
 
   onSubmit(): void {
@@ -138,12 +143,9 @@ export class ContactComponent {
       body: JSON.stringify(payload),
     })
       .then(() => {
-        this.submitted = true;
         this.isSubmitting = false;
-        this.notificationService.show(
-          'Message sent successfully! We will get back to you soon.',
-          'success',
-        );
+        this.isSuccessModalOpen = true;
+        this.resetForm();
       })
       .catch((error) => {
         console.error('Submission error:', error);
