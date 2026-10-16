@@ -230,7 +230,7 @@ export class CausesNewDetailsComponent implements OnInit {
         partner: {
           name: 'The Earth Saviours Foundation',
           description: 'Working towards animal rescue, care and safer communities for pets.',
-          logo: 'assets/images/earth_saviours_logo.jpg',
+          logo: 'assets/images/earth_saviours_logo.png',
           verified: true
         },
         impactStory: {
@@ -268,7 +268,7 @@ export class CausesNewDetailsComponent implements OnInit {
         partner: {
           name: 'The Earth Saviours Foundation',
           description: 'Providing quality education to underprivileged children across India.',
-          logo: 'assets/images/earth_saviours_logo.jpg',
+          logo: 'assets/images/earth_saviours_logo.png',
           verified: true
         },
         impactStory: {
@@ -306,7 +306,7 @@ export class CausesNewDetailsComponent implements OnInit {
         partner: {
           name: 'PraveenLata Sansthan Foundation',
           description: 'Empowering women through education, skill development and livelihood opportunities.',
-          logo: 'assets/images/praveenlata_logo.jpg',
+          logo: 'assets/images/praveenlata_logo.png',
           verified: true
         },
         impactStory: {
@@ -344,7 +344,7 @@ export class CausesNewDetailsComponent implements OnInit {
         partner: {
           name: 'The Earth Saviours Foundation',
           description: 'Working for the health, care and dignity of senior citizens across India.',
-          logo: 'assets/images/earth_saviours_logo.jpg',
+          logo: 'assets/images/earth_saviours_logo.png',
           verified: true
         },
         impactStory: {

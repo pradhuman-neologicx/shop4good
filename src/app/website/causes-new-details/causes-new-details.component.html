@@ -198,13 +198,11 @@
             Our NGO partner
           </h2>
           <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 shadow-xs">
-            <div class="w-14 h-14 min-w-[56px] min-h-[56px] rounded-full overflow-hidden border border-slate-100 shadow-xs shrink-0 relative">
+            <div class="w-20 h-13 sm:w-24 sm:h-14 min-w-[80px] sm:min-w-[96px] rounded-xl bg-white border border-slate-200/80 p-1.5 sm:p-2 flex items-center justify-center shrink-0 shadow-2xs relative">
               <img 
-                [ngSrc]="causeDetail.partner.logo" 
+                [src]="causeDetail.partner.logo" 
                 [alt]="causeDetail.partner.name" 
-                width="56"
-                height="56"
-                class="w-full h-full object-cover"
+                class="max-w-full max-h-full w-auto h-auto object-contain"
               >
             </div>
             <div class="flex-grow min-w-0">
