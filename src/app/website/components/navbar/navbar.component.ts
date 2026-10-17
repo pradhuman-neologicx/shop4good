@@ -4,13 +4,14 @@ import { Router, NavigationEnd, RouterLink } from '@angular/router';
 import { filter, take } from 'rxjs/operators';
 import { JwtService } from 'src/app/core/services/jwt.service';
 import { CustomerProfileService } from 'src/app/core/services/customer-profile.service';
+import { WelcomeComponent } from '../../auth/welcome/welcome.component';
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrl: './navbar.component.scss',
     changeDetection: ChangeDetectionStrategy.Default,
-    imports: [RouterLink, NgOptimizedImage, CommonModule],
+    imports: [RouterLink, NgOptimizedImage, CommonModule, WelcomeComponent],
 })
 export class NavbarComponent implements OnInit {
   isMenuOpen = false;
@@ -19,6 +20,7 @@ export class NavbarComponent implements OnInit {
   currentUser: any = null;
   isProfileMenuOpen = false;
   activeDropdown: string | null = null;
+  isWelcomeOpen = false;
 
   constructor(
     private router: Router, 
@@ -101,6 +103,21 @@ export class NavbarComponent implements OnInit {
   closeMenu() {
     this.isMenuOpen = false;
     this.activeDropdown = null;
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = '';
+    }
+  }
+
+  openWelcome() {
+    this.closeMenu();
+    this.isWelcomeOpen = true;
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  closeWelcome() {
+    this.isWelcomeOpen = false;
     if (typeof document !== 'undefined') {
       document.body.style.overflow = '';
     }

@@ -136,10 +136,10 @@
     <!-- ── RIGHT: CTA + MOBILE TOGGLE ── -->
     <div class="navbar__actions flex items-center gap-3">
       @if (!currentUser) {
-        <a routerLink="/auth/login" class="navbar__cta" (click)="closeMenu()">
+        <button type="button" (click)="openWelcome()" class="navbar__cta cursor-pointer">
           <i class="fa-solid fa-user"></i>
           <span>Login / Sign Up</span>
-        </a>
+        </button>
       } @else {
         <div class="navbar__profile relative" (mouseenter)="isProfileMenuOpen = true" (mouseleave)="isProfileMenuOpen = false">
           <button class="navbar__profile-btn flex items-center gap-2 focus:outline-none py-2" (click)="isProfileMenuOpen = !isProfileMenuOpen">
@@ -187,6 +187,11 @@
     </div>
   </div>
 </nav>
+
+<!-- ── WELCOME MODAL ── -->
+@if (isWelcomeOpen) {
+  <app-welcome (closed)="closeWelcome()"></app-welcome>
+}
 
 <!-- ── MOBILE DRAWER OVERLAY & MENU ── -->
 <!-- Backdrop Overlay -->

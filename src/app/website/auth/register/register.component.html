@@ -331,15 +331,11 @@
     @if (step === 'success') {
       <div class="flex flex-col items-center py-4">
         
-        <!-- Animated / Illustrated Checkmark Circle -->
-        <div class="relative mb-5 flex items-center justify-center">
-          <span class="absolute -top-2 left-2 text-amber-400 text-xs animate-ping">✦</span>
-          <span class="absolute -bottom-1 -right-1 text-emerald-400 text-sm">✦</span>
-          <span class="absolute top-1 -right-2 text-rose-400 text-xs">●</span>
-          
-          <div class="w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-[#087F6A]/10 text-[#087F6A] border-4 border-[#087F6A]/20 flex items-center justify-center text-3xl shadow-sm">
-            <i class="fa-solid fa-check font-black"></i>
-          </div>
+        <!-- Success Badge (72x72px solid brand/green with white SVG checkmark) -->
+        <div class="w-[72px] h-[72px] rounded-full bg-[#087F6A] flex items-center justify-center mb-6 shadow-xs">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
         </div>
 
         <!-- Heading -->
@@ -354,9 +350,12 @@
         <button 
           type="button" 
           (click)="onStartShopping()"
-          class="w-full bg-[#087F6A] hover:bg-[#066c5a] active:scale-[0.99] text-white font-bold py-3.5 sm:py-4 rounded-[14px] font-heading text-sm sm:text-base transition-all cursor-pointer shadow-xs text-center"
+          class="w-full bg-[#087F6A] hover:bg-[#066c5a] active:scale-[0.99] text-white font-bold py-3.5 sm:py-4 rounded-[14px] font-heading text-sm sm:text-base transition-all cursor-pointer shadow-xs flex items-center justify-center gap-2"
         >
-          Start Shopping
+          <span>Start Shopping</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
         </button>
 
       </div>

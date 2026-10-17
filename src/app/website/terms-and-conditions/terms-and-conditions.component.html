@@ -1,75 +1,164 @@
-<div class="terms-page flex flex-col min-h-screen bg-slate-50">
-  <app-navbar></app-navbar>
+<app-navbar></app-navbar>
 
-  <div class="bg-gradient-to-r from-[#032826] to-[#05413e] pt-32 pb-16 relative text-center">
-    <div class="max-w-4xl mx-auto px-4 relative z-10">
-      <span class="text-emerald-400 text-sm font-bold tracking-widest uppercase mb-4 block">Legal & Rules</span>
-      <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4">Terms of Service</h1>
-      <p class="text-slate-300 text-lg">The rules that govern the use of the Shop4Good platform.</p>
+<main class="min-h-screen bg-white py-6 sm:py-12 lg:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- ── Header Section ── -->
+    <div class="mb-6 sm:mb-8 max-w-2xl">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-[#08265C] tracking-tight font-heading leading-tight mb-1.5">
+        Terms of Service
+      </h1>
+      <p class="text-[11px] sm:text-xs text-slate-400 font-medium mb-3">
+        Last updated: {{ lastUpdated }}
+      </p>
+      <p class="text-sm text-slate-500 font-normal leading-relaxed">
+        Please read these terms and conditions carefully before using the Shop4Good platform and services.
+      </p>
     </div>
+
+    <!-- ── Main Grid Layout (Mobile: Single Column, Desktop: max-w-7xl 2-Column) ── -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+
+      <!-- ── LEFT / MAIN CONTENT: Terms Sections & Callout ── -->
+      <div class="lg:col-span-7 xl:col-span-8 flex flex-col space-y-4">
+
+        <!-- Terms Sections List -->
+        <div class="mt-2 divide-y divide-slate-100">
+          
+          @for (section of sections; track section.number; let isFirst = $first; let isLast = $last) {
+            <div 
+              class="flex items-start gap-3 sm:gap-4" 
+              [ngClass]="{
+                'pb-4 sm:pb-5': !isLast,
+                'pt-4 sm:pt-5': !isFirst
+              }"
+            >
+              <!-- Number Circle Badge -->
+              <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-100 text-slate-600 font-bold text-xs sm:text-sm flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                {{ section.number }}
+              </div>
+
+              <!-- Content Body -->
+              <div class="flex-1 min-w-0">
+                <h3 class="text-sm sm:text-base font-bold text-[#08265C] font-heading leading-snug mb-1">
+                  {{ section.title }}
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed">
+                  {{ section.description }}
+                </p>
+
+                @if (section.bullets && section.bullets.length) {
+                  <ul class="mt-2.5 space-y-2 text-xs sm:text-sm text-slate-500 font-normal">
+                    @for (bullet of section.bullets; track bullet) {
+                      <li class="flex items-start gap-2.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#087F6A] shrink-0 mt-1.5"></span>
+                        <span class="leading-relaxed">{{ bullet }}</span>
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+            </div>
+          }
+
+        </div>
+
+        <!-- Mint Green Callout Box (Matches Privacy Policy bottom banner) -->
+        <div class="bg-[#E8F5F1] rounded-xl sm:rounded-2xl border border-emerald-100/90 p-3.5 sm:p-4 flex items-center gap-3.5 shadow-2xs">
+          <!-- Document / Scale Icon -->
+          <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white text-[#087F6A] flex items-center justify-center shrink-0 shadow-2xs">
+            <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+            </svg>
+          </div>
+
+          <!-- Callout Text -->
+          <p class="text-xs sm:text-[13px] text-slate-700 font-medium leading-relaxed">
+            Questions about our terms or service rules? Write to 
+            <a href="mailto:legal@shop4good.com" class="text-[#087F6A] font-semibold hover:underline cursor-pointer">
+              legal@shop4good.com
+            </a>
+          </p>
+        </div>
+
+      </div>
+
+      <!-- ── RIGHT COLUMN: Desktop Sticky Sidebar ── -->
+      <div class="hidden lg:col-span-5 xl:col-span-4 lg:flex flex-col space-y-5 lg:sticky lg:top-28">
+
+        <!-- Deep Navy Trust / Terms Commitment Card -->
+        <div class="w-full bg-[#0B2545] rounded-2xl sm:rounded-3xl p-5 sm:p-6 text-white shadow-sm flex flex-col justify-between relative overflow-hidden">
+          
+          <!-- Subtle decorative radial background glow -->
+          <div class="absolute -top-16 -right-16 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div>
+            <!-- Balance/Shield Icon Container (White circle with emerald icon) -->
+            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white flex items-center justify-center text-[#087F6A] mb-4 shadow-sm">
+              <svg class="w-5 h-5 sm:w-5.5 sm:h-5.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z" />
+              </svg>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h3 class="text-lg sm:text-xl font-bold text-white font-heading leading-tight mb-2">
+              Our Transparency Promise
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed mb-6">
+              We hold ourselves to the highest standards of transparency, verifying non-profit partners and ensuring your everyday shopping creates genuine, traceable social impact.
+            </p>
+          </div>
+
+          <!-- Contact Support Button -->
+          <div>
+            <a 
+              routerLink="/contact"
+              class="inline-flex items-center justify-center gap-2 bg-[#087F6A] hover:bg-[#066c5a] text-white text-xs sm:text-sm font-semibold py-3 px-5 rounded-xl transition-all shadow-sm group cursor-pointer"
+            >
+              <span>Contact Support</span>
+              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Desktop Quick Links Card -->
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs space-y-3">
+          <h4 class="text-sm font-bold text-[#08265C] font-heading mb-3">
+            Related Information
+          </h4>
+
+          <div class="space-y-2 text-xs text-slate-600">
+            <a routerLink="/privacy-policy" class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
+              <span class="font-medium text-slate-700 group-hover:text-[#087F6A]">Privacy Policy</span>
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-[#087F6A] group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </a>
+
+            <a routerLink="/help/faqs" class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
+              <span class="font-medium text-slate-700 group-hover:text-[#087F6A]">Frequently Asked Questions</span>
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-[#087F6A] group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </a>
+
+            <a routerLink="/about/how-it-works" class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
+              <span class="font-medium text-slate-700 group-hover:text-[#087F6A]">How Shop4Good Works</span>
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-[#087F6A] group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
+</main>
 
-  <main class="flex-grow max-w-4xl mx-auto px-4 py-16 w-full">
-    <article class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200 text-slate-700 space-y-8 leading-relaxed">
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">1. Acceptance of Terms</h2>
-        <p>
-          By accessing and using the <strong>Shop4Good</strong> platform, you agree to comply with and be bound by these Terms of Service. If you do not agree with any part of these terms, you must not use our website or services.
-        </p>
-      </section>
-
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">2. How the Service Works</h2>
-        <p class="mb-4">
-          Shop4Good acts as an affiliate platform bridging users with third-party marketplaces. 
-        </p>
-        <ul class="list-disc pl-6 space-y-2">
-          <li>We provide tracked links to partner marketplaces.</li>
-          <li>When you make a qualifying purchase through our links, the marketplace pays us a commission.</li>
-          <li>We donate a percentage of that commission to the charity you selected in your dashboard.</li>
-          <li>We are not responsible for the products, delivery, refunds, or customer service of the third-party marketplaces.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">3. User Accounts</h2>
-        <p class="mb-4">
-          To track donations and choose charities, you must register for an account. 
-        </p>
-        <ul class="list-disc pl-6 space-y-2">
-          <li>You are responsible for maintaining the confidentiality of your account password.</li>
-          <li>You agree to provide accurate, current, and complete information during registration.</li>
-          <li>We reserve the right to suspend or terminate accounts that violate these terms or engage in fraudulent activity.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">4. Charitable Donations</h2>
-        <p>
-          Donations are calculated based on the affiliate commission received by Shop4Good, not the total purchase price. Commissions vary by retailer and product category. Donations are only processed once the retailer confirms the purchase and the return period has expired. We aim to disburse funds to charities on a quarterly basis.
-        </p>
-      </section>
-
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">5. Third-Party Links</h2>
-        <p>
-          Our platform contains links to external websites (marketplaces). These links are provided for your convenience. We have no control over the content, privacy policies, or practices of any third-party sites or services.
-        </p>
-      </section>
-
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">6. Contact Us</h2>
-        <p>
-          If you have any questions about these Terms, please contact us at:
-          <a href="mailto:legal@shop4good.com" class="text-teal-600 font-medium hover:underline">legal&#64;shop4good.com</a>
-        </p>
-      </section>
-
-      <footer class="pt-8 mt-8 border-t border-slate-200 text-sm text-slate-500 text-center">
-        <p>These Terms of Service were last updated on October 2026.</p>
-      </footer>
-    </article>
-  </main>
-
-  <app-footer></app-footer>
-</div>
+<app-footer></app-footer>
