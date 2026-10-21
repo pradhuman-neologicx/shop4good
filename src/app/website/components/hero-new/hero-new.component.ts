@@ -22,13 +22,13 @@ export class HeroNewComponent implements OnInit, OnDestroy {
   ];
 
  
-  mobileLeftImage = 'assets/images/hero/0.png'; 
+  mobileLeftImage = 'assets/images/hero/mobil_1.png'; 
   
   mobileRightImages: string[] = [
-    'assets/images/hero/1.png',
-    'assets/images/hero/2.png',
-    'assets/images/hero/3.png',
-    'assets/images/hero/4.png',
+    'assets/images/hero/mobil_2.png',
+    'assets/images/hero/mobil_4.png',
+    'assets/images/hero/mobil_5.png',
+    'assets/images/hero/mobil_6.png',
   ];
   
   currentIndex = 0;
