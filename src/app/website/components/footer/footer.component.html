@@ -7,7 +7,7 @@
       <!-- ── BRAND COLUMN (Desktop & Mobile) ── -->
       <div class="md:col-span-4 lg:col-span-4 flex flex-col items-start">
         <!-- Logo -->
-        <a routerLink="/" class="inline-block mb-2.5 cursor-pointer">
+        <a routerLink="/" class="inline-block mb-4 md:mb-5 cursor-pointer">
           <img 
             ngSrc="assets/logo.png" 
             width="220" 
@@ -18,22 +18,22 @@
         </a>
 
         <!-- Tagline -->
-        <p class="text-xs sm:text-[14px] text-slate-500 font-normal leading-relaxed max-w-xs mb-0 md:mb-6">
+        <p class="text-xs sm:text-[14px] text-slate-500 font-normal leading-relaxed max-w-xs mb-6 md:mb-8">
           Every purchase can create a better tomorrow.
         </p>
 
         <!-- Socials on Desktop (Placed in Brand column as in Figma Desktop) -->
         <div class="hidden md:block">
-          <span class="block text-[11px] text-slate-600 font-bold tracking-wider uppercase mb-3">
+          <span class="block text-[11px] text-slate-500 font-bold tracking-wider uppercase mb-3.5">
             FOLLOW THE GOOD
           </span>
-          <div class="flex items-center gap-4 flex-wrap">
+          <div class="flex items-center gap-6 lg:gap-8 flex-wrap">
             @for (social of socialLinks; track social.label) {
               <a 
                 [href]="social.href" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                class="text-xs text-slate-800 hover:text-[#087F6A] font-medium transition-colors cursor-pointer"
+                class="text-xs sm:text-[13px] md:text-sm text-slate-900 hover:text-[#087F6A] font-semibold transition-colors cursor-pointer"
               >
                 {{ social.label }}
               </a>
@@ -166,17 +166,17 @@
     </div>
 
     <!-- ── SOCIALS & COPYRIGHT ON MOBILE (md:hidden) ── -->
-    <div class="md:hidden pt-4 pb-2">
-      <span class="block text-[11px] sm:text-xs text-slate-400 font-medium mb-2">
-        Follow the good
+    <div class="md:hidden pt-6 pb-2">
+      <span class="block text-[11px] text-slate-500 font-bold tracking-wider uppercase mb-3">
+        FOLLOW THE GOOD
       </span>
-      <div class="flex items-center gap-4 flex-wrap mb-6">
+      <div class="flex items-center gap-5 sm:gap-6 flex-wrap mb-6">
         @for (social of socialLinks; track social.label) {
           <a 
             [href]="social.href" 
             target="_blank" 
             rel="noopener noreferrer"
-            class="text-xs text-slate-700 hover:text-[#087F6A] font-medium transition-colors cursor-pointer"
+            class="text-xs text-slate-900 hover:text-[#087F6A] font-semibold transition-colors cursor-pointer"
           >
             {{ social.label }}
           </a>
