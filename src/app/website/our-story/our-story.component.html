@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 
 <!-- ══════════════════════════════════════════════════════════════
-     MOBILE VIEW ONLY (100% Original Untouched Design)
+     MOBILE VIEW ONLY
      ══════════════════════════════════════════════════════════════ -->
 <div class="block lg:hidden">
   <main class="min-h-screen bg-[#FAFBFD] py-6">
@@ -20,23 +20,45 @@
           />
         </div>
 
-        <!-- Story, Stats, Beliefs & CTA -->
+        <!-- Story, Promises & CTA -->
         <div class="flex flex-col mt-6">
           
-          <!-- Badge & Main Story Content -->
-          <div class="mb-6">
+          <!-- Badge & Main Heading -->
+          <div class="mb-2 sm:mb-5">
             <span class="text-[11px] font-bold uppercase tracking-wider text-[#087F6A] mb-2 block font-heading">
               OUR STORY
             </span>
-            <h1 class="text-2xl font-extrabold text-[#08265C] tracking-tight font-heading leading-tight mb-3">
-              Every purchase can create a better tomorrow.
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-[#08265C] tracking-tight font-heading leading-tight mb-2">
+              A Note from Our Founder
             </h1>
-            <p class="text-xs text-slate-500 font-normal leading-relaxed">
-              Shop4Good was born from a simple belief — that everyday shopping can do more. We bring together the brands you love and the causes that matter, making it easy for everyone to contribute to a kinder, fairer and more equal world.
+          </div>
+
+          <!-- Founder's Letter Body -->
+          <div class="space-y-4 text-slate-600 text-[13px] sm:text-sm leading-relaxed font-normal mb-7">
+            <p>
+              Every time I shopped online, I noticed the same thing: brands pay commissions to bring customers to their platforms. At the same time, NGOs doing meaningful work spend precious time and effort raising funds.
+            </p>
+
+            <div class="bg-[#E8F5F1]/70 border-l-4 border-[#087F6A] p-3.5 rounded-r-xl">
+              <p class="text-[#08265C] font-medium italic">
+                I began to wonder: <strong class="font-bold text-[#087F6A]">what if everyday shopping could help support causes that matter?</strong>
+              </p>
+              <p class="text-[#08265C] font-bold text-sm mt-1.5 not-italic">
+                That question became Shop4Good.
+              </p>
+            </div>
+
+            <p>
+              The idea is simple. You shop with brands you already love through our platform. The brand pays us a commission for referring you, and we share a portion of that commission with an NGO of your choice. You pay nothing extra, and your everyday shopping can help support a cause you care about.
+            </p>
+
+            <p>
+              I believe most people want to make a difference, but giving often requires extra time, money, or effort. Shop4Good aims to make supporting good causes a more natural part of everyday life.
             </p>
           </div>
 
-          <!-- 3 Stats Grid Card -->
+          <!-- Stats Grid Card [COMMENTED OUT] -->
+          <!--
           <div class="bg-white rounded-2xl border border-slate-200/90 py-4 px-2 mb-7 shadow-xs">
             <div class="grid grid-cols-3 divide-x divide-slate-100 text-center">
               <div class="px-2">
@@ -53,55 +75,56 @@
               </div>
             </div>
           </div>
+          -->
 
-          <!-- "What we believe" Section -->
-          <div class="mb-6">
-            <h2 class="text-base font-bold text-slate-800 font-heading mb-3">
-              What we believe
+          <!-- "We're building Shop4Good around three promises" Section -->
+          <div class="mb-7">
+            <h2 class="text-base sm:text-lg font-bold text-[#08265C] font-heading mb-3">
+              We're building Shop4Good around three promises:
             </h2>
-            <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-xs space-y-4">
+            <div class="space-y-3.5">
               
-              <!-- Value 1: Verified NGOs only -->
-              <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-full bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 mt-0.5">
+              <!-- Promise 1: Transparency -->
+              <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-xs flex items-start gap-3">
+                <div class="w-9 h-9 rounded-xl bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 mt-0.5">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 class="text-sm font-semibold text-slate-800">Verified NGOs only</h3>
-                  <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">
-                    Every partner is vetted for transparency and impact.
+                  <h3 class="text-sm font-bold text-[#08265C] font-heading">Transparency</h3>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                    We'll be clear about how commissions are shared and how they support the causes you choose.
                   </p>
                 </div>
               </div>
 
-              <!-- Value 2: 2% of every order -->
-              <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-full bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 mt-0.5">
+              <!-- Promise 2: Responsible partnerships -->
+              <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-xs flex items-start gap-3">
+                <div class="w-9 h-9 rounded-xl bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 mt-0.5">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 4.5l-15 15M6.75 8.25a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm10.5 10.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 class="text-sm font-semibold text-slate-800">2% of every order</h3>
-                  <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">
-                    A share of each purchase goes straight to your cause.
+                  <h3 class="text-sm font-bold text-[#08265C] font-heading">Responsible partnerships</h3>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                    We'll be thoughtful about the NGOs we partner with and the work they do.
                   </p>
                 </div>
               </div>
 
-              <!-- Value 3: No extra cost to you -->
-              <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-full bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 mt-0.5">
+              <!-- Promise 3: Impact that matters -->
+              <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-xs flex items-start gap-3">
+                <div class="w-9 h-9 rounded-xl bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center shrink-0 mt-0.5">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 class="text-sm font-semibold text-slate-800">No extra cost to you</h3>
-                  <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">
-                    You pay the same price — the brand funds the donation.
+                  <h3 class="text-sm font-bold text-[#08265C] font-heading">Impact that matters</h3>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                    We'll keep the people and communities these causes serve at the heart of what we do.
                   </p>
                 </div>
               </div>
@@ -109,13 +132,16 @@
             </div>
           </div>
 
-          <!-- Mobile-only Navy Quote Box (matches original mobile order) -->
+          <!-- Mobile Closing Note Box -->
           <div class="bg-[#0B2545] rounded-2xl p-5 text-white mb-6 shadow-sm">
-            <h3 class="text-[15px] font-semibold text-white leading-snug">
-              Good is a choice we all can make.
-            </h3>
-            <p class="text-xs text-slate-300 mt-3 font-normal">
-              — The Shop4Good team
+            <p class="text-xs sm:text-[13px] text-white/90 leading-relaxed font-normal mb-3">
+              We're just getting started, and there's a lot to build. Whether you're a shopper, an NGO, or a brand, we'd love for you to be part of this journey.
+            </p>
+            <p class="text-sm font-bold text-[#C2F0D1] font-heading">
+              Thank you for being here.
+            </p>
+            <p class="text-[11px] text-slate-300 mt-1">
+              — The Shop4Good Team
             </p>
           </div>
 
@@ -142,27 +168,47 @@
 
 
 <!-- ══════════════════════════════════════════════════════════════
-     DESKTOP VIEW ONLY (Exact Figma Desktop Design)
+     DESKTOP VIEW ONLY
      ══════════════════════════════════════════════════════════════ -->
 <div class="hidden lg:block min-h-screen bg-[#FAFBFD]">
   
-  <!-- 1. Hero & Stats Container -->
+  <!-- 1. Hero Container -->
   <div class="max-w-7xl mx-auto px-6 lg:px-8 pt-10 lg:pt-14">
 
-    <!-- Hero 2-Column Split: Story Left, Image Right -->
-    <div class="grid grid-cols-12 gap-12 items-center mb-14">
+    <!-- Hero 2-Column Split: Founder Story Left, Image Right -->
+    <div class="grid grid-cols-12 gap-12 items-start mb-16">
 
-      <!-- Left: Story Text & CTA -->
+      <!-- Left: Story Text & Letter -->
       <div class="col-span-7 flex flex-col items-start">
         <span class="text-xs font-bold uppercase tracking-wider text-[#087F6A] mb-3 block font-heading">
           OUR STORY
         </span>
-        <h1 class="text-4xl lg:text-[42px] font-extrabold text-[#08265C] tracking-tight font-heading leading-tight mb-4">
-          Every purchase can create a better tomorrow.
+        <h1 class="text-4xl lg:text-[42px] font-extrabold text-[#08265C] tracking-tight font-heading leading-tight mb-6">
+          A Note from Our Founder
         </h1>
-        <p class="text-[15px] text-slate-500 font-normal leading-relaxed mb-7 max-w-xl">
-          Shop4Good was born from a simple belief — that everyday shopping can do more. We bring together the brands you love and the causes that matter, making it easy for everyone to contribute to a kinder, fairer and more equal world.
-        </p>
+        
+        <div class="space-y-5 text-slate-600 text-[15px] leading-relaxed font-normal mb-8">
+          <p>
+            Every time I shopped online, I noticed the same thing: brands pay commissions to bring customers to their platforms. At the same time, NGOs doing meaningful work spend precious time and effort raising funds.
+          </p>
+
+          <div class="bg-[#E8F5F1]/80 border-l-4 border-[#087F6A] p-4 rounded-r-2xl my-2">
+            <p class="text-[#08265C] text-base font-medium italic">
+              I began to wonder: <strong class="font-bold text-[#087F6A]">what if everyday shopping could help support causes that matter?</strong>
+            </p>
+            <p class="text-[#08265C] font-bold text-base mt-2 not-italic font-heading">
+              That question became Shop4Good.
+            </p>
+          </div>
+
+          <p>
+            The idea is simple. You shop with brands you already love through our platform. The brand pays us a commission for referring you, and we share a portion of that commission with an NGO of your choice. You pay nothing extra, and your everyday shopping can help support a cause you care about.
+          </p>
+
+          <p>
+            I believe most people want to make a difference, but giving often requires extra time, money, or effort. Shop4Good aims to make supporting good causes a more natural part of everyday life.
+          </p>
+        </div>
 
         <a 
           routerLink="/shop" 
@@ -175,9 +221,9 @@
         </a>
       </div>
 
-      <!-- Right: Hero Image -->
-      <div class="col-span-5 w-full">
-        <div class="relative w-full aspect-[4/3] rounded-[24px] overflow-hidden shadow-sm bg-slate-100 border border-slate-100">
+      <!-- Right: Hero Image sticky -->
+      <div class="col-span-5 w-full sticky top-28">
+        <div class="relative w-full aspect-[4/3] rounded-[24px] overflow-hidden shadow-md bg-slate-100 border border-slate-100">
           <img 
             ngSrc="assets/images/hero/Golden-Hour Shopping Joy.png" 
             alt="Our Story - Shop4Good" 
@@ -190,7 +236,8 @@
 
     </div>
 
-    <!-- 3 Stats Grid Card (4 Causes | 100+ Brand partners | 2% Of every order) -->
+    <!-- 3 Stats Grid Card [COMMENTED OUT] -->
+    <!--
     <div class="mb-16">
       <div class="bg-white rounded-[22px] border border-slate-200/90 py-7 px-8 shadow-2xs">
         <div class="grid grid-cols-3 divide-x divide-slate-100 text-center">
@@ -209,20 +256,26 @@
         </div>
       </div>
     </div>
+    -->
 
   </div>
 
-  <!-- 2. "WHAT WE BELIEVE" SECTION (Full-width cream background - Figma) -->
+  <!-- 2. "WE'RE BUILDING SHOP4GOOD AROUND THREE PROMISES" SECTION -->
   <section class="w-full bg-[#FAF7F2] py-16 border-y border-[#F2EDE4]/80 mb-16">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       
-      <h2 class="text-2xl lg:text-3xl font-bold text-[#08265C] font-heading mb-8">
-        What we believe
-      </h2>
+      <div class="max-w-2xl mb-10 text-left">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#087F6A] mb-2 block font-heading">
+          OUR COMMITMENT
+        </span>
+        <h2 class="text-2xl lg:text-3xl font-bold text-[#08265C] font-heading leading-tight">
+          We're building Shop4Good around three promises:
+        </h2>
+      </div>
 
       <div class="grid grid-cols-3 gap-6">
 
-        <!-- Card 1: Verified NGOs only -->
+        <!-- Card 1: Transparency -->
         <div class="bg-white rounded-[22px] border border-gray-100/90 shadow-2xs p-7 flex flex-col justify-start hover:shadow-md transition-shadow">
           <div class="w-11 h-11 rounded-xl bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center mb-4 shrink-0">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -230,29 +283,29 @@
             </svg>
           </div>
           <h3 class="text-lg font-bold text-[#08265C] font-heading mb-2 leading-tight">
-            Verified NGOs only
+            Transparency
           </h3>
           <p class="text-sm text-slate-500 leading-relaxed font-normal">
-            Every partner is vetted for transparency and impact.
+            We'll be clear about how commissions are shared and how they support the causes you choose.
           </p>
         </div>
 
-        <!-- Card 2: 2% of every order -->
+        <!-- Card 2: Responsible partnerships -->
         <div class="bg-white rounded-[22px] border border-gray-100/90 shadow-2xs p-7 flex flex-col justify-start hover:shadow-md transition-shadow">
           <div class="w-11 h-11 rounded-xl bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center mb-4 shrink-0">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 4.5l-15 15M6.75 8.25a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm10.5 10.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
             </svg>
           </div>
           <h3 class="text-lg font-bold text-[#08265C] font-heading mb-2 leading-tight">
-            2% of every order
+            Responsible partnerships
           </h3>
           <p class="text-sm text-slate-500 leading-relaxed font-normal">
-            A share of each purchase goes straight to your cause.
+            We'll be thoughtful about the NGOs we partner with and the work they do.
           </p>
         </div>
 
-        <!-- Card 3: No extra cost to you -->
+        <!-- Card 3: Impact that matters -->
         <div class="bg-white rounded-[22px] border border-gray-100/90 shadow-2xs p-7 flex flex-col justify-start hover:shadow-md transition-shadow">
           <div class="w-11 h-11 rounded-xl bg-[#E8F5F1] text-[#087F6A] flex items-center justify-center mb-4 shrink-0">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -260,10 +313,10 @@
             </svg>
           </div>
           <h3 class="text-lg font-bold text-[#08265C] font-heading mb-2 leading-tight">
-            No extra cost to you
+            Impact that matters
           </h3>
           <p class="text-sm text-slate-500 leading-relaxed font-normal">
-            You pay the same price — the brand funds the donation.
+            We'll keep the people and communities these causes serve at the heart of what we do.
           </p>
         </div>
 
@@ -272,25 +325,28 @@
     </div>
   </section>
 
-  <!-- 3. Bottom Navy Banner (Figma) -->
+  <!-- 3. Bottom Navy Banner (Closing Note & CTA) -->
   <div class="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
-    <div class="bg-[#0B2545] rounded-[24px] p-8 lg:p-10 text-white flex items-center justify-between gap-6 shadow-md">
+    <div class="bg-[#0B2545] rounded-[24px] p-8 lg:p-10 text-white flex items-center justify-between gap-8 shadow-md">
       
-      <!-- Left: Quote & Team info -->
-      <div>
-        <h3 class="text-2xl lg:text-3xl font-bold font-heading text-white leading-snug">
-          Good is a choice we all can make.
-        </h3>
-        <p class="text-sm text-slate-300 mt-2 font-normal">
+      <!-- Left: Closing Note -->
+      <div class="max-w-2xl">
+        <p class="text-base lg:text-lg text-white/90 leading-relaxed font-normal mb-2">
+          We're just getting started, and there's a lot to build. Whether you're a shopper, an NGO, or a brand, we'd love for you to be part of this journey.
+        </p>
+        <p class="text-xl font-bold font-heading text-[#C2F0D1]">
+          Thank you for being here.
+        </p>
+        <p class="text-sm text-slate-300 mt-1 font-normal">
           — The Shop4Good team
         </p>
       </div>
 
       <!-- Right: Start Shopping CTA Button -->
-      <div>
+      <div class="shrink-0">
         <a 
           routerLink="/shop" 
-          class="inline-flex items-center gap-2 bg-[#087F6A] hover:bg-[#066c5a] text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-sm cursor-pointer text-base shrink-0 group"
+          class="inline-flex items-center gap-2 bg-[#087F6A] hover:bg-[#066c5a] text-white font-semibold py-3.5 px-7 rounded-xl transition-all shadow-sm cursor-pointer text-base shrink-0 group"
         >
           <span>Start Shopping</span>
           <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

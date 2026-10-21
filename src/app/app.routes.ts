@@ -51,6 +51,18 @@ export const routes: Routes = [
     loadComponent: () => import('./website/causes-new-details/causes-new-details.component').then(c => c.CausesNewDetailsComponent)
   },
   {
+    path: 'about/about-us',
+    loadComponent: () => import('./website/about-us/about-us.component').then(c => c.AboutUsComponent)
+  },
+  {
+    path: 'about-us',
+    loadComponent: () => import('./website/about-us/about-us.component').then(c => c.AboutUsComponent)
+  },
+  {
+    path: 'about',
+    loadComponent: () => import('./website/about-us/about-us.component').then(c => c.AboutUsComponent)
+  },
+  {
     path: 'about/our-story',
     loadComponent: () => import('./website/our-story/our-story.component').then(c => c.OurStoryComponent)
   },

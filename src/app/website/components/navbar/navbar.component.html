@@ -78,6 +78,10 @@
         <div class="absolute left-0 top-full pt-2 z-50 transition-all duration-200"
              [ngClass]="activeDropdown === 'about' ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto'">
           <div class="w-56 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 overflow-hidden">
+            <a routerLink="/about/about-us" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
+              <span>About Us</span>
+              <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </a>
             <a routerLink="/about/our-story" (click)="closeDropdown()" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#087F6A] transition-colors group/item">
               <span>Our Story</span>
               <svg class="w-3.5 h-3.5 text-slate-300 group-hover/item:text-[#087F6A] group-hover/item:translate-x-0.5 transition-all" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
@@ -334,6 +338,10 @@
           ABOUT
         </div>
         <div class="flex flex-col divide-y divide-slate-100">
+          <a routerLink="/about/about-us" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
+            <span>About Us</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+          </a>
           <a routerLink="/about/our-story" (click)="closeMenu()" class="flex items-center justify-between py-2.5 px-1 hover:text-[#087F6A] transition-colors font-medium text-[14.5px]">
             <span>Our Story</span>
             <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>

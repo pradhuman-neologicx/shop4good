@@ -265,9 +265,9 @@ export class CausesNewDetailsComponent implements OnInit {
           { value: '50+', label: 'Schools impacted', icon: 'school' }
         ],
         howWeHelp: [
-          { title: 'Quality education', desc: 'Providing school bags, notebooks, textbooks, uniforms, and learning essentials.', icon: 'book' },
-          { title: 'Learning resources', desc: 'Upgrading village learning spaces with clean desks, safe lights, and library corners.', icon: 'bulb' },
-          { title: 'Better futures', desc: 'Daily nutritious meals and quarterly health camps to keep kids strong and focused.', icon: 'grad-cap' }
+          { title: 'Quality education', desc: 'Classroom support and trained teachers for underserved schools.', icon: 'book' },
+          { title: 'Learning resources', desc: 'Books, digital tools and learning kits for every child.', icon: 'bulb' },
+          { title: 'Better futures', desc: 'Scholarships and mentoring that open new doors.', icon: 'grad-cap' }
         ],
         partner: {
           name: 'The Earth Saviours Foundation',

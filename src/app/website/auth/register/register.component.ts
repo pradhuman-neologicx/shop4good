@@ -146,6 +146,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.notification.show('New code sent! (Use code: 123456)', 'info');
   }
 
+  onChangeContact() {
+    this.clearTimer();
+    this.step = 'input';
+    this.otpDigits = ['', '', '', '', '', ''];
+    this.otpError = '';
+    this.cdr.detectChanges();
+  }
+
   // OTP Handlers
   onOtpDigitInput(index: number, event: Event) {
     const input = event.target as HTMLInputElement;

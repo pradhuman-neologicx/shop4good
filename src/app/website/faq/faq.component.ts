@@ -23,61 +23,49 @@ export interface FaqItem {
 export class FaqComponent {
   searchQuery: string = '';
 
-  // All 9 FAQs from the Figma design
+  // FAQs from Slide 8
   faqs: FaqItem[] = [
     {
       id: 1,
-      question: 'What is Shop4Good?',
-      answer: 'Shop4Good is a shopping platform that donates 2% of every order to a cause you choose — at no extra cost to you.',
+      question: 'How does Shop4Good work?',
+      answer:
+        'Shop4Good partners with your favourite brands. When you shop through our platform, the retailer pays us a commission. We donate a portion of that commission to your chosen cause – at zero extra cost to you.',
       category: 'General'
     },
     {
       id: 2,
-      question: 'How does the donation work?',
-      answer: 'When you shop through Shop4Good, the brand pays us an affiliate commission. We send 2% of your order value directly to the NGO behind your chosen cause.',
-      category: 'Donations'
-    },
-    {
-      id: 3,
-      question: 'Does it cost me anything extra?',
-      answer: "No. You pay the brand's regular price — the donation comes from the brand's commission, not your pocket.",
+      question: 'Is there any extra cost to me?',
+      answer:
+        "Absolutely not! You pay the same price as you would shopping directly. The donation comes from the retailer's commission, not from your pocket.",
       category: 'Pricing'
     },
     {
+      id: 3,
+      question: 'How long does it take for the donation to process?',
+      answer:
+        'It typically takes 14-30 days for the purchase to be confirmed by the retailer. Once confirmed, the 2% commission is tracked and distributed to your selected cause. We disburse the money on a monthly basis.',
+      category: 'Donations'
+    },
+    {
       id: 4,
-      question: 'Which brands are available?',
-      answer: 'Right now you can shop at Amazon, Flipkart, Tata CLiQ and Nykaa, with more partners coming soon.',
-      category: 'Brands'
+      question: 'Can I choose which NGO receives my donation?',
+      answer:
+        'Yes! You can select from our list of NGOs and charities. You can change your chosen cause at any time from your dashboard.',
+      category: 'Causes'
     },
     {
       id: 5,
-      question: 'Can I change my cause later?',
-      answer: 'Yes. Go to My Profile → Change cause and pick a different cause at any time. You can support one cause at a time.',
-      category: 'Account'
+      question: 'Which brands are available on Shop4Good?',
+      answer:
+        'We partner with 100+ brands including Amazon, Flipkart, Myntra, Ajio, Nykaa, and many more. New brands are added regularly',
+      category: 'Brands'
     },
     {
       id: 6,
-      question: 'How do I know my donation made an impact?',
-      answer: "Your profile shows how much you've donated and how many lives you've impacted, and our NGO partners share regular impact updates.",
+      question: 'How do I track my impact?',
+      answer:
+        "Once you create a free account, you'll have access to a personal dashboard that shows your total purchases, donations generated, and the causes you've supported.",
       category: 'Impact'
-    },
-    {
-      id: 7,
-      question: 'Do you work with verified NGOs?',
-      answer: 'Yes. Every NGO partner is checked for registration, transparency and on-ground impact before joining.',
-      category: 'NGOs'
-    },
-    {
-      id: 8,
-      question: 'Is my personal information safe?',
-      answer: 'Yes. We never sell your data and use industry-standard security to protect it. See our Privacy Policy for details.',
-      category: 'Security'
-    },
-    {
-      id: 9,
-      question: 'How can my brand partner with you?',
-      answer: 'Go to Partner With Us → For Brands, or write to support@shop4good.com and our team will get in touch.',
-      category: 'Partnership'
     }
   ];
 
