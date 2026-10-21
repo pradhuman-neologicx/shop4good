@@ -1,33 +1,34 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-hero-new',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './hero-new.component.html',
   styleUrl: './hero-new.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeroNewComponent implements OnInit, OnDestroy {
   // ─── Desktop Images ───
-  desktopLeftImage = 'assets/images/hero/header_1.png';
+  desktopLeftImage = 'assets/images/hero/0.png';
   
   desktopRightImages: string[] = [
-    'assets/images/hero/header_6.png',
-    'assets/images/hero/header_5.png',
-    'assets/images/hero/header_4.png',
-    'assets/images/hero/header_2.png',
+    'assets/images/hero/1.png',
+    'assets/images/hero/2.png',
+    'assets/images/hero/3.png',
+    'assets/images/hero/4.png',
   ];
 
  
-  mobileLeftImage = 'assets/images/hero/mobil_1.png'; 
+  mobileLeftImage = 'assets/images/hero/0.png'; 
   
   mobileRightImages: string[] = [
-    'assets/images/hero/mobil_2.png',
-    'assets/images/hero/mobil_4.png',
-    'assets/images/hero/mobil_5.png',
-    'assets/images/hero/mobil_6.png',
+    'assets/images/hero/1.png',
+    'assets/images/hero/2.png',
+    'assets/images/hero/3.png',
+    'assets/images/hero/4.png',
   ];
   
   currentIndex = 0;
