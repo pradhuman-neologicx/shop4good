@@ -8,19 +8,19 @@
 
     <!-- Sheet / Dialog Panel -->
     <div 
-      class="bg-white w-full sm:max-w-[440px] md:max-w-[460px] rounded-t-[28px] sm:rounded-[28px] p-4 sm:p-5 shadow-2xl relative z-10 max-h-[90vh] sm:max-h-[86vh] flex flex-col justify-between animate-in slide-in-from-bottom duration-300 my-auto"
+      class="bg-white w-full sm:max-w-[480px] md:max-w-[840px] lg:max-w-[940px] rounded-t-[28px] sm:rounded-[28px] p-4 sm:p-5 md:p-6 shadow-2xl relative z-10 max-h-[90vh] sm:max-h-[88vh] flex flex-col justify-between animate-in slide-in-from-bottom duration-300 my-auto"
       (click)="$event.stopPropagation()"
     >
       <!-- Top Drag Handle (Mobile only) -->
       <div class="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-2 sm:hidden shrink-0"></div>
 
       <!-- Header: Title & Close -->
-      <div class="flex items-center justify-between mb-2.5 shrink-0">
-        <h2 class="text-lg sm:text-xl font-bold text-[#08265C] font-heading leading-tight text-left">
+      <div class="flex items-center justify-between mb-2.5 md:mb-3 shrink-0">
+        <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-[#08265C] font-heading leading-tight text-left">
           Choose the cause you support
         </h2>
         <button 
-          type="button"
+          type="button" 
           (click)="onClose()" 
           class="w-8 h-8 rounded-full flex items-center justify-center text-[#08265C] hover:bg-gray-100 transition-colors cursor-pointer shrink-0 -mr-1"
           aria-label="Close"
@@ -33,12 +33,12 @@
       <div class="overflow-y-auto custom-scrollbar flex-1 pr-0.5 sm:pr-1">
         
         <!-- Informational Callout Card -->
-        <div class="bg-[#F8F9FA] rounded-[14px] sm:rounded-[16px] border border-gray-200/80 p-2.5 sm:p-3 mb-2.5 flex items-start gap-2.5">
+        <div class="bg-[#F8F9FA] rounded-[14px] sm:rounded-[16px] border border-gray-200/80 p-2.5 sm:p-3 mb-2.5 md:mb-3 flex items-start gap-2.5">
           <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center shrink-0 border border-gray-100 shadow-2xs mt-0.5">
             <i class="fa-solid fa-circle-info text-gray-400 text-xs sm:text-sm"></i>
           </div>
           <div class="text-left">
-            <h4 class="text-xs sm:text-[13px] font-bold text-[#08265C] font-heading leading-tight mb-0.5">
+            <h4 class="text-xs sm:text-[13px] md:text-sm font-bold text-[#08265C] font-heading leading-tight mb-0.5">
               You can support 1 cause at a time
             </h4>
             <p class="text-[11px] sm:text-xs text-gray-500 leading-relaxed font-normal">
@@ -47,8 +47,8 @@
           </div>
         </div>
 
-        <!-- 2x2 Causes Grid -->
-        <div class="grid grid-cols-2 gap-2 sm:gap-2.5 mb-2">
+        <!-- Causes Grid (2 cols on mobile, 4 cols in 1 row on desktop) -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3.5 mb-2">
           @for (cause of causes; track cause.id) {
             <div 
               (click)="selectTempCause(cause.id)"
@@ -59,9 +59,9 @@
               [class.ring-[#087F6A]]="selectedId === cause.id"
             >
               <!-- Card Body -->
-              <div class="p-2 flex flex-col flex-grow">
+              <div class="p-2 sm:p-2.5 flex flex-col flex-grow">
                 <!-- Image container with radio overlay -->
-                <div class="rounded-xl overflow-hidden h-24 sm:h-32 w-full relative mb-1.5 bg-black/10 shrink-0">
+                <div class="rounded-xl overflow-hidden h-24 sm:h-28 md:h-32 lg:h-36 w-full relative mb-1.5 bg-black/10 shrink-0">
                   <img 
                     [src]="cause.image" 
                     [alt]="cause.title" 
@@ -79,18 +79,18 @@
                 </div>
 
                 <!-- Title -->
-                <h3 class="text-xs sm:text-[13px] font-bold font-heading text-white leading-tight mb-1 min-h-[26px] flex items-start">
+                <h3 class="text-xs sm:text-[13px] md:text-sm font-bold font-heading text-white leading-tight mb-1 min-h-[26px] md:min-h-[32px] flex items-start">
                   {{ cause.title }}
                 </h3>
               </div>
 
               <!-- Footer Bar -->
-              <div class="bg-black/25 px-2 py-1.5 flex items-center justify-between border-t border-white/10 shrink-0">
-                <span class="text-[9px] sm:text-[10px] font-normal text-white/90 truncate mr-1.5 leading-tight">
+              <div class="bg-black/25 px-2 sm:px-2.5 py-1.5 flex items-center justify-between border-t border-white/10 shrink-0">
+                <span class="text-[9px] sm:text-[10px] md:text-[11px] font-normal text-white/90 truncate mr-1.5 leading-tight">
                   {{ cause.foundation }}
                 </span>
                 <span class="text-white/80 hover:text-white transition-colors shrink-0">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[9px] md:text-[10px]"></i>
                 </span>
               </div>
             </div>
@@ -99,11 +99,11 @@
       </div>
 
       <!-- Sticky Save Button (Always visible at bottom) -->
-      <div class="pt-2.5 border-t border-gray-100 bg-white shrink-0 mt-1">
+      <div class="pt-2.5 md:pt-3 border-t border-gray-100 bg-white shrink-0 mt-1 flex justify-end">
         <button 
           type="button" 
           (click)="saveSelection()"
-          class="w-full bg-[#087F6A] hover:bg-[#066c5a] active:scale-[0.99] text-white font-bold text-sm sm:text-base py-2.5 sm:py-3 rounded-[14px] transition-all shadow-md font-heading flex items-center justify-center cursor-pointer"
+          class="w-full md:max-w-xs bg-[#087F6A] hover:bg-[#066c5a] active:scale-[0.99] text-white font-bold text-sm sm:text-base py-2.5 sm:py-3 rounded-[14px] transition-all shadow-md font-heading flex items-center justify-center cursor-pointer"
         >
           Save
         </button>

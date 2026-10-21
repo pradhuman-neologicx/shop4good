@@ -2,9 +2,11 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { JwtService } from 'src/app/core/services/jwt.service';
-import { ChooseCauseComponent, Cause } from '../../choose-cause/choose-cause.component';
+import { ChooseCauseComponent, Cause as BaseCause } from '../../choose-cause/choose-cause.component';
 
-export { Cause };
+export interface Cause extends BaseCause {
+  description?: string;
+}
 
 @Component({
   selector: 'app-causes-new',
@@ -18,7 +20,8 @@ export class CausesNewComponent implements OnInit {
     {
       id: 'kids',
       title: 'Kids Education',
-      subtitle: 'Brighter minds for a brighter tomorrow',
+      subtitle: 'Every child deserves a classroom',
+      description: 'Support NGOs building schools, providing scholarships, and training teachers in underserved communities.',
       foundation: 'The Earth Saviours Foundation',
       image: 'assets/images/Kids card photo.jpg',
       bgColor: '#1e3a8a' 
@@ -26,7 +29,8 @@ export class CausesNewComponent implements OnInit {
     {
       id: 'women',
       title: 'Women Empowerment',
-      subtitle: 'Stronger Women Build Stronger Communities',
+      subtitle: 'Strength in every woman',
+      description: 'Back programmes that provide skills training, legal aid, and economic independence to women.',
       foundation: 'PraveenLata Sansthan Foundation',
       image: 'assets/images/Women card image.jpg',
       bgColor: '#d2386c'
@@ -34,15 +38,17 @@ export class CausesNewComponent implements OnInit {
     {
       id: 'senior',
       title: 'Senior Citizen Care',
-      subtitle: 'Respect, care and a more dignified tomorrow.',
+      subtitle: 'Compassion and support for the elderly',
+      description: 'Help us give the elderly the comfort of aging with dedicated help they can trust.',
       foundation: 'The Earth Saviours Foundation',
       image: 'assets/images/Senior Citizen Card Image.jpg',
       bgColor: '#4a8dd6' 
     },
     {
       id: 'pets',
-      title: 'Pet Care',
-      subtitle: 'Better care for happier companions.',
+      title: 'Animal Welfare',
+      subtitle: 'Compassion for every creature',
+      description: 'Support rescue shelters, spay-neuter drives, and wildlife conservation efforts.',
       foundation: 'The Earth Saviours Foundation',
       image: 'assets/images/Dog Card photo.jpg',
       bgColor: '#245e55'
