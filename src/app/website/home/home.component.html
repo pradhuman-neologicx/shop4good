@@ -238,9 +238,11 @@
         "Small acts, when multiplied by millions of people, can transform the world."
       </h2>
       <p class="cta-section__author">— Howard Zinn</p>
-      <a routerLink="/auth/register" class="cta-section__btn">
-        Create Your Free Account <i class="fa-solid fa-user-plus"></i>
-      </a>
+      @if (!isLoggedIn) {
+        <a routerLink="/auth/register" class="cta-section__btn">
+          Create Your Free Account <i class="fa-solid fa-user-plus"></i>
+        </a>
+      }
     </div>
   </section>
   <app-footer></app-footer>
