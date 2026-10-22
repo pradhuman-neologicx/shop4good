@@ -195,7 +195,7 @@ export class CausesNewDetailsComponent implements OnInit {
     }
 
     this.closeConfirmModal();
-    this.router.navigate(['/shop']);
+    // this.router.navigate(['/shop']);
   }
 
   goToShop(): void {
