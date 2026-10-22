@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom, ErrorHandler } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -11,6 +11,7 @@ import { JwtService } from './core/services/jwt.service';
 import { EmployeeService } from './core/services/Employee.service';
 import { LoadingInterceptor } from './core/services/loading.interceptor';
 import { AuthInterceptor } from './core/services/auth.interceptor';
+import { ChunkErrorHandler } from './core/services/chunk-error-handler';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -33,6 +34,7 @@ export const appConfig: ApplicationConfig = {
     DatePipe,
     EmployeeService,
     
+    { provide: ErrorHandler, useClass: ChunkErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     
