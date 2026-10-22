@@ -4,6 +4,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import { MarketplaceModalComponent, Marketplace } from '../components/marketplace-modal/marketplace-modal.component';
+import { NotificationService } from 'src/app/core/services/notificationnew.service';
 
 export interface CauseStat {
   value: string;
@@ -68,6 +69,10 @@ export class CausesNewDetailsComponent implements OnInit {
   currentId: string = 'pets';
   
   isMarketplaceOpen = false;
+  isConfirmModalOpen = false;
+  isConfirmedSuccess = false;
+  isCurrentCauseSupported = false;
+
   marketplaces: Marketplace[] = [];
   causeDetail: CauseItem | any = null;
   selectedImageIndex = 0;
@@ -114,20 +119,89 @@ export class CausesNewDetailsComponent implements OnInit {
     return this.otherCauses.filter(c => c.id !== this.currentId);
   }
 
-  constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private cdr: ChangeDetectorRef,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
+    this.checkIfCauseSupported();
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
         this.currentId = id;
         this.loadMockData(id);
+        this.checkIfCauseSupported();
         if (typeof window !== 'undefined') {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         this.cdr.detectChanges();
       }
     });
+  }
+
+  checkIfCauseSupported(): void {
+    if (typeof window === 'undefined') return;
+    try {
+      const saved = localStorage.getItem('shop4good_supported_cause');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        this.isCurrentCauseSupported = parsed?.id === this.currentId || (this.causeDetail && parsed?.id === this.causeDetail.id);
+      } else {
+        this.isCurrentCauseSupported = false;
+      }
+    } catch {
+      this.isCurrentCauseSupported = false;
+    }
+  }
+
+  openConfirmModal(): void {
+    this.checkIfCauseSupported();
+    this.isConfirmedSuccess = false;
+    this.isConfirmModalOpen = true;
+    this.cdr.detectChanges();
+  }
+
+  closeConfirmModal(): void {
+    this.isConfirmModalOpen = false;
+    this.isConfirmedSuccess = false;
+    this.cdr.detectChanges();
+  }
+
+  confirmSupportCause(): void {
+    if (!this.causeDetail) return;
+
+    const causePayload = {
+      id: this.causeDetail.id,
+      title: this.causeDetail.name,
+      subtitle: this.causeDetail.subtitle || '',
+      foundation: this.causeDetail.partner?.name || '',
+      image: (this.causeDetail.images && this.causeDetail.images[0]) || this.causeDetail.cover_image_url || '',
+      bgColor: this.causeDetail.bgColor || '#087F6A'
+    };
+
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('shop4good_supported_cause', JSON.stringify(causePayload));
+        this.isCurrentCauseSupported = true;
+      } catch (e) {
+        console.error('Failed to save supported cause:', e);
+      }
+    }
+
+    this.isConfirmedSuccess = true;
+    try {
+      this.notificationService.show(`You are now supporting ${this.causeDetail.name}!`, 'success');
+    } catch (e) {
+      // fallback
+    }
+    this.cdr.detectChanges();
+  }
+
+  proceedToMarketplace(): void {
+    this.closeConfirmModal();
+    this.openMarketplace();
   }
 
   openMarketplace() {
@@ -390,6 +464,7 @@ export class CausesNewDetailsComponent implements OnInit {
       causeDetail: this.causeDetail
     };
 
+    this.checkIfCauseSupported();
     this.isLoading = false;
   }
 }
