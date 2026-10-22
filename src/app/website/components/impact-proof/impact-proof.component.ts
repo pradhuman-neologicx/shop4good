@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { JwtService } from 'src/app/core/services/jwt.service';
 
 @Component({
   selector: 'app-impact-proof',
@@ -8,5 +9,8 @@ import { RouterModule } from '@angular/router';
   templateUrl: './impact-proof.component.html',
   styleUrl: './impact-proof.component.scss'
 })
-export class ImpactProofComponent {}
+export class ImpactProofComponent {
+  private jwtService = inject(JwtService);
+  isLoggedIn = this.jwtService.getCustomerIsLoggedIn();
+}
 

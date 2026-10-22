@@ -15,15 +15,17 @@
       <p class="text-white/80 text-xs sm:text-sm md:text-[15px] leading-relaxed mb-5 sm:mb-6 max-w-sm font-normal">
        Your everyday shopping can help create brighter future or fulfill soneones cream – one purchase at a time.
       </p>
-      <div class="w-full sm:w-auto">
-        <a 
-          routerLink="/causes" 
-          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#087F6A] hover:bg-[#066c5a] text-white font-medium text-sm py-3 px-3 sm:px-5 rounded-full transition-colors duration-300 shadow-sm group cursor-pointer"
-        >
-          <span>Sign-up/Log-in and start doing good</span>
-          <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
-        </a>
-      </div>
+      @if (!isLoggedIn) {
+        <div class="w-full sm:w-auto">
+          <a 
+            routerLink="/causes" 
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#087F6A] hover:bg-[#066c5a] text-white font-medium text-sm py-3 px-3 sm:px-5 rounded-full transition-colors duration-300 shadow-sm group cursor-pointer"
+          >
+            <span>Sign-up/Log-in and start doing good</span>
+            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+      }
     </div>
 
     <!-- Right / Bottom Content: Day 1 Story -->
