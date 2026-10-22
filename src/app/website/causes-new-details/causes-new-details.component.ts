@@ -1,9 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
-import { MarketplaceModalComponent, Marketplace } from '../components/marketplace-modal/marketplace-modal.component';
 import { NotificationService } from 'src/app/core/services/notificationnew.service';
 
 export interface CauseStat {
@@ -59,7 +58,7 @@ export interface CauseItem {
 @Component({
   selector: 'app-causes-new-details',
   standalone: true,
-  imports: [CommonModule, RouterModule, NavbarComponent, FooterComponent, MarketplaceModalComponent, NgOptimizedImage],
+  imports: [CommonModule, RouterModule, NavbarComponent, FooterComponent, NgOptimizedImage],
   templateUrl: './causes-new-details.component.html',
   styleUrl: './causes-new-details.component.scss'
 })
@@ -68,12 +67,10 @@ export class CausesNewDetailsComponent implements OnInit {
   isLoading: boolean = true;
   currentId: string = 'pets';
   
-  isMarketplaceOpen = false;
   isConfirmModalOpen = false;
   isConfirmedSuccess = false;
   isCurrentCauseSupported = false;
 
-  marketplaces: Marketplace[] = [];
   causeDetail: CauseItem | any = null;
   selectedImageIndex = 0;
 
@@ -121,6 +118,7 @@ export class CausesNewDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute, 
+    private router: Router,
     private cdr: ChangeDetectorRef,
     private notificationService: NotificationService
   ) {}
@@ -190,22 +188,19 @@ export class CausesNewDetailsComponent implements OnInit {
       }
     }
 
-    this.isConfirmedSuccess = true;
     try {
       this.notificationService.show(`You are now supporting ${this.causeDetail.name}!`, 'success');
     } catch (e) {
       // fallback
     }
-    this.cdr.detectChanges();
-  }
 
-  proceedToMarketplace(): void {
     this.closeConfirmModal();
-    this.openMarketplace();
+    this.router.navigate(['/shop']);
   }
 
-  openMarketplace() {
-    this.isMarketplaceOpen = true;
+  goToShop(): void {
+    this.closeConfirmModal();
+    this.router.navigate(['/shop']);
   }
 
   shareWhatsApp() {
