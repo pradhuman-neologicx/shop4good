@@ -6,23 +6,27 @@
 
     <!-- Left / Top Content -->
     <div class="w-full md:w-[48%] lg:w-[45%] flex flex-col justify-center">
-      <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.16em] mb-2 sm:mb-3 text-white/80 block font-heading">
-        Make a Difference with Every Purchase
+      <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.16em] mb-2.5 sm:mb-3 text-white/80 block font-heading">
+        <span class="block sm:inline">Make a Difference </span>
+        <span class="block sm:inline">with Every Purchase</span>
       </span>
-      <h2 class="text-3xl md:text-4xl lg:text-[44px] font-bold text-white leading-[2.5rem] mb-2.5 sm:mb-3.5 font-heading tracking-wider">
+      <h2 class="text-3xl md:text-4xl lg:text-[44px] font-bold text-white leading-tight mb-3.5 sm:mb-4.5 font-heading tracking-wide">
         Small Purchases.<br/>Big Change.
       </h2>
-      <p class="text-white/80 text-xs sm:text-sm md:text-[15px] leading-relaxed mb-5 sm:mb-6 max-w-sm font-normal">
-       Your everyday shopping can help create brighter future or fulfill soneones cream – one purchase at a time.
+      <p class="text-white/80 text-xs sm:text-sm md:text-[15px] leading-relaxed mb-4 sm:mb-6 max-w-sm font-normal">
+        Your everyday shopping can help create brighter future or fulfill someone's dream – one purchase at a time.
       </p>
       @if (!isLoggedIn) {
         <div class="w-full sm:w-auto">
           <a 
             routerLink="/causes" 
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#087F6A] hover:bg-[#066c5a] text-white font-medium text-sm py-3 px-3 sm:px-5 rounded-full transition-colors duration-300 shadow-sm group cursor-pointer"
+            class="w-full sm:w-auto inline-flex items-center justify-between gap-2 bg-[#087F6A] hover:bg-[#066c5a] text-white font-medium text-sm py-3 px-4 sm:px-5 rounded-2xl transition-colors duration-300 shadow-sm group cursor-pointer text-center"
           >
-            <span>Sign-up/Log-in and start doing good</span>
-            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+            <span class="leading-snug text-left">
+              <span class="block sm:inline">Sign-up/Log-in and </span>
+              <span class="block sm:inline">start doing good</span>
+            </span>
+            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform shrink-0"></i>
           </a>
         </div>
       }
@@ -30,7 +34,7 @@
 
     <!-- Right / Bottom Content: Day 1 Story -->
     <div class="w-full md:w-[50%] lg:w-[48%] flex flex-col justify-center">
-      <div class="bg-white/10 border border-white/15 rounded-[20px] sm:rounded-[24px] p-5 sm:p-7 md:p-8 backdrop-blur-xs flex flex-col gap-3.5 text-left shadow-lg">
+      <div class="bg-white/10 border border-white/15 rounded-[20px] sm:rounded-[24px] p-4 sm:p-7 md:p-8 backdrop-blur-xs flex flex-col gap-3.5 text-left shadow-lg">
         <h3 class="text-white text-lg sm:text-xl md:text-[22px] font-bold font-heading leading-snug">
           We are just getting started at Shop4Good.
         </h3>

@@ -32,24 +32,24 @@ export const routes: Routes = [
   },
 
 
-  {
-    path: 'causes',
-    redirectTo: 'causes/kids',
-    pathMatch: 'full'
-  },
-  {
-    path: 'causes-new',
-    redirectTo: 'causes/kids',
-    pathMatch: 'full'
-  },
-  {
-    path: 'causes/:id',
-    loadComponent: () => import('./website/causes-new-details/causes-new-details.component').then(c => c.CausesNewDetailsComponent)
-  },
-  {
-    path: 'causes-new/:id',
-    loadComponent: () => import('./website/causes-new-details/causes-new-details.component').then(c => c.CausesNewDetailsComponent)
-  },
+  // {
+  //   path: 'causes',
+  //   redirectTo: 'causes/kids',
+  //   pathMatch: 'full'
+  // },
+  // {
+  //   path: 'causes-new',
+  //   redirectTo: 'causes/kids',
+  //   pathMatch: 'full'
+  // },
+  // {
+  //   path: 'causes/:id',
+  //   loadComponent: () => import('./website/causes-new-details/causes-new-details.component').then(c => c.CausesNewDetailsComponent)
+  // },
+  // {
+  //   path: 'causes-new/:id',
+  //   loadComponent: () => import('./website/causes-new-details/causes-new-details.component').then(c => c.CausesNewDetailsComponent)
+  // },
   {
     path: 'about/about-us',
     loadComponent: () => import('./website/about-us/about-us.component').then(c => c.AboutUsComponent)

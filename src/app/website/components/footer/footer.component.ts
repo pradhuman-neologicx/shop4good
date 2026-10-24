@@ -26,9 +26,9 @@ export class FooterComponent {
 
   aboutLinks = [
     { label: 'About Us', href: '/about/about-us' },
-    { label: 'Our Story', href: '/about/our-story' },
+    // { label: 'Our Story', href: '/about/our-story' },
     { label: 'How It Works', href: '/about/how-it-works' },
-    { label: 'Our Impact', href: '/about/our-impact' },
+    // { label: 'Our Impact', href: '/about/our-impact' },
     { label: 'Partner With Us', href: '/about/partner-with-us' },
   ];
 

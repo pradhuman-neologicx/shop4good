@@ -4,25 +4,9 @@
     <h2 class="text-[20px] md:text-[32px] font-bold text-[#08265C] mb-2 leading-tight font-heading">
       Choose your happy cause
     </h2>
-    <div class="mt-3 md:mt-4 space-y-1.5">
-      <div class="flex items-center gap-2 text-sm md:text-base text-gray-600">
-        <i class="fa-solid fa-arrow-right text-xs text-gray-400 shrink-0"></i>
-        <span>From little feet with big dreams.</span>
-      </div>
-      <div class="flex items-center gap-2 text-sm md:text-base text-gray-600">
-        <i class="fa-solid fa-arrow-right text-xs text-gray-400 shrink-0"></i>
-        <span>To girl power.</span>
-      </div>
-      <div class="flex items-center gap-2 text-sm md:text-base text-gray-600">
-        <i class="fa-solid fa-arrow-right text-xs text-gray-400 shrink-0"></i>
-        <span>To wrinkled faces with silver hair.</span>
-      </div>
-      <div class="flex items-center gap-2 text-sm md:text-base text-gray-600">
-        <i class="fa-solid fa-arrow-right text-xs text-gray-400 shrink-0"></i>
-        <span>To tails that wag in happiness!</span>
-      </div>
-      
-    </div>
+    <p class="mt-2 md:mt-3 text-sm md:text-base text-gray-600 leading-relaxed">
+      From little feet with big dreams. To girl power. To wrinkled faces with silver hair. To tails that wag in happiness!
+    </p>
   </div>
 
   <!-- Supporting Line Card (Only shown if user is logged in) -->
@@ -89,8 +73,9 @@
 
   <!-- Cards Grid -->
    <!-- Sub-Heading -->
-   <!-- Sub-Heading -->
-   <h3 class="text-base md:text-xl font-bold text-[#08265C] mt-4 mb-4 md:mb-5 font-heading">Pick a cause that makes your heart tick.</h3>
+   <h3 class="text-base md:text-xl font-bold text-[#08265C] mt-4 mb-4 md:mb-5 font-heading">
+     Pick a cause<br />that makes your heart tick
+   </h3>
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-2 md:gap-y-4">
     @for (cause of causes; track cause.id) {
       <div 
@@ -115,14 +100,14 @@
           </div>
 
           <!-- Content: Title, Subtitle, Para -->
-          <h3 class="text-[11px] sm:text-base font-bold uppercase tracking-wider text-white/90 mb-1 font-heading">
+          <h3 class="text-[14px] sm:text-base font-extrabold uppercase tracking-wider text-white mb-1 font-heading">
             {{ cause.title }}
           </h3>
-          <h4 class="text-[13px] sm:text-sm md:text-[15px] font-semibold text-white leading-snug mb-1.5 font-heading">
+          <h4 class="text-xs md:text-[13px] font-medium text-white/90 leading-snug mb-1.5 font-heading">
             {{ cause.subtitle }}
           </h4>
           @if (cause.description) {
-            <p class="text-[11px] sm:text-xs text-white/80 leading-relaxed font-normal">
+            <p class="text-[11px] text-white/80 leading-relaxed font-normal">
               {{ cause.description }}
             </p>
           }
