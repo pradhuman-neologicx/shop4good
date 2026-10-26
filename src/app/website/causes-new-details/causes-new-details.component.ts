@@ -55,6 +55,8 @@ export interface CauseItem {
   bgColor?: string;
   quotes?: string;
   quote?: string;
+  web_link?: string;
+  web_link_name?: string;
 }
 
 @Component({
@@ -303,6 +305,8 @@ export class CausesNewDetailsComponent implements OnInit {
         subtitle: 'Every Life Deserves Kindness.',
         cover_image_url: 'assets/images/banner-pets.png',
         images: ['assets/images/Dog Card photo.jpg'],
+        web_link: 'www.friendicoes.org',
+        web_link_name: 'Friendicoes',
         stats: [
           { value: '3,100+', label: 'Animals supported', icon: 'paw' },
           { value: '20+', label: 'Shelters supported', icon: 'home' }
@@ -347,6 +351,8 @@ At Shop4Goods, we believe kindness should extend to every living being. By suppo
         subtitle: 'Every Child Deserves a Brighter Tomorrow.',
         cover_image_url: 'assets/images/banner-kids.png',
         images: ['assets/images/Kids card photo.jpg'],
+        web_link: 'www.spreadingsmilesnathupur.org',
+        web_link_name: 'Spreading Smiles Foundation',
         stats: [
           { value: '12,500+', label: 'Children supported', icon: 'users' },
           { value: '50+', label: 'Schools impacted', icon: 'school' }

@@ -156,23 +156,39 @@
         </div>
       </div>
 
-      <!-- CTA Button -->
-      <button 
-        (click)="openConfirmModal()" 
-        class="w-full bg-[#087F6A] hover:bg-[#066856] active:scale-[0.99] text-white font-bold text-sm py-3.5 px-6 rounded-xl flex items-center justify-center gap-2.5 shadow-md shadow-emerald-800/15 transition-all duration-200 group cursor-pointer"
-      >
-        @if (isCurrentCauseSupported) {
-          <svg class="w-4 h-4 text-emerald-100" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
-          </svg>
-          <span>Currently supporting</span>
-        } @else {
-          <span>Support this cause</span>
-          <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-          </svg>
+      <!-- CTA Action Buttons (Mobile) -->
+      <div class="flex flex-col sm:flex-row items-center gap-3 w-full">
+        <button 
+          (click)="openConfirmModal()" 
+          class="w-full sm:flex-1 bg-[#087F6A] hover:bg-[#066856] active:scale-[0.99] text-white font-bold text-sm py-3.5 px-6 rounded-xl flex items-center justify-center gap-2.5 shadow-md shadow-emerald-800/15 transition-all duration-200 group cursor-pointer"
+        >
+          @if (isCurrentCauseSupported) {
+            <svg class="w-4 h-4 text-emerald-100" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+            </svg>
+            <span>Currently supporting</span>
+          } @else {
+            <span>Support this cause</span>
+            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          }
+        </button>
+
+        @if (causeDetail.web_link) {
+          <a 
+            [href]="causeDetail.web_link.startsWith('http') ? causeDetail.web_link : 'https://' + causeDetail.web_link" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="w-full sm:w-auto bg-white hover:bg-emerald-50 text-[#087F6A] border-2 border-[#087F6A] font-bold text-sm py-3 px-5 rounded-xl flex items-center justify-center gap-2 shadow-2xs transition-all duration-200 cursor-pointer group"
+          >
+            <span>{{ causeDetail.web_link_name || 'Website' }}</span>
+            <svg class="w-4 h-4 text-[#087F6A] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+            </svg>
+          </a>
         }
-      </button>
+      </div>
 
       <!-- Impact Story Card (Mobile Placement) -->
       <div class="mt-6">
@@ -316,23 +332,40 @@
             </div>
           }
 
-          <!-- CTA Button (Figma) -->
-          <button 
-            (click)="openConfirmModal()" 
-            class="bg-[#087F6A] hover:bg-[#066856] active:scale-[0.99] text-white font-bold text-sm xl:text-base py-3 px-7 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer group"
-          >
-            @if (isCurrentCauseSupported) {
-              <svg class="w-4 h-4 text-emerald-100" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
-              </svg>
-              <span>Currently supporting</span>
-            } @else {
-              <span>Support this cause</span>
-              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-              </svg>
+          <!-- CTA Action Buttons (Desktop) -->
+          <div class="flex items-center gap-3.5 flex-wrap">
+            <button 
+              (click)="openConfirmModal()" 
+              class="bg-[#087F6A] hover:bg-[#066856] active:scale-[0.99] text-white font-bold text-sm xl:text-base py-3 px-6 xl:px-7 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer group"
+            >
+              @if (isCurrentCauseSupported) {
+                <svg class="w-4 h-4 text-emerald-100" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+                </svg>
+                <span>Currently supporting</span>
+              } @else {
+                <span>Support this cause</span>
+                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              }
+            </button>
+
+            <!-- web link button -->
+            @if (causeDetail.web_link) {
+              <a 
+                [href]="causeDetail.web_link.startsWith('http') ? causeDetail.web_link : 'https://' + causeDetail.web_link" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="bg-white hover:bg-emerald-50 text-[#087F6A] border-2 border-[#087F6A] font-bold text-sm xl:text-base py-2.5 px-5 xl:px-6 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer group"
+              >
+                <span>{{ causeDetail.web_link_name || 'Website' }}</span>
+                <svg class="w-4 h-4 text-[#087F6A] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                </svg>
+              </a>
             }
-          </button>
+          </div>
         </div>
 
         <!-- Right: Cause Hero Image (Figma) -->
