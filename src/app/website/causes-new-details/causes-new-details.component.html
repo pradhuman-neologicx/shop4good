@@ -57,7 +57,8 @@
         {{ causeDetail.subtitle }}
       </p>
 
-      <!-- Stats Card -->
+      <!-- Stats Card (Commented) -->
+      <!--
       <div class="bg-white rounded-2xl border border-slate-200/90 px-2  sm:px-3 py-3 shadow-xs mb-6">
         <div class="grid grid-cols-2 divide-x divide-slate-100">
           @for (stat of causeDetail.stats; track $index) {
@@ -78,6 +79,31 @@
           }
         </div>
       </div>
+      -->
+
+      <!-- Cause Description & Quote (Mobile) -->
+      @if (causeDetail.description || causeDetail.quotes) {
+        <div class="mb-6 space-y-3.5">
+          @if (causeDetail.description) {
+            <div class="text-sm text-slate-600 leading-relaxed whitespace-pre-line font-normal">
+              {{ causeDetail.description }}
+            </div>
+          }
+
+          @if (causeDetail.quotes || causeDetail.quote) {
+            <div class="relative bg-gradient-to-r from-[#EBF7EE]/90 to-[#F0FAF3]/40 border-l-4 border-[#087F6A] rounded-r-2xl p-4 shadow-2xs">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-[#087F6A] shrink-0 mt-0.5 opacity-80" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                </svg>
+                <p class="text-xs sm:text-sm font-semibold text-[#08265C] italic leading-snug">
+                  “{{ causeDetail.quotes || causeDetail.quote }}”
+                </p>
+              </div>
+            </div>
+          }
+        </div>
+      }
 
       <!-- How we help (Mobile Compact) -->
       <div class="mb-6">
@@ -241,7 +267,8 @@
             {{ causeDetail.subtitle }}
           </p>
 
-          <!-- Stats Pill Bar (Figma) -->
+          <!-- Stats Pill Bar (Figma) (Commented) -->
+          <!--
           <div class="inline-flex items-center gap-6 bg-white rounded-2xl border border-slate-200/80 p-3 px-5 shadow-2xs mb-6">
             @for (stat of causeDetail.stats; track $index) {
               <div class="flex items-center gap-3">
@@ -263,6 +290,31 @@
               }
             }
           </div>
+          -->
+
+          <!-- Cause Description & Quote (Desktop) -->
+          @if (causeDetail.description || causeDetail.quotes) {
+            <div class="mb-6 space-y-4 max-w-xl">
+              @if (causeDetail.description) {
+                <div class="text-sm xl:text-[15px] text-slate-600 leading-relaxed whitespace-pre-line font-normal">
+                  {{ causeDetail.description }}
+                </div>
+              }
+
+              @if (causeDetail.quotes || causeDetail.quote) {
+                <div class="relative bg-gradient-to-r from-[#EBF7EE]/90 to-[#F0FAF3]/40 border-l-4 border-[#087F6A] rounded-r-2xl p-4 xl:p-4.5 shadow-2xs">
+                  <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-[#087F6A] shrink-0 mt-0.5 opacity-80" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                    </svg>
+                    <p class="text-sm xl:text-base font-semibold text-[#08265C] italic leading-snug">
+                      “{{ causeDetail.quotes || causeDetail.quote }}”
+                    </p>
+                  </div>
+                </div>
+              }
+            </div>
+          }
 
           <!-- CTA Button (Figma) -->
           <button 

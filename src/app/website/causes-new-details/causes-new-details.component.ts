@@ -54,7 +54,7 @@ export interface CauseItem {
   tags: string[];
   bgColor?: string;
   quotes?: string;
-  
+  quote?: string;
 }
 
 @Component({
@@ -86,7 +86,10 @@ export class CausesNewDetailsComponent implements OnInit {
       subtitle: 'Brighter minds for a brighter tomorrow',
       foundation: 'The Earth Saviours Foundation',
       image: 'assets/images/Kids card photo.jpg',
-      bgColor: '#1e3a8a'
+      bgColor: '#1e3a8a',
+      description: 'A brighter future begins with the opportunity to learn. Every child deserves the chance to dream, discover, and build a future filled with possibilities. Yet, for many children, access to quality education remains a distant dream. At Shop4Goods, we believe education is more than a fundamental right—it is the foundation of opportunity, independence, and lasting change.\n\nBy supporting child education, we help open doors to knowledge, nurture young minds, and empower the next generation to shape a better world.',
+      quotes: 'Because when we educate a child, we empower a lifetime.',
+      quote: 'Because when we educate a child, we empower a lifetime.'
     },
     {
       id: 'women',
@@ -94,7 +97,10 @@ export class CausesNewDetailsComponent implements OnInit {
       subtitle: 'Stronger Women Build Stronger Communities',
       foundation: 'PraveenLata Sansthan Foundation',
       image: 'assets/images/Women card image.jpg',
-      bgColor: '#d2386c'
+      bgColor: '#d2386c',
+      description: 'When women rise, communities thrive. Every woman deserves the freedom to dream big, the opportunity to achieve her ambitions, and the confidence to shape her own future. Yet, countless women continue to face barriers to education, financial independence, equal opportunities, and self-expression.\n\nShop4Goods believes that empowering women means creating opportunities for them to lead, grow, and thrive on their own terms. By supporting women empowerment, we champion equality, strengthen families, and help build a society where every woman has the power to realize her potential.',
+      quotes: "Because an empowered woman doesn't just change her life—she can change the world.",
+      quote: "Because an empowered woman doesn't just change her life—she can change the world."
     },
     {
       id: 'senior',
@@ -102,7 +108,10 @@ export class CausesNewDetailsComponent implements OnInit {
       subtitle: 'Respect, care and a more dignified tomorrow.',
       foundation: 'The Earth Saviours Foundation',
       image: 'assets/images/Senior Citizen Card Image.jpg',
-      bgColor: '#4a8dd6'
+      bgColor: '#4a8dd6',
+      description: "They spent a lifetime caring for others. Now, it's our turn. Our senior citizens carry a lifetime of memories, wisdom, sacrifices, and stories that have helped shape our families and communities. They deserve more than gratitude—they deserve respect, companionship, comfort, and compassionate care.\n\nAt Shop4Goods, we believe that growing older should never mean feeling forgotten or alone. Through our commitment to senior citizen care, we aspire to support a world where every elder feels valued, protected, included, and loved.",
+      quotes: 'Because age may change a life, but it should never diminish its worth.',
+      quote: 'Because age may change a life, but it should never diminish its worth.'
     },
     {
       id: 'pets',
@@ -110,7 +119,10 @@ export class CausesNewDetailsComponent implements OnInit {
       subtitle: 'Better care for happier companions.',
       foundation: 'The Earth Saviours Foundation',
       image: 'assets/images/Dog Card photo.jpg',
-      bgColor: '#245e55'
+      bgColor: '#245e55',
+      description: 'They may not have a voice, but they deserve to be heard. Animals bring companionship, joy, and balance to our world, yet many face hunger, abandonment, neglect, and suffering. Every animal deserves a life free from cruelty, with access to food, shelter, protection, and compassionate care.\n\nAt Shop4Goods, we believe kindness should extend to every living being. By supporting animal welfare, we stand for responsible care, humane treatment, and a world where compassion guides the way we treat the animals who share our planet.',
+      quotes: 'Because kindness has no species, and compassion should have no boundaries.',
+      quote: 'Because kindness has no species, and compassion should have no boundaries.'
     }
   ];
 
@@ -285,10 +297,10 @@ export class CausesNewDetailsComponent implements OnInit {
     const mockItems: Record<string, CauseItem> = {
       'pets': {
         id: 'pets',
-        name: 'Pet Care',
+        name: 'Animal Welfare',
         slug: 'pet-care',
         badge: 'Our cause',
-        subtitle: 'Better care for happier companions.',
+        subtitle: 'Every Life Deserves Kindness.',
         cover_image_url: 'assets/images/banner-pets.png',
         images: ['assets/images/Dog Card photo.jpg'],
         stats: [
@@ -313,7 +325,11 @@ export class CausesNewDetailsComponent implements OnInit {
           quote: 'Every life, no matter how small, matters.',
           bgColor: '#245e55'
         },
-        description: `<h2><strong>Compassionate Care for Every Animal</strong></h2><p>Every animal deserves love, safety, proper medical care, and a chance to live a healthy, joyful life. Millions of pets and homeless animals face extreme challenges such as hunger, untreated illnesses, vehicular trauma, abandonment, and unsafe weather conditions. The Pet Care initiative is committed to providing prompt rescue, medical attention, nourishment, and secure shelter to innocent voiceless animals.</p><h3><strong>Our Core Mission</strong></h3><p>Our mission is to foster a compassionate society where vulnerable and stray animals receive immediate protection, nourishment, and dignity. Through our verified grassroots partner shelter network, we transform suffering into recovery and hope.</p><h3><strong>How Your Shopping Support Creates Impact</strong></h3><ul><li><strong>Emergency Rescue:</strong> Mobile animal ambulances and rescue teams equipped to handle critical distress calls.</li><li><strong>Nutritious Food & Clean Water:</strong> Daily feeding drives across city zones and shelter kitchens providing healthy meals.</li><li><strong>Veterinary Medical Care:</strong> Crucial surgeries, sterilizations, deworming, rabies vaccination drives, and chronic illness treatment.</li><li><strong>Shelter & Loving Adoptions:</strong> Safe rehabilitation centers where rescued animals heal and find loving forever families.</li></ul><p><strong>Support this cause effortlessly today</strong> — every time you shop through participating stores on Shop4Good, affiliate earnings go directly towards funding animal shelter meals and life-saving veterinary treatments.</p>`,
+        description: `They may not have a voice, but they deserve to be heard. Animals bring companionship, joy, and balance to our world, yet many face hunger, abandonment, neglect, and suffering. Every animal deserves a life free from cruelty, with access to food, shelter, protection, and compassionate care.
+
+At Shop4Goods, we believe kindness should extend to every living being. By supporting animal welfare, we stand for responsible care, humane treatment, and a world where compassion guides the way we treat the animals who share our planet.`,
+        quotes: 'Because kindness has no species, and compassion should have no boundaries.',
+        quote: 'Because kindness has no species, and compassion should have no boundaries.',
         goal_amount: 200000,
         raised_amount: 95000,
         donors_count: 310,
@@ -325,10 +341,10 @@ export class CausesNewDetailsComponent implements OnInit {
       },
       'kids': {
         id: 'kids',
-        name: 'Kids Education',
+        name: 'Child Education',
         slug: 'kids-education',
         badge: 'Our cause',
-        subtitle: 'Brighter minds for a brighter tomorrow.',
+        subtitle: 'Every Child Deserves a Brighter Tomorrow.',
         cover_image_url: 'assets/images/banner-kids.png',
         images: ['assets/images/Kids card photo.jpg'],
         stats: [
@@ -353,7 +369,11 @@ export class CausesNewDetailsComponent implements OnInit {
           quote: 'Education opens doors to endless possibilities.',
           bgColor: '#1e3a8a'
         },
-        description: `<h2><strong>Empower Every Child Through Education</strong></h2><p>Every child deserves the opportunity to learn, grow, and build a brighter future. Many underprivileged children lack access to quality education, essential school supplies, and the learning resources they need to succeed.</p><h3><strong>Our Mission</strong></h3><p>The Kids Education Support initiative aims to make quality education accessible to children from underserved communities by providing essential educational resources, classrooms, and teacher mentorship.</p><h3><strong>How Your Donation Helps</strong></h3><ul><li><strong>School Supplies:</strong> Provide books, notebooks, stationery, and other essential learning materials.</li><li><strong>Quality Education:</strong> Support access to foundational literacy and numeracy programs.</li><li><strong>Better Opportunities:</strong> Help children develop critical life skills and pursue their dreams.</li><li><strong>Brighter Futures:</strong> Empower children to break generational poverty and build thriving communities.</li></ul><p><strong>Together, we can turn dreams into reality — one child, one opportunity, and one brighter future at a time.</strong></p>`,
+        description: `A brighter future begins with the opportunity to learn. Every child deserves the chance to dream, discover, and build a future filled with possibilities. Yet, for many children, access to quality education remains a distant dream. At Shop4Goods, we believe education is more than a fundamental right—it is the foundation of opportunity, independence, and lasting change.
+
+By supporting child education, we help open doors to knowledge, nurture young minds, and empower the next generation to shape a better world.`,
+        quotes: 'Because when we educate a child, we empower a lifetime.',
+        quote: 'Because when we educate a child, we empower a lifetime.',
         goal_amount: 500000,
         raised_amount: 125000,
         donors_count: 245,
@@ -368,7 +388,7 @@ export class CausesNewDetailsComponent implements OnInit {
         name: 'Women Empowerment',
         slug: 'women-empowerment',
         badge: 'Our cause',
-        subtitle: 'Stronger women build stronger communities.',
+        subtitle: 'Empower Her, Empower the World',
         cover_image_url: 'assets/images/banner-women.png',
         images: ['assets/images/Women card image.jpg'],
         stats: [
@@ -393,7 +413,11 @@ export class CausesNewDetailsComponent implements OnInit {
           quote: 'When women grow, communities thrive.',
           bgColor: '#d2386c'
         },
-        description: `<h2><strong>Creating Pathways to Independence</strong></h2><p>Women empowerment is about creating a world where every woman has the opportunity to live independently, make her own decisions, and achieve her aspirations. Many women face structural barriers such as limited educational opportunities, lack of financial independence, and social inequities.</p><h3><strong>Our Mission</strong></h3><p>Our mission is to empower women by providing sustainable livelihood training, financial literacy, and community support groups so they can lead dignified lives.</p><h3><strong>How We Make a Difference</strong></h3><ul><li><strong>Education and Skill Development:</strong> Vocational training that leads directly to earning potential.</li><li><strong>Financial Independence:</strong> Helping women open bank accounts, save safely, and manage family finances.</li><li><strong>Women Entrepreneurship:</strong> Encouraging micro-businesses, cooperative marketing, and self-reliance.</li><li><strong>Community Safety:</strong> Promoting gender equality, legal literacy, and safety networks.</li></ul>`,
+        description: `When women rise, communities thrive. Every woman deserves the freedom to dream big, the opportunity to achieve her ambitions, and the confidence to shape her own future. Yet, countless women continue to face barriers to education, financial independence, equal opportunities, and self-expression.
+
+Shop4Goods believes that empowering women means creating opportunities for them to lead, grow, and thrive on their own terms. By supporting women empowerment, we champion equality, strengthen families, and help build a society where every woman has the power to realize her potential.`,
+        quotes: "Because an empowered woman doesn't just change her life—she can change the world.",
+        quote: "Because an empowered woman doesn't just change her life—she can change the world.",
         goal_amount: 300000,
         raised_amount: 85000,
         donors_count: 180,
@@ -408,7 +432,7 @@ export class CausesNewDetailsComponent implements OnInit {
         name: 'Senior Citizen Care',
         slug: 'senior-citizen-care',
         badge: 'Our cause',
-        subtitle: 'Respect, care and a more dignified tomorrow.',
+        subtitle: 'Every Elder Deserves Dignity and Love.',
         cover_image_url: 'assets/images/banner-elder.png',
         images: ['assets/images/Senior Citizen Card Image.jpg'],
         stats: [
@@ -433,7 +457,11 @@ export class CausesNewDetailsComponent implements OnInit {
           quote: 'Because they cared for us, now it’s our turn.',
           bgColor: '#4a8dd6'
         },
-        description: `<h2><strong>Honoring and Caring for Our Elders</strong></h2><p>Every senior citizen deserves respect, love, attentive care, and the opportunity to live with joy and dignity. Many elderly individuals suffer from physical frailty, loneliness, chronic health concerns, or abandonment.</p><h3><strong>Our Mission</strong></h3><p>Our mission is to ensure elderly citizens receive the shelter, nutrition, healthcare, and emotional warmth they need to enjoy peaceful golden years.</p><h3><strong>How We Make a Difference</strong></h3><ul><li><strong>Healthcare Support:</strong> Regular visits by doctors, round-the-clock nursing care, and emergency hospital access.</li><li><strong>Food & Nutrition:</strong> Fresh, doctor-customized hot meals and dietary supplements daily.</li><li><strong>Safe Living:</strong> Upgraded old age home facilities with safety railings, clean washrooms, and recreational spaces.</li><li><strong>Loving Companionship:</strong> Community interaction and recreational activities to alleviate depression and loneliness.</li></ul>`,
+        description: `They spent a lifetime caring for others. Now, it's our turn. Our senior citizens carry a lifetime of memories, wisdom, sacrifices, and stories that have helped shape our families and communities. They deserve more than gratitude —they deserve respect, companionship, comfort, and compassionate care.
+
+At Shop4Goods, we believe that growing older should never mean feeling forgotten or alone. Through our commitment to senior citizen care, we aspire to support a world where every elder feels valued, protected, included, and loved.`,
+        quotes: 'Because age may change a life, but it should never diminish its worth.',
+        quote: 'Because age may change a life, but it should never diminish its worth.',
         goal_amount: 800000,
         raised_amount: 320000,
         donors_count: 412,
