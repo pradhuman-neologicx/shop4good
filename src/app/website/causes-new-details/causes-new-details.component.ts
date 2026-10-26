@@ -82,8 +82,8 @@ export class CausesNewDetailsComponent implements OnInit {
   otherCauses = [
     {
       id: 'kids',
-      title: 'Kids Education',
-      subtitle: 'Brighter minds for a brighter tomorrow',
+      title: 'Child Education',
+      subtitle: 'Every Child Deserves a Brighter Tomorrow.',
       foundation: 'The Earth Saviours Foundation',
       image: 'assets/images/Kids card photo.jpg',
       bgColor: '#1e3a8a',
@@ -94,7 +94,7 @@ export class CausesNewDetailsComponent implements OnInit {
     {
       id: 'women',
       title: 'Women Empowerment',
-      subtitle: 'Stronger Women Build Stronger Communities',
+      subtitle: 'Empower Her, Empower the World',
       foundation: 'PraveenLata Sansthan Foundation',
       image: 'assets/images/Women card image.jpg',
       bgColor: '#d2386c',
@@ -105,7 +105,7 @@ export class CausesNewDetailsComponent implements OnInit {
     {
       id: 'senior',
       title: 'Senior Citizen Care',
-      subtitle: 'Respect, care and a more dignified tomorrow.',
+      subtitle: 'Every Elder Deserves Dignity and Love.',
       foundation: 'The Earth Saviours Foundation',
       image: 'assets/images/Senior Citizen Card Image.jpg',
       bgColor: '#4a8dd6',
@@ -115,8 +115,8 @@ export class CausesNewDetailsComponent implements OnInit {
     },
     {
       id: 'pets',
-      title: 'Pet Care',
-      subtitle: 'Better care for happier companions.',
+      title: 'Animal Welfare',
+      subtitle: 'Every Life Deserves Kindness.',
       foundation: 'The Earth Saviours Foundation',
       image: 'assets/images/Dog Card photo.jpg',
       bgColor: '#245e55',
