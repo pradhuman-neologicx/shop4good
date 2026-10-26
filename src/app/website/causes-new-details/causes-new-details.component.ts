@@ -53,6 +53,8 @@ export interface CauseItem {
   ends_at: string;
   tags: string[];
   bgColor?: string;
+  quotes?: string;
+  
 }
 
 @Component({

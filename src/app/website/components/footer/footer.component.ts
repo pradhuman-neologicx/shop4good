@@ -18,10 +18,10 @@ export class FooterComponent {
   ];
 
   causeLinks = [
-    { label: 'Kids Education', href: '/causes-new/kids' },
-    { label: 'Women Empowerment', href: '/causes-new/women' },
-    { label: 'Senior Citizen Care', href: '/causes-new/senior' },
-    { label: 'Pet Care', href: '/causes-new/pets' },
+    { label: 'Kids Education', href: '/causes/kids' },
+    { label: 'Women Empowerment', href: '/causes/women' },
+    { label: 'Senior Citizen Care', href: '/causes/senior' },
+    { label: 'Pet Care', href: '/causes/pets' },
   ];
 
   aboutLinks = [
