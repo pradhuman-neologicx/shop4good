@@ -397,6 +397,8 @@ By supporting child education, we help open doors to knowledge, nurture young mi
         subtitle: 'Empower Her, Empower the World',
         cover_image_url: 'assets/images/banner-women.png',
         images: ['assets/images/Women card image.jpg'],
+        web_link:'#',
+        web_link_name:'Website Link',
         stats: [
           { value: '5,400+', label: 'Women supported', icon: 'heart' },
           { value: '120+', label: 'Skill programs', icon: 'grad-cap' }
@@ -441,6 +443,8 @@ Shop4Goods believes that empowering women means creating opportunities for them 
         subtitle: 'Every Elder Deserves Dignity and Love.',
         cover_image_url: 'assets/images/banner-elder.png',
         images: ['assets/images/Senior Citizen Card Image.jpg'],
+         web_link:'#',
+        web_link_name:'Website Link',
         stats: [
           { value: '8,200+', label: 'Senior citizens supported', icon: 'users' },
           { value: '30+', label: 'Care centres', icon: 'home' }
