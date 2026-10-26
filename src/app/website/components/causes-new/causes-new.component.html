@@ -81,7 +81,7 @@
       <div 
         class="rounded-[16px] text-white flex flex-col relative cursor-pointer transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98] h-full shadow-sm hover:shadow-md overflow-hidden"
         [style.backgroundColor]="cause.bgColor"
-        [routerLink]="['/causes-new', cause.id]"
+        [routerLink]="['/causes', cause.id]"
         (click)="selectCause(cause.id)"
       >
         <!-- Currently Supporting Badge (if logged in and matched) -->
