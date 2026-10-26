@@ -32,20 +32,20 @@ export const routes: Routes = [
   },
 
 
-  // {
-  //   path: 'causes',
-  //   redirectTo: 'causes/kids',
-  //   pathMatch: 'full'
-  // },
+  {
+    path: 'causes',
+    redirectTo: 'causes/kids',
+    pathMatch: 'full'
+  },
   // {
   //   path: 'causes-new',
   //   redirectTo: 'causes/kids',
   //   pathMatch: 'full'
   // },
-  // {
-  //   path: 'causes/:id',
-  //   loadComponent: () => import('./website/causes-new-details/causes-new-details.component').then(c => c.CausesNewDetailsComponent)
-  // },
+  {
+    path: 'causes/:id',
+    loadComponent: () => import('./website/causes-new-details/causes-new-details.component').then(c => c.CausesNewDetailsComponent)
+  },
   // {
   //   path: 'causes-new/:id',
   //   loadComponent: () => import('./website/causes-new-details/causes-new-details.component').then(c => c.CausesNewDetailsComponent)
