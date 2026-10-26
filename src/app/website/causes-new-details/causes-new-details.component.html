@@ -251,7 +251,7 @@
   <main class="hidden lg:block w-full flex-grow">
     
     <!-- ── 1. Desktop Hero Split Section ── -->
-    <div class="max-w-[1440px] mx-auto px-12 xl:px-24 pt-6 pb-12">
+    <div class="max-w-[1440px] mx-auto px-8 lg:px-10 xl:px-16 pt-6 pb-12">
       <!-- Breadcrumb -->
       <nav class="flex items-center gap-2 text-xs sm:text-sm text-slate-500 mb-6 font-medium">
         <a routerLink="/" class="hover:text-emerald-700 transition-colors">Home</a>
@@ -262,9 +262,9 @@
       </nav>
 
       <!-- 2-Column Split: Info Left, Image Right (Figma) -->
-      <div class="grid grid-cols-12 gap-10 xl:gap-14 items-center">
+      <div class="grid grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-center">
         <!-- Left: Text, Stats, CTA -->
-        <div class="col-span-6 flex flex-col items-start justify-center">
+        <div class="col-span-12 lg:col-span-7 xl:col-span-7 flex flex-col items-start justify-center">
           <!-- Badge -->
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#EBF7EE] text-[#087F6A] border border-[#D5EEDC] mb-3">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -333,10 +333,10 @@
           }
 
           <!-- CTA Action Buttons (Desktop) -->
-          <div class="flex items-center gap-3.5 flex-wrap">
+          <div class="flex items-center gap-3 xl:gap-3.5 flex-wrap xl:flex-nowrap pt-1">
             <button 
               (click)="openConfirmModal()" 
-              class="bg-[#087F6A] hover:bg-[#066856] active:scale-[0.99] text-white font-bold text-sm xl:text-base py-3 px-6 xl:px-7 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer group"
+              class="bg-[#087F6A] hover:bg-[#066856] active:scale-[0.99] text-white font-bold text-sm xl:text-[15px] py-3 px-5 xl:px-6 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer group whitespace-nowrap shrink-0"
             >
               @if (isCurrentCauseSupported) {
                 <svg class="w-4 h-4 text-emerald-100" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -357,7 +357,7 @@
                 [href]="causeDetail.web_link.startsWith('http') ? causeDetail.web_link : 'https://' + causeDetail.web_link" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                class="bg-white hover:bg-emerald-50 text-[#087F6A] border-2 border-[#087F6A] font-bold text-sm xl:text-base py-2.5 px-5 xl:px-6 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer group"
+                class="bg-white hover:bg-emerald-50 text-[#087F6A] border-2 border-[#087F6A] font-bold text-sm xl:text-[15px] py-2.5 px-4 xl:px-5 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer group whitespace-nowrap shrink-0"
               >
                 <span>{{ causeDetail.web_link_name || 'Website' }}</span>
                 <svg class="w-4 h-4 text-[#087F6A] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -369,7 +369,7 @@
         </div>
 
         <!-- Right: Cause Hero Image (Figma) -->
-        <div class="col-span-6">
+        <div class="col-span-12 lg:col-span-5 xl:col-span-5">
           <div class="relative w-full rounded-[24px] overflow-hidden shadow-sm border border-slate-200/80 bg-slate-100 aspect-[4/3] max-h-[380px]">
             <img 
               [ngSrc]="causeDetail.cover_image_url" 
