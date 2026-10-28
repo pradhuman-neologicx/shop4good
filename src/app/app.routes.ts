@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/auth-guard';
+import { CustomerAuthGuard } from './core/auth/customer-auth-guard';
 
 export const routes: Routes = [
   {
@@ -108,6 +109,7 @@ export const routes: Routes = [
   },
   {
     path: 'shop',
+    canActivate: [CustomerAuthGuard],
     loadComponent: () => import('./website/shop/shop.component').then(c => c.ShopComponent)
   },
   {
@@ -120,6 +122,7 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
+    canActivate: [CustomerAuthGuard],
     loadComponent: () => import('./website/customer-profile/customer-profile.component').then(c => c.CustomerProfileComponent)
   },
 

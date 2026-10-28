@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { JwtService } from 'src/app/core/services/jwt.service';
@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder, 
     private router: Router,
+    private route: ActivatedRoute,
     private jwtService: JwtService,
     private notification: NotificationService,
     private cdr: ChangeDetectorRef
@@ -256,7 +257,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onStartShopping() {
-    this.router.navigate(['/shop']);
+    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/shop';
+    this.router.navigateByUrl(returnUrl);
   }
 
   onClose() {

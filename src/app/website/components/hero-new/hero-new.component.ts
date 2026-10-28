@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { RouterLink } from '@angular/router';
+// import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-hero-new',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './hero-new.component.html',
   styleUrl: './hero-new.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

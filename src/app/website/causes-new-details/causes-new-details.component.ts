@@ -4,6 +4,7 @@ import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import { NotificationService } from 'src/app/core/services/notificationnew.service';
+import { JwtService } from 'src/app/core/services/jwt.service';
 
 export interface CauseStat {
   value: string;
@@ -136,7 +137,8 @@ export class CausesNewDetailsComponent implements OnInit {
     private route: ActivatedRoute, 
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private jwtService: JwtService
   ) {}
 
   ngOnInit(): void {
@@ -157,6 +159,10 @@ export class CausesNewDetailsComponent implements OnInit {
 
   checkIfCauseSupported(): void {
     if (typeof window === 'undefined') return;
+    if (!this.jwtService.getCustomerIsLoggedIn()) {
+      this.isCurrentCauseSupported = false;
+      return;
+    }
     try {
       const saved = localStorage.getItem('shop4good_supported_cause');
       if (saved) {
@@ -171,6 +177,11 @@ export class CausesNewDetailsComponent implements OnInit {
   }
 
   openConfirmModal(): void {
+    if (!this.jwtService.getCustomerIsLoggedIn()) {
+      this.notificationService.show('Please log in to support a cause.', 'info');
+      this.router.navigate(['/auth/login'], { queryParams: { returnUrl: this.router.url } });
+      return;
+    }
     this.checkIfCauseSupported();
     this.isConfirmedSuccess = false;
     this.isConfirmModalOpen = true;
@@ -185,6 +196,13 @@ export class CausesNewDetailsComponent implements OnInit {
 
   confirmSupportCause(): void {
     if (!this.causeDetail) return;
+
+    if (!this.jwtService.getCustomerIsLoggedIn()) {
+      this.closeConfirmModal();
+      this.notificationService.show('Please log in to support a cause.', 'info');
+      this.router.navigate(['/auth/login'], { queryParams: { returnUrl: this.router.url } });
+      return;
+    }
 
     const causePayload = {
       id: this.causeDetail.id,
@@ -216,6 +234,11 @@ export class CausesNewDetailsComponent implements OnInit {
 
   goToShop(): void {
     this.closeConfirmModal();
+    if (!this.jwtService.getCustomerIsLoggedIn()) {
+      this.notificationService.show('Please log in to start shopping.', 'info');
+      this.router.navigate(['/auth/login'], { queryParams: { returnUrl: '/shop' } });
+      return;
+    }
     this.router.navigate(['/shop']);
   }
 

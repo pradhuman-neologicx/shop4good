@@ -1,11 +1,13 @@
 import { Component, OnInit, DestroyRef, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import { MarketplaceService } from '../../core/services/marketplace.service';
+import { JwtService } from '../../core/services/jwt.service';
+import { NotificationService } from '../../core/services/notificationnew.service';
 
 export interface BrandItem {
   id?: number | string;
@@ -18,7 +20,7 @@ export interface BrandItem {
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [CommonModule, FormsModule,  NavbarComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, NavbarComponent, FooterComponent],
   templateUrl: './shop.component.html',
   styleUrl: './shop.component.scss',
   changeDetection: ChangeDetectionStrategy.Default
@@ -41,10 +43,19 @@ export class ShopComponent implements OnInit {
 
   constructor(
     private marketplaceService: MarketplaceService, 
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private jwtService: JwtService,
+    private router: Router,
+    private notification: NotificationService
   ) {}
 
   ngOnInit(): void {
+    if (!this.jwtService.getCustomerIsLoggedIn()) {
+      this.notification.show('Please log in to start shopping.', 'info');
+      this.router.navigate(['/auth/login'], { queryParams: { returnUrl: '/shop' } });
+      return;
+    }
+
     this.marketplaces = [...this.defaultMarketplaces];
     this.loadMarketplaces();
     if (typeof window !== 'undefined') {
@@ -120,6 +131,11 @@ export class ShopComponent implements OnInit {
     if (event) {
       event.stopPropagation();
     }
+    if (!this.jwtService.getCustomerIsLoggedIn()) {
+      this.notification.show('Please log in to start shopping.', 'info');
+      this.router.navigate(['/auth/login'], { queryParams: { returnUrl: '/shop' } });
+      return;
+    }
     this.selectedBrand = brand;
     if (brand.url && brand.url !== '#') {
       if (typeof window !== 'undefined') {
@@ -129,6 +145,11 @@ export class ShopComponent implements OnInit {
   }
 
   startShopping(): void {
+    if (!this.jwtService.getCustomerIsLoggedIn()) {
+      this.notification.show('Please log in to start shopping.', 'info');
+      this.router.navigate(['/auth/login'], { queryParams: { returnUrl: '/shop' } });
+      return;
+    }
     const target = this.selectedBrand || (this.filteredMarketplaces.length > 0 ? this.filteredMarketplaces[0] : null);
     if (target && target.url && target.url !== '#') {
       if (typeof window !== 'undefined') {

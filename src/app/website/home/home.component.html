@@ -121,7 +121,11 @@
           </div>
         } @else if (brandLogos.length > 0) {
           @for (brand of brandLogos; track brand.name) {
-            <a [href]="brand.url" target="_blank" class="bg-white rounded-[16px] sm:rounded-[20px] flex flex-col items-center justify-between h-[150px] sm:h-[180px] md:h-[200px] group cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-md overflow-hidden border border-gray-100">
+            <a 
+              [href]="isLoggedIn ? brand.url : '/auth/login'" 
+              (click)="onBrandClick(brand, $event)"
+              class="bg-white rounded-[16px] sm:rounded-[20px] flex flex-col items-center justify-between h-[150px] sm:h-[180px] md:h-[200px] group cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-md overflow-hidden border border-gray-100"
+            >
               <div class="flex-1 flex items-center justify-center w-full relative p-3 sm:p-4">
                 <img [src]="brand.src" [alt]="brand.name" class="w-full max-w-[85px] sm:max-w-[120px] h-auto object-contain transition-transform duration-500 group-hover:scale-105" />
               </div>

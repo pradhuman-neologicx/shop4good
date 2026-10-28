@@ -8,7 +8,7 @@ import {
   DestroyRef
 } from '@angular/core';
 import { NavbarComponent } from '../components/navbar/navbar.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FooterComponent } from '../components/footer/footer.component';
 import { HeroComponent } from '../components/hero/hero.component';
 // import { NgoImpactComponent } from '../components/ngo-impact/ngo-impact.component';
@@ -19,6 +19,7 @@ import { CausesNewComponent } from '../components/causes-new/causes-new.componen
 import { HowWorksComponent } from '../components/how-works/how-works.component';
 import { ImpactProofComponent } from '../components/impact-proof/impact-proof.component';
 import { JwtService } from '../../core/services/jwt.service';
+import { NotificationService } from '../../core/services/notificationnew.service';
 import { HeroNewComponent } from '../components/hero-new/hero-new.component';
 
 @Component({
@@ -43,6 +44,8 @@ export class HomeComponent implements OnInit {
   isLoggedIn = false;
   private destroyRef = inject(DestroyRef);
   private jwtService = inject(JwtService);
+  private router = inject(Router);
+  private notification = inject(NotificationService);
 
   constructor(
     private marketplaceService: MarketplaceService,
@@ -52,6 +55,21 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.isLoggedIn = this.jwtService.getCustomerIsLoggedIn();
     this.loadMarketplaces();
+  }
+
+  onBrandClick(brand: any, event?: Event) {
+    if (event) {
+      event.preventDefault();
+    }
+    this.isLoggedIn = this.jwtService.getCustomerIsLoggedIn();
+    if (!this.isLoggedIn) {
+      this.notification.show('Please log in to start shopping.', 'info');
+      this.router.navigate(['/auth/login'], { queryParams: { returnUrl: '/shop' } });
+      return;
+    }
+    if (brand.url && brand.url !== '#') {
+      window.open(brand.url, '_blank', 'noopener,noreferrer');
+    }
   }
 
   loadMarketplaces() {
