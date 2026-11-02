@@ -28,9 +28,9 @@ export class ChooseCauseComponent implements OnInit, OnChanges {
   causes: Cause[] = [
     {
       id: 'kids',
-      title: 'Kids Education',
+      title: 'Child Education',
       subtitle: 'Brighter minds for a brighter tomorrow',
-      foundation: 'The Earth Saviours Foundation',
+      foundation: 'Spreading Smiles',
       image: 'assets/images/Kids card photo.jpg',
       bgColor: '#1e3a8a'
     },
@@ -52,9 +52,9 @@ export class ChooseCauseComponent implements OnInit, OnChanges {
     },
     {
       id: 'pets',
-      title: 'Pet Care',
+      title: 'Animal Welfare',
       subtitle: 'Better care for happier companions.',
-      foundation: 'The Earth Saviours Foundation',
+      foundation: 'Friendicoes SECA',
       image: 'assets/images/Dog Card photo.jpg',
       bgColor: '#245e55'
     }

@@ -23,6 +23,7 @@ export interface NgoPartner {
   description: string;
   logo: string;
   verified: boolean;
+  website?: string;
 }
 
 export interface ImpactStory {
@@ -87,7 +88,7 @@ export class CausesNewDetailsComponent implements OnInit {
       id: 'kids',
       title: 'Child Education',
       subtitle: 'Every Child Deserves a Brighter Tomorrow.',
-      foundation: 'The Earth Saviours Foundation',
+      foundation: 'Spreading Smiles',
       image: 'assets/images/Kids card photo.jpg',
       bgColor: '#1e3a8a',
       description: 'A brighter future begins with the opportunity to learn. Every child deserves the chance to dream, discover, and build a future filled with possibilities. Yet, for many children, access to quality education remains a distant dream. At Shop4Goods, we believe education is more than a fundamental right—it is the foundation of opportunity, independence, and lasting change.\n\nBy supporting child education, we help open doors to knowledge, nurture young minds, and empower the next generation to shape a better world.',
@@ -120,7 +121,7 @@ export class CausesNewDetailsComponent implements OnInit {
       id: 'pets',
       title: 'Animal Welfare',
       subtitle: 'Every Life Deserves Kindness.',
-      foundation: 'The Earth Saviours Foundation',
+      foundation: 'Friendicoes SECA',
       image: 'assets/images/Dog Card photo.jpg',
       bgColor: '#245e55',
       description: 'They may not have a voice, but they deserve to be heard. Animals bring companionship, joy, and balance to our world, yet many face hunger, abandonment, neglect, and suffering. Every animal deserves a life free from cruelty, with access to food, shelter, protection, and compassionate care.\n\nAt Shop4Goods, we believe kindness should extend to every living being. By supporting animal welfare, we stand for responsible care, humane treatment, and a world where compassion guides the way we treat the animals who share our planet.',
@@ -242,6 +243,26 @@ export class CausesNewDetailsComponent implements OnInit {
     this.router.navigate(['/shop']);
   }
 
+  getFormattedLink(link?: string): string {
+    if (!link || link === '#') return '#';
+    const trimmed = link.trim();
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+      return trimmed;
+    }
+    return `https://${trimmed}`;
+  }
+
+  getCleanDomain(link?: string): string {
+    if (!link || link === '#') return '';
+    try {
+      const formatted = this.getFormattedLink(link);
+      const url = new URL(formatted);
+      return url.hostname.replace(/^www\./, '');
+    } catch {
+      return link.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+    }
+  }
+
   shareWhatsApp() {
     const url = typeof window !== 'undefined' ? window.location.href : '';
     const title = this.causeDetail?.name || this.ngo?.name || 'Shop4Good';
@@ -343,7 +364,8 @@ export class CausesNewDetailsComponent implements OnInit {
           name: 'Friendicoes SECA',
           description: 'Working towards animal rescue, care and safer communities for pets.',
           logo: 'assets/images/Friendicoes.jpg',
-          verified: true
+          verified: true,
+          website: 'https://friendicoes.org/'
         },
         bgColor: '#245e55',
         impactStory: {
@@ -374,7 +396,7 @@ At Shop4Goods, we believe kindness should extend to every living being. By suppo
         subtitle: 'Every Child Deserves a Brighter Tomorrow.',
         cover_image_url: 'assets/images/banner-kids.png',
         images: ['assets/images/Kids card photo.jpg'],
-        web_link: 'www.spreadingsmilesnathupur.org',
+        web_link: 'https://www.spreadingsmilesnathupur.org',
         web_link_name: 'Spreading Smiles Foundation',
         stats: [
           { value: '12,500+', label: 'Children supported', icon: 'users' },
@@ -389,7 +411,8 @@ At Shop4Goods, we believe kindness should extend to every living being. By suppo
           name: 'Spreading Smiles',
           description: 'Providing quality education to underprivileged children across India.',
           logo: 'assets/images/spreading-smiles.png',
-          verified: true
+          verified: true,
+          website: 'https://www.spreadingsmilesnathupur.org'
         },
         bgColor: '#1e3a8a',
         impactStory: {
@@ -420,8 +443,8 @@ By supporting child education, we help open doors to knowledge, nurture young mi
         subtitle: 'Empower Her, Empower the World',
         cover_image_url: 'assets/images/banner-women.png',
         images: ['assets/images/Women card image.jpg'],
-        web_link:'#',
-        web_link_name:'Website Link',
+        web_link: 'https://pls-ngo.org/',
+        web_link_name: 'PraveenLata Sansthan Foundation',
         stats: [
           { value: '5,400+', label: 'Women supported', icon: 'heart' },
           { value: '120+', label: 'Skill programs', icon: 'grad-cap' }
@@ -435,7 +458,8 @@ By supporting child education, we help open doors to knowledge, nurture young mi
           name: 'PraveenLata Sansthan Foundation',
           description: 'Empowering women through education, skill development and livelihood opportunities.',
           logo: 'assets/images/praveenlata_logo.png',
-          verified: true
+          verified: true,
+          website: 'https://pls-ngo.org/'
         },
         bgColor: '#d2386c',
         impactStory: {
@@ -466,8 +490,8 @@ Shop4Goods believes that empowering women means creating opportunities for them 
         subtitle: 'Every Elder Deserves Dignity and Love.',
         cover_image_url: 'assets/images/banner-elder.png',
         images: ['assets/images/Senior Citizen Card Image.jpg'],
-         web_link:'#',
-        web_link_name:'Website Link',
+        web_link: 'https://earthsaviours.in/',
+        web_link_name: 'The Earth Saviours Foundation',
         stats: [
           { value: '8,200+', label: 'Senior citizens supported', icon: 'users' },
           { value: '30+', label: 'Care centres', icon: 'home' }
@@ -481,7 +505,8 @@ Shop4Goods believes that empowering women means creating opportunities for them 
           name: 'The Earth Saviours Foundation',
           description: 'Working for the health, care and dignity of senior citizens across India.',
           logo: 'assets/images/earth_saviours_logo.png',
-          verified: true
+          verified: true,
+          website: 'https://earthsaviours.in/'
         },
         bgColor: '#4a8dd6',
         impactStory: {
