@@ -328,8 +328,8 @@ export class CausesNewDetailsComponent implements OnInit {
         subtitle: 'Every Life Deserves Kindness.',
         cover_image_url: 'assets/images/banner-pets.png',
         images: ['assets/images/Dog Card photo.jpg'],
-        web_link: 'www.friendicoes.org',
-        web_link_name: 'Friendicoes',
+        web_link: 'https://friendicoes.org/',
+        web_link_name: 'Friendicoes SECA',
         stats: [
           { value: '3,100+', label: 'Animals supported', icon: 'paw' },
           { value: '20+', label: 'Shelters supported', icon: 'home' }
@@ -340,9 +340,9 @@ export class CausesNewDetailsComponent implements OnInit {
           { title: 'Animal welfare', desc: 'Vaccination drives, anti-rabies camps, legal advocacy, and loving adoption campaigns.', icon: 'shield-check' }
         ],
         partner: {
-          name: 'The Earth Saviours Foundation',
+          name: 'Friendicoes SECA',
           description: 'Working towards animal rescue, care and safer communities for pets.',
-          logo: 'assets/images/earth_saviours_logo.png',
+          logo: 'assets/images/Friendicoes.jpg',
           verified: true
         },
         bgColor: '#245e55',
@@ -386,9 +386,9 @@ At Shop4Goods, we believe kindness should extend to every living being. By suppo
           { title: 'Better futures', desc: 'Scholarships and mentoring that open new doors.', icon: 'grad-cap' }
         ],
         partner: {
-          name: 'The Earth Saviours Foundation',
+          name: 'Spreading Smiles',
           description: 'Providing quality education to underprivileged children across India.',
-          logo: 'assets/images/earth_saviours_logo.png',
+          logo: 'assets/images/spreading-smiles.png',
           verified: true
         },
         bgColor: '#1e3a8a',

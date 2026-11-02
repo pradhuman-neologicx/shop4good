@@ -19,10 +19,10 @@ export class CausesNewComponent implements OnInit {
   causes: Cause[] = [
     {
       id: 'kids',
-      title: 'Kids Education',
+      title: 'Child Education',
       subtitle: 'Every child deserves a classroom',
       description: 'Support NGOs building schools, providing scholarships, and training teachers in underserved communities.',
-      foundation: 'The Earth Saviours Foundation',
+      foundation: 'Spreading Smiles',
       image: 'assets/images/Kids card photo.jpg',
       bgColor: '#1e3a8a' 
     },
@@ -49,7 +49,7 @@ export class CausesNewComponent implements OnInit {
       title: 'Animal Welfare',
       subtitle: 'Compassion for every creature',
       description: 'Support rescue shelters, spay-neuter drives, and wildlife conservation efforts.',
-      foundation: 'The Earth Saviours Foundation',
+      foundation: 'Friendicoes SECA',
       image: 'assets/images/Dog Card photo.jpg',
       bgColor: '#245e55'
     }
